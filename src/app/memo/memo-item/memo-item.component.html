@@ -1,16 +1,16 @@
-<div style="max-width: 20rem;" class="w3-card-2">
+<div style="max-width: 20rem;" class="w3-card-4 p-4">
   <section>
 
     <header >
-      <h1>{{Title}}</h1> <p>{{Icon.IconList.memo.icon}}</p>
+      <h1>{{Title}}</h1> <p>{{MemoIcon}}</p>
     </header>
 
     <article>
-      <p >{{PlaceHolderText}}</p>
+      <p>{{Description}}</p>
     </article>
-    @*ngFor="let item of {{FoodList}}"
   </section>
-  <section class=" w3-monospace bg-blue-800 hover:bg-white hover:text-blue-400 text-white">
-    <span><button>Remove memo</button><button> Edit Memo</button></span>
+  <section class="w-full mt-4 flex flex-row flex-nowrap content-center justify-between w3-monospace text-white">
+      <button id="remove-button" class="rounded-md p-2 bg-blue-800 hover:bg-opacity-80">Remove memo</button>
+      <button id="edit-button" class="rounded-md p-2 bg-blue-800 hover:bg-opacity-80"> Edit Memo</button>
   </section>
 </div>

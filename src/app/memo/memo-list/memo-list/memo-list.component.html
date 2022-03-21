@@ -1,3 +1,26 @@
-<p>
-  memo-list works!
-</p>
+<div class="flex flex-row flex-wrap justify-around gap-24 ">
+
+  <div class="w-auto bg-white rounded-md" *ngFor="let memo of MemoList">
+    <section  class="w3-card-4 p-6">
+
+        <header class="inline-flex w-full justify-between mb-4">
+          <h1>{{memo.Title}}</h1><p>{{memo.MemoIcon}}</p>
+        </header>
+
+
+        <article class="border-b-2 border-gray-300">
+          <p>{{memo.Description}}</p>
+        </article>
+
+        <ul  *ngFor="let ingredient of memo.Ingredients">
+          <a class="hover:bg-gray-200 hover:text-blue-800" href="#"><li class="w-full inline-flex flex-row justify-between"><div class="inline-flex gap-2"><p >{{ingredient.Icon}}</p> <p>{{ingredient.Name}}</p></div><p class="justify-end">x{{ingredient.Amount}}</p></li></a>
+        </ul>
+
+      <section class="w-auto  mt-4 flex flex-row items-center flex-nowrap content-center justify-between w3-monospace text-white">
+          <button id="remove-button" class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80">{{Icons.remove.icon}}</button>
+          <button id="edit-button"   class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80"> {{Icons.edit.icon}}</button>
+      </section>
+
+    </section>
+  </div>
+</div>

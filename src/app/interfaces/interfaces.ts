@@ -1,5 +1,5 @@
-import { MemoIcons } from "../memo-icons/memo-icons";
-import { MemoDescriptionComponent } from "../memo/memo-description/memo-description.component";
+import { MemoIcon } from "../memo/memo-icons/memo-icons";
+import { MemoDescriptionComponent } from "../memo/memo-description/memo-description.model";
 
 export interface IIcons {
   icon: string;
@@ -8,7 +8,7 @@ export interface IMemo {
   Title: string;
   MemoDescription: MemoDescriptionComponent;
   PlaceHolderText: string;
-  Icon: MemoIcons;
+  MemoIcon: MemoIcon;
 }
 
 export interface IFood {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MemoDescriptionComponent } from './memo-description.component';
+import { MemoDescriptionComponent } from './memo-description.model';
 
 describe('MemoDescriptionComponent', () => {
   let component: MemoDescriptionComponent;
