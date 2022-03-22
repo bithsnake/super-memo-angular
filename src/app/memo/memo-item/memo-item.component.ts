@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Ingredient } from 'src/app/food/food-list/ingredients';
+import { Ingredient } from 'src/app/shared/ingredients';
 import { MemoIcon } from '../memo-icons/memo-icons';
 type NewType = MemoIcon;
 

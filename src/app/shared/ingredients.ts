@@ -47,18 +47,11 @@ export type Watermelon = '🍉';
 export interface IIngredient {
   Name: string;
   Icon: string;
+  Amount: number;
 }
 
 export class Ingredient implements IIngredient{
-  Name: string;
-  Icon: IngredientType;
-  Amount: number;
-
-  constructor(name: string , icon : IngredientType, amount : number = 0) {
-    this.Name = name;
-    this.Icon = icon;
-    this.Amount = amount;
-  }
+  constructor(public Name: string ,public Icon : IngredientType, public Amount : number = 0) {}
 }
 
 export const ingredients = {
@@ -103,3 +96,125 @@ export const ingredients = {
   popcorn:        { Name: "Popcorn",Icon: '🍿' as IngredientType},
   watermelon:     { Name: "Watermelon",Icon: '🍉' as IngredientType}
 };
+export const ingredientsArray = [
+  {
+    Name: "Red Apple", Icon: '🍎' as IngredientType
+  },
+  {
+    Name: "Green Apple",Icon: '🍏' as IngredientType,
+  },
+  {
+    Name: "Avocado", Icon: '🥑' as IngredientType,
+  },
+  {
+    Name: "Bacon", Icon: '🥓' as IngredientType,
+  },
+  {
+    Name: "Banana" , Icon: '🍌' as IngredientType,
+  },
+  {
+    Name: "Baguette bread", Icon: '🥖' as IngredientType,
+  },
+  {
+    Name: "Bread", Icon: '🍞' as IngredientType,
+  },
+  {
+    Name: "Broccoli", Icon: '🥦' as IngredientType,
+  },
+  {
+    Name: "Brown egg",Icon: '🟤' as IngredientType,
+  },
+  {
+    Name: "Carrot", Icon: '🥕' as IngredientType,
+  },
+  {
+    Name: "Cattle", Icon: '🐄' as IngredientType,
+  },
+  {
+    Name: "Corn", Icon: '🌽' as IngredientType,
+  },
+  {
+    Name: "Coconut", Icon: '🥥' as IngredientType,
+  },
+  {
+    Name: "Cucumber", Icon: '🥒' as IngredientType,
+  },
+  {
+    Name: "Eggplant", Icon: '🍆' as IngredientType,
+  },
+  {
+    Name: "Egg", Icon: '🥚' as IngredientType,
+  },
+  {
+    Name: "Salmon", Icon: '🐟' as IngredientType,
+  },
+  {
+    Name: "Fries", Icon: '🍟' as IngredientType,
+  },
+  {
+    Name: "Grapes",Icon: '🍇' as IngredientType,
+  },
+  {
+    Name: "Hot pepper",Icon: '🌶️' as IngredientType,
+  },
+  {
+    Name: "Kiwi", Icon: '🥝' as IngredientType,
+  },
+  {
+    Name: "Leafy greens",Icon: '🥬' as IngredientType,
+  },
+  {
+    Name: "Lemon",Icon:  '🍋' as IngredientType,
+  },
+  {
+    Name: "Mango", Icon: '🥭' as IngredientType,
+  },
+  {
+    Name: "Melon", Icon: '🍈' as IngredientType,
+  },
+  {
+    Name: "Mushroom", Icon: '🍄' as IngredientType,
+  },
+  {
+    Name: "Onion",Icon:  '🧅' as IngredientType,
+  },
+  {
+    Name: "Rice", Icon: '🍙' as IngredientType,
+  },
+  {
+    Name: "Sausage/Hot dog", Icon: '🌭' as IngredientType,
+  },
+  {
+    Name: "Strawberry", Icon: '🍓' as IngredientType,
+  },
+  {
+    Name: "Sweetpotato", Icon: '🍠' as IngredientType,
+  },
+  {
+    Name: "Tomato", Icon: '🍅' as IngredientType,
+  },
+  {
+    Name: "Peanuts", Icon: '🥜' as IngredientType,
+  },
+  {
+    Name: "Pear", Icon: '🍐' as IngredientType,
+  },
+  {
+    Name: "Pasta", Icon: '🍝' as IngredientType,
+  },
+  {
+    Name: "Pineapple",Icon: '🍍' as IngredientType,
+  },
+  {
+    Name: "Potato",Icon: '🥔' as IngredientType,
+  },
+  {
+     Name: "Pork",Icon: '🐖' as IngredientType
+  },
+  {
+     Name: "Popcorn",Icon: '🍿' as IngredientType
+  },
+  {
+    Name: "Watermelon", Icon: '🍉' as IngredientType
+  }
+];

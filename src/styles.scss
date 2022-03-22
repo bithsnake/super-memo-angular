@@ -10,3 +10,12 @@
 html {
   height : 100%;
 }
+
+
+.hover-glow :hover{
+background-color: rgba(0,0,0,10%);
+padding-top: 1rem;
+padding-bottom: 1rem;
+border-radius: 20%;
+
+}

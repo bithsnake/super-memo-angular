@@ -7,6 +7,7 @@ import {MemoItemComponent} from'./memo/memo-item/memo-item.component';
 import {MemoDescriptionComponent}  from './memo/memo-description/memo-description.model';
 import { NavbarComponent } from './navbar/navbar/navbar.component';
 import { MemoListComponent } from './memo/memo-list/memo-list/memo-list.component';
+import { IngredientsModalComponent } from './shared/ingredients-modal/ingredients-modal.component';
 
 // always add your components in the declarations array!
 @NgModule({
@@ -15,6 +16,7 @@ import { MemoListComponent } from './memo/memo-list/memo-list/memo-list.componen
     MemoItemComponent,
     MemoListComponent,
     MemoDescriptionComponent,
+    IngredientsModalComponent,
     NavbarComponent
   ],
   imports: [
