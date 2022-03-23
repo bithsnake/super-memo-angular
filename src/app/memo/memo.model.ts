@@ -1,7 +1,9 @@
+import { Input } from "@angular/core";
 import { Ingredient,ingredients, IngredientType } from "../shared/ingredients";
 import { MemoIcon } from "./memo-icons/memo-icons";
-/**A single memo containing a title, description, icon, add button */
+/**A single memo model */
 export class Memo {
+
   public AddIngredient(Ingredient: Ingredient) {
     if (Ingredient === null || Ingredient === undefined) return;
     const IngredientDoesExist = this.Ingredients.filter(x => x.Name === Ingredient.Name).length > 0;
@@ -22,6 +24,6 @@ export class Memo {
     public AddIngredients: boolean = false,
     public EditMemo: boolean = false,
     public DeleteMemo: boolean = false,
-    public Ingredients: Ingredient[]
+    public Ingredients: Ingredient[],
   ) {}
 };

@@ -13,7 +13,7 @@ export class NavbarComponent implements OnInit {
   ClickHandler = (e?: Event) => {
     if (e === null || e === undefined) return;
     e.preventDefault();
-    console.log("this something: ", e.target);
+    console.log("this something: ", (<HTMLButtonElement>e.target).value);
   };
   constructor() {
     this.id = "";

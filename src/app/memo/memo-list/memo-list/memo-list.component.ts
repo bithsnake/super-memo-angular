@@ -10,8 +10,12 @@ import { Memo } from '../../memo.model';
 })
 
 export class MemoListComponent implements OnInit {
+
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    setTimeout(() => {
+      this.IsDisabled = false;
+    }, 2000);
+    // throw new Error('Method not implemented.');
   }
 
   public ChangeMemo(value : any, Id : number) {
@@ -26,11 +30,23 @@ export class MemoListComponent implements OnInit {
     const objectIndex = this.MemoList.indexOf(memo, 0);
     this.MemoList.splice(objectIndex, 1);
   }
+  public UpdateInputText(e: Event) {
+    // Telling angular that we know that this is an input element with explicit casting
+    // works almost exactly like useRef() in React
+    this.InputTextTest = (<HTMLInputElement>e.target).value
+  }
+  public GetColor() {
+    return this.IsDisabled ? 'red' : 'green';
+  };
+
   public _ingredients = ingredientsArray;
   public AddIngredients: boolean = false;
   public EditMemo: boolean = false;
   public DeleteMemo: boolean = false;
   public Icons = MemoIcons;
+  public TextTest = '';
+  public InputTextTest = '';
+  public IsDisabled: boolean = true;
   public MemoList: Memo[] = [
     new Memo(0,"Monday Groceries", "Fruit Monday!", MemoIcons.memo.icon, false,false,false,[
       new Ingredient(ingredients.applered.Name, ingredients.applered.Icon, 5),

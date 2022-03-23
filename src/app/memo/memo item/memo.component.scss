@@ -1,0 +1,45 @@
+.clicked-button {
+  animation : growFade ease-out 0.3s;
+}
+
+.ingredient-list-default{
+  height: 0rem;
+}
+.open-list{
+  animation : openList ease-out 0.3s;
+}
+.close-list{
+  animation : closeList ease-out 0.3s;
+}
+
+
+@keyframes growFade{
+  from {
+    opacity : 80;
+    width : 0.5rem;
+  }
+  to{
+    opacity : 0;
+    width: 1rem;
+  }
+}
+@keyframes openList{
+  from {
+    opacity : 0;
+    height : 0rem;
+  }
+  to{
+    opacity : 1;
+    height: 5.625rem;
+  }
+}
+@keyframes closeList{
+  from {
+    opacity : 1;
+    height: 5.625rem;
+  }
+  to{
+    opacity : 0;
+    height : 0rem;
+  }
+}

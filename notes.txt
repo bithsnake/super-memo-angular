@@ -1,0 +1,34 @@
+<section>
+<label >Input 1</label>
+<!-- Property binding is useful wheny u want to bidn the value of a property dynamically to a variable in the model -->
+<input [disabled]="IsDisabled" [(ngModel)]="TextTest" type="text">
+<label>Output 1 Two-way binding</label>
+<div class="w-48 h-48" >{{TextTest}}</div>
+<label >Input 2</label>
+<!-- event binding from an input and getting the input value -->
+<input (input)="UpdateInputText($event)" type="text">
+<label>Output 2 event binding</label>
+<div class="w-48 h-48" >{{InputTextTest}}</div>
+</section>
+
+
+
+<!-- "Items modal" -->
+<!-- How to conditionally show an element with a else condition using local markers -->
+<!-- If memo.AddIngredients === true -->
+<!-- *ngIf="memo.AddIngredients" -->
+  <div #ingredientMenu *ngIf="memo.AddIngredients; else noList" class="flex" (blur)="memo.AddIngredients = false" >
+    <app-ingredients-modal style="max-width : 16rem"></app-ingredients-modal>
+  </div>
+  <!-- else show this -->
+  <ng-template  #noList>
+    <div [ngStyle]="{color : GetColor()}">Can type in text</div>
+  </ng-template>
+
+
+  <!--
+  For images <img> you can use 2 ways to output a image, either as src={{" string interpolation to the image path"}} or [src]="propertybinding for the imagepath"
+-->
+<!-- Button menu -->
+<!-- (click)="ChangeMemo(buttonSection,memo.Id)"  -->
+<!-- Add classes dynamically -->
