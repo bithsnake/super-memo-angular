@@ -2,17 +2,16 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { Ingredient, ingredientsArray } from 'src/app/shared/ingredients';
 import { MemoIcon, MemoIcons } from '../memo-icons/memo-icons';
 import {IMemo} from '../../interfaces/interfaces'
-import { Memo } from '../memo.model';
 
 const MAX_WIDTH = "32rem";
 
 @Component({
-  selector: 'app-memo',
-  templateUrl: './memo.component.html',
-  styleUrls: ['./memo.component.scss']
+  selector: 'app-memo-item',
+  templateUrl: './memo-item.component.html',
+  styleUrls: ['./memo-item.component.scss']
 })
 
-export class MemoComponent implements OnInit {
+export class MemoItemComponent implements OnInit {
   // herer we are exposing this particular object to "the world"
   @Input() public memo: IMemo;
   constructor() {

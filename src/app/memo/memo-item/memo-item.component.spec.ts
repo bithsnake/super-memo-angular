@@ -2,21 +2,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { MemoComponent } from './memo.component';
+import { MemoItemComponent } from './memo-item.component';
 
 describe('MemoComponent', () => {
-  let component: MemoComponent;
-  let fixture: ComponentFixture<MemoComponent>;
+  let component: MemoItemComponent;
+  let fixture: ComponentFixture<MemoItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MemoComponent ]
+      declarations: [ MemoItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MemoComponent);
+    fixture = TestBed.createComponent(MemoItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

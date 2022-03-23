@@ -28,5 +28,5 @@
       <div #ingredientMenu class="ingredient-list-default" [ngClass]="{'open-list': memo.AddIngredients && hasClicked, 'close-list' : !memo.AddIngredients && hasClicked}"  class="flex" (blur)="memo.AddIngredients = false" >
         <app-ingredients-modal [ngStyle]="{maxWidth: max_width}" *ngIf="memo.AddIngredients"></app-ingredients-modal>
       </div>
-    </div>
+</div>
 

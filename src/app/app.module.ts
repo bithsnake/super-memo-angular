@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar/navbar.component';
-import { MemoComponent } from'./memo/memo item/memo.component';
+import { MemoItemComponent } from'./memo/memo-item/memo-item.component';
 import { MemoListComponent } from './memo/memo-list/memo-list/memo-list.component';
 import { IngredientsModalComponent } from './shared/ingredients-modal/ingredients-modal.component';
 import { MemoMenuComponent } from './memo-menu/memo-menu.component';
@@ -14,7 +14,7 @@ import { MemoMenuComponent } from './memo-menu/memo-menu.component';
 @NgModule({
   declarations: [
     AppComponent,
-    MemoComponent,
+    MemoItemComponent,
     MemoListComponent,
     IngredientsModalComponent,
     NavbarComponent,

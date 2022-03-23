@@ -8,7 +8,7 @@
       <!-- All the memos in a list -->
       <div class="flex flex-row flex-wrap justify-around gap-24 ">
         <!-- <app-memo-list></app-memo-list> -->
-        <app-memo *ngFor="let memo of Memos" [memo]="memo" ></app-memo>
+        <app-memo-item *ngFor="let memo of Memos" [memo]="memo" ></app-memo-item>
       </div>
 
   <!-- The routers -->
