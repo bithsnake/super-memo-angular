@@ -1,9 +1,10 @@
-<div [ngStyle]="{maxWidth: max_width}" class="w-64 bg-white rounded-md ">
+<div [ngStyle]="{maxWidth: max_width}" class="w-auto bg-white rounded-md ">
     <section  class="w3-card-4 p-6">
         <!-- Memo Title -->
-        <header class="inline-flex w-full justify-between mb-4">
+        <header class="w-full justify-between mb-4 ">
           <h1>{{memo.Title}}</h1><p>{{memo.MemoIcon}}</p>
         </header>
+        <section><p class="text-blue-500">Created {{memo.CreatedDate.toLocaleDateString()}} </p></section>
         <!-- Description -->
         <article class="border-b-2 border-gray-300">
           <p>{{memo.Description}}</p>
@@ -19,7 +20,7 @@
         </ul>
 
         <section #buttonSection [ngClass]="{'hidden': IsDisabled === true}" class="w-auto mt-4 flex flex-row items-center flex-nowrap content-center justify-between w3-monospace text-white">
-          <button #removeButton id="remove-button" (click)="RemoveMemo(memo.Id)" class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80">{{Icons.remove.icon}}</button>
+          <button #removeButton id="remove-button" (click)="DeleteMemo()" class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80">{{Icons.remove.icon}}</button>
           <button #addButton id="add-button"  (click)="memo.AddIngredients =! memo.AddIngredients; hasClicked = true;" class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80">{{memo.AddIngredients ? 'Close' : 'Add'}}</button>
           <button #editButton id="edit-button"  class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80"> {{Icons.edit.icon}}</button>
         </section>

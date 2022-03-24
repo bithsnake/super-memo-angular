@@ -8,10 +8,8 @@ export interface IMemo {
   Id: number;
   Title: string;
   Description: string;
+  CreatedDate: Date;
   MemoIcon: MemoIcon;
-  AddIngredients: boolean;
-  EditMemo: boolean;
-  DeleteMemo: boolean;
   Ingredients: Ingredient[];
 }
 

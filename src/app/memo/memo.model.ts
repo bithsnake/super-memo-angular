@@ -1,8 +1,12 @@
 import { Input } from "@angular/core";
+import { IMemo } from "../interfaces/interfaces";
 import { Ingredient,ingredients, IngredientType } from "../shared/ingredients";
 import { MemoIcon } from "./memo-icons/memo-icons";
 /**A single memo model */
-export class Memo {
+export class Memo implements IMemo {
+
+  public AddIngredients: boolean;
+  public EditMemo: boolean;
 
   public AddIngredient(Ingredient: Ingredient) {
     if (Ingredient === null || Ingredient === undefined) return;
@@ -16,14 +20,21 @@ export class Memo {
       this.Ingredients.push(Ingredient);
     }
   }
+  public ChangeIngredientAmount() {
+
+  };
+  public DeleteIngredient() {
+
+  };
   constructor(
     public Id: number,
     public Title: string,
     public Description: string,
+    public CreatedDate : Date = new Date(),
     public MemoIcon: MemoIcon,
-    public AddIngredients: boolean = false,
-    public EditMemo: boolean = false,
-    public DeleteMemo: boolean = false,
-    public Ingredients: Ingredient[],
-  ) {}
+    public Ingredients: Ingredient[] = [],
+  ) {
+    this.AddIngredients = false;
+    this.EditMemo = false;
+  }
 };

@@ -10,6 +10,7 @@ import { MemoListComponent } from './memo/memo-list/memo-list/memo-list.componen
 import { IngredientsModalComponent } from './shared/ingredients-modal/ingredients-modal.component';
 import { MemoMenuComponent } from './memo-menu/memo-menu.component';
 
+
 // always add your components in the declarations array!
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { MemoMenuComponent } from './memo-menu/memo-menu.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

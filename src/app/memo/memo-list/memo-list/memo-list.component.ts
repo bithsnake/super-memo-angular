@@ -22,9 +22,9 @@ export class MemoListComponent implements OnInit {
     console.log("value in edit button: ", value);
     console.log("value in memo: ", this.MemoList.find((m) => Id === m.Id));
   }
-  public AddMemo(Title: string, Description: string, Icon: MemoIcon, Ingredients: Ingredient[]) {
+  public AddMemo(Title: string, Description: string,CreatedDate : Date, Icon: MemoIcon, Ingredients: Ingredient[]) {
     const Id = this.MemoList.length + 1;
-    this.MemoList = [...this.MemoList,new Memo(Id,Title,Description,Icon,false,false,false,[...Ingredients])]
+    this.MemoList = [...this.MemoList, new Memo(Id, Title, Description,CreatedDate,Icon, [...Ingredients])];
   }
   public RemoveMemo(memo : Memo) {
     const objectIndex = this.MemoList.indexOf(memo, 0);
@@ -48,28 +48,28 @@ export class MemoListComponent implements OnInit {
   public InputTextTest = '';
   public IsDisabled: boolean = true;
   public MemoList: Memo[] = [
-    new Memo(0,"Monday Groceries", "Fruit Monday!", MemoIcons.memo.icon, false,false,false,[
+    new Memo(0,"Monday Groceries", "Fruit Monday!",new Date(), MemoIcons.memo.icon, [
       new Ingredient(ingredients.applered.Name, ingredients.applered.Icon, 5),
       new Ingredient(ingredients.banana.Name, ingredients.banana.Icon, 10),
       new Ingredient(ingredients.cucumber.Name, ingredients.cucumber.Icon, 1),
       new Ingredient(ingredients.applegreen.Name, ingredients.applegreen.Icon, 5),
       new Ingredient(ingredients.pear.Name, ingredients.pear.Icon, 8),
     ]),
-    new Memo(1,"Monday Groceries", "Fruit Monday!", MemoIcons.memo.icon,false,false,false,[
+    new Memo(1,"Monday Groceries", "Fruit Monday!",new Date(), MemoIcons.memo.icon,[
       new Ingredient(ingredients.pear.Name, ingredients.pear.Icon, 8),
       new Ingredient(ingredients.applegreen.Name, ingredients.applegreen.Icon, 5),
       new Ingredient(ingredients.banana.Name, ingredients.banana.Icon, 10),
       new Ingredient(ingredients.applered.Name, ingredients.applered.Icon, 5),
       new Ingredient(ingredients.cucumber.Name, ingredients.cucumber.Icon, 1),
     ]),
-    new Memo(2,"Pick these up on thursday", "Remember these!", MemoIcons.importantmemo.icon,false,false,false,[
+    new Memo(2,"Pick these up on thursday", "Remember these!",new Date(), MemoIcons.importantmemo.icon,[
       new Ingredient(ingredients.applegreen.Name, ingredients.applegreen.Icon, 5),
       new Ingredient(ingredients.banana.Name, ingredients.banana.Icon, 10),
       new Ingredient(ingredients.pear.Name, ingredients.pear.Icon, 8),
       new Ingredient(ingredients.cucumber.Name, ingredients.cucumber.Icon, 1),
       new Ingredient(ingredients.applered.Name, ingredients.applered.Icon, 5),
     ]),
-    new Memo(3,"Monday Groceries", "Fruit Monday!", MemoIcons.memo.icon,false,false,false,[
+    new Memo(3,"Monday Groceries", "Fruit Monday!",new Date(), MemoIcons.memo.icon,[
       new Ingredient(ingredients.applered.Name, ingredients.applered.Icon, 5),
       new Ingredient(ingredients.pear.Name, ingredients.pear.Icon, 8),
       new Ingredient(ingredients.banana.Name, ingredients.banana.Icon, 10),

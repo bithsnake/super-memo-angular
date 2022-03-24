@@ -1,16 +1,24 @@
 
 <main  class ="mx-auto h-screen" >
   <!-- Navbar always visible -->
-  <div class="_bgimage"></div>
+  <div #appWindow class="_bgimage"></div>
       <app-navbar></app-navbar>
-
+      <app-memo-menu
+      (stackMemos)="ToggleMemosFlexFlow(backToTopElement,memoItemList)"
+      (orderMemosByLetter)="OrderMemosByLetter()"
+      (orderMemosByID)="OrderMemosByID()"
+      (orderMemosByCreated)="OrderMemosByLetter()"
+      ></app-memo-menu>
 
       <!-- All the memos in a list -->
-      <div class="flex flex-row flex-wrap justify-around gap-24 ">
+      <div #memoItemList  [ngClass]="{'flex-row': UseRow, 'justify-around' : UseRow , 'flex-col' : !UseRow, 'content-center' : !UseRow}" class="flex flex-wrap gap-24 ">
         <!-- <app-memo-list></app-memo-list> -->
-        <app-memo-item *ngFor="let memo of Memos" [memo]="memo" ></app-memo-item>
+        <app-memo-item (memoDeleted)="RemoveMemo(memo)" *ngFor="let memo of Memos" [memo]="memo" ></app-memo-item>
       </div>
 
-  <!-- The routers -->
+  <div id="backtotop" #backToTopElement [ngClass]="{'show': !UseRow, 'hidden' : UseRow}" class="static full-opacity bottom-4 w-max p-6 bg-black bg-opacity-50">
+    <button (click)="ScrollBackUp()" class="text-blue-200 hover:text-white hover:bg-opacity-5 hover:-translate-y-1 bg-white bg-opacity-20 p-2 rounded-lg transform">Back to top</button>
+  </div>
+  <!-- The router -->
   <router-outlet></router-outlet>
 </main>
