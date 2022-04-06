@@ -5,7 +5,7 @@ export interface IIcons {
   icon: string;
 }
 export interface IMemo {
-  Id: number;
+  Id: string;
   Title: string;
   Description: string;
   CreatedDate: Date;

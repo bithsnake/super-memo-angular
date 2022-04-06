@@ -3,7 +3,8 @@ import { Ingredient, ingredientsArray } from 'src/app/shared/ingredients';
 import { MemoIcon, MemoIcons } from '../memo-icons/memo-icons';
 import {IMemo} from '../../interfaces/interfaces'
 import { Memo } from '../memo.model';
-
+import * as uuid from 'uuid';
+let _id = uuid.v4();
 const MAX_WIDTH = "32rem";
 
 @Component({
@@ -19,7 +20,7 @@ export class MemoItemComponent implements OnInit {
 
   constructor() {
     this.memo = {
-      Id: -1,
+      Id: _id,
       Title: 'New Memo!',
       Description: 'Somet description!',
       CreatedDate : new Date(),

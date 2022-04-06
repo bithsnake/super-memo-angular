@@ -9,7 +9,9 @@ import { MemoItemComponent } from'./memo/memo-item/memo-item.component';
 import { MemoListComponent } from './memo/memo-list/memo-list/memo-list.component';
 import { IngredientsModalComponent } from './shared/ingredients-modal/ingredients-modal.component';
 import { MemoMenuComponent } from './memo-menu/memo-menu.component';
-
+import AddNewMemoComponent from './memo/add-new-memo/add-new-memo.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog';
 
 // always add your components in the declarations array!
 @NgModule({
@@ -19,14 +21,19 @@ import { MemoMenuComponent } from './memo-menu/memo-menu.component';
     MemoListComponent,
     IngredientsModalComponent,
     NavbarComponent,
-    MemoMenuComponent
+    MemoMenuComponent,
+    AddNewMemoComponent
    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
   ],
-  providers: [],
+  providers: [
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

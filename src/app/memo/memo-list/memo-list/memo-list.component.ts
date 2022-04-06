@@ -2,7 +2,8 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { Ingredient, ingredients, ingredientsArray, IngredientType} from 'src/app/shared/ingredients';
 import { MemoIcon, MemoIcons } from '../../memo-icons/memo-icons';
 import { Memo } from '../../memo.model';
-
+import * as uuid from 'uuid';
+let _id = uuid.v4();
 @Component({
   selector: 'app-memo-list',
   templateUrl: './memo-list.component.html',
@@ -18,12 +19,12 @@ export class MemoListComponent implements OnInit {
     // throw new Error('Method not implemented.');
   }
 
-  public ChangeMemo(value : any, Id : number) {
+  public ChangeMemo(value : any, Id : string) {
     console.log("value in edit button: ", value);
     console.log("value in memo: ", this.MemoList.find((m) => Id === m.Id));
   }
   public AddMemo(Title: string, Description: string,CreatedDate : Date, Icon: MemoIcon, Ingredients: Ingredient[]) {
-    const Id = this.MemoList.length + 1;
+    const Id = uuid.v4();
     this.MemoList = [...this.MemoList, new Memo(Id, Title, Description,CreatedDate,Icon, [...Ingredients])];
   }
   public RemoveMemo(memo : Memo) {
@@ -48,28 +49,28 @@ export class MemoListComponent implements OnInit {
   public InputTextTest = '';
   public IsDisabled: boolean = true;
   public MemoList: Memo[] = [
-    new Memo(0,"Monday Groceries", "Fruit Monday!",new Date(), MemoIcons.memo.icon, [
+    new Memo(uuid.v4(),"Monday Groceries", "Fruit Monday!",new Date(), MemoIcons.memo.icon, [
       new Ingredient(ingredients.applered.Name, ingredients.applered.Icon, 5),
       new Ingredient(ingredients.banana.Name, ingredients.banana.Icon, 10),
       new Ingredient(ingredients.cucumber.Name, ingredients.cucumber.Icon, 1),
       new Ingredient(ingredients.applegreen.Name, ingredients.applegreen.Icon, 5),
       new Ingredient(ingredients.pear.Name, ingredients.pear.Icon, 8),
     ]),
-    new Memo(1,"Monday Groceries", "Fruit Monday!",new Date(), MemoIcons.memo.icon,[
+    new Memo(uuid.v4(),"Monday Groceries", "Fruit Monday!",new Date(), MemoIcons.memo.icon,[
       new Ingredient(ingredients.pear.Name, ingredients.pear.Icon, 8),
       new Ingredient(ingredients.applegreen.Name, ingredients.applegreen.Icon, 5),
       new Ingredient(ingredients.banana.Name, ingredients.banana.Icon, 10),
       new Ingredient(ingredients.applered.Name, ingredients.applered.Icon, 5),
       new Ingredient(ingredients.cucumber.Name, ingredients.cucumber.Icon, 1),
     ]),
-    new Memo(2,"Pick these up on thursday", "Remember these!",new Date(), MemoIcons.importantmemo.icon,[
+    new Memo(uuid.v4(),"Pick these up on thursday", "Remember these!",new Date(), MemoIcons.importantmemo.icon,[
       new Ingredient(ingredients.applegreen.Name, ingredients.applegreen.Icon, 5),
       new Ingredient(ingredients.banana.Name, ingredients.banana.Icon, 10),
       new Ingredient(ingredients.pear.Name, ingredients.pear.Icon, 8),
       new Ingredient(ingredients.cucumber.Name, ingredients.cucumber.Icon, 1),
       new Ingredient(ingredients.applered.Name, ingredients.applered.Icon, 5),
     ]),
-    new Memo(3,"Monday Groceries", "Fruit Monday!",new Date(), MemoIcons.memo.icon,[
+    new Memo(uuid.v4(),"Monday Groceries", "Fruit Monday!",new Date(), MemoIcons.memo.icon,[
       new Ingredient(ingredients.applered.Name, ingredients.applered.Icon, 5),
       new Ingredient(ingredients.pear.Name, ingredients.pear.Icon, 8),
       new Ingredient(ingredients.banana.Name, ingredients.banana.Icon, 10),

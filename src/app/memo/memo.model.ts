@@ -27,7 +27,7 @@ export class Memo implements IMemo {
 
   };
   constructor(
-    public Id: number,
+    public Id: string,
     public Title: string,
     public Description: string,
     public CreatedDate : Date = new Date(),
