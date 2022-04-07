@@ -1,5 +1,4 @@
 import { NgModule, } from '@angular/core';
-import { FormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,8 +10,10 @@ import { IngredientsModalComponent } from './shared/ingredients-modal/ingredient
 import { MemoMenuComponent } from './memo-menu/memo-menu.component';
 import AddNewMemoComponent from './memo/add-new-memo/add-new-memo.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatDialogModule} from '@angular/material/dialog';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import {MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field'
+import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 // always add your components in the declarations array!
 @NgModule({
   declarations: [
@@ -27,12 +28,15 @@ import {MatDialogModule} from '@angular/material/dialog';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [
-
+    // {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}}
   ],
   bootstrap: [AppComponent]
 })

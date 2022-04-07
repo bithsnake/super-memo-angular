@@ -4,7 +4,7 @@ import { Ingredient } from 'src/app/shared/ingredients';
 import { MemoIcon } from '../memo-icons/memo-icons';
 import { Memo } from '../memo.model';
 import * as uuid from 'uuid';
-
+import {FormControl, Validators} from '@angular/forms';
 
 const _id = uuid.v4();
 @Component({
@@ -20,10 +20,35 @@ class AddNewMemoComponent implements IMemo {
   public MemoIcon: MemoIcon ="📝";
   public Ingredients: Ingredient[] = [];
 
+  titleControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(20)]);
+  descriptionControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(20)]);
+
+
   OnFirstRun() {
     console.log("Created a new Memo!")
   };
+  getTitleErrorMessage() {
+    if (this.titleControl.hasError('required')) {
+      return 'Too short title';
+    }
 
+    return this.titleControl.hasError('formTitle') ? 'Not a valid title' : '';
+  }
+
+  getDescriptionErrorMessage() {
+    if (this.descriptionControl.hasError('required')) {
+      return 'Too short description';
+    }
+
+    return this.descriptionControl.hasError('formDescription') ? 'Not a valid description' : '';
+  }
+  getFoodListErrorMessage() {
+    if (this.descriptionControl.hasError('required')) {
+      return 'Too short description';
+    }
+
+    return this.descriptionControl.hasError('formDescription') ? 'Not a valid description' : '';
+  }
 
 }
 

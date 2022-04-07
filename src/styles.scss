@@ -4,6 +4,8 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,500;0,600;0,700;1,100;1,200&display=swap');
+
+$dialogBackgroundColor : 115, 103, 80;
 :root{
   font-family: 'Poppins', sans-serif;
 }
@@ -18,6 +20,17 @@ padding-top: 1rem;
 padding-bottom: 1rem;
 border-radius: 20%;
 
+}
+
+
+// override
+.custom-dialog-container .mat-dialog-container{
+  border-radius : 0.4rem;
+  background-color: rgba(115, 103, 80,0.6);
+}
+
+.cdk-overlay-dark-backdrop{
+  background: rgba(0,0,0,0.82) !important;
 }
 
 html, body { height: 100%; }

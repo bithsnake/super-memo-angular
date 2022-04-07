@@ -35,10 +35,12 @@ export class MemoMenuComponent implements OnInit {
     // emit this object created!
     console.log("memo created!");
     this.memoCreated.emit(true);
-    this.dialogRef.open(AddNewMemoComponent);
+    this.dialogRef.open(AddNewMemoComponent,{ panelClass: 'custom-dialog-container' });
   }
   constructor(private dialogRef: MatDialog) { }
-  ngOnInit() {}
+  ngOnInit() {
+    this.AddNewMemo();
+  }
 }
 
 // export class Something{

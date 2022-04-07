@@ -1,2 +1,19 @@
 <h2>New Memo! Lets att some content!</h2>
-<button>Create Memo</button>
+<div class="flex flex-col ">
+  <mat-form-field appearance="fill">
+    <mat-label for="title" class="text-white">Enter your title</mat-label>
+    <input name="title" matInput placeholder="happy sundays!..." [formControl]="titleControl" #title [(ngModel)]="Title" required>
+    <mat-error *ngIf="titleControl.invalid">{{getTitleErrorMessage()}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label for="description">Enter your description</mat-label>
+    <input name="description" matInput placeholder="some description.." [formControl]="descriptionControl" #description [(ngModel)]="Description" required>
+    <mat-error *ngIf="descriptionControl.invalid">{{getDescriptionErrorMessage()}}</mat-error>
+  </mat-form-field>
+
+    <h2 for="description">Fill your foodlist!</h2>
+    <div><section>
+      <p>ADD A INGREDIENT LIST HERE</p>
+    </section></div>
+</div>
