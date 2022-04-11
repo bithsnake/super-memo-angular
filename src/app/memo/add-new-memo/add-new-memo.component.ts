@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { IMemo } from 'src/app/interfaces/interfaces';
-import { Ingredient } from 'src/app/shared/ingredients';
-import { MemoIcon } from '../memo-icons/memo-icons';
-import { Memo } from '../memo.model';
+import { Ingredient, ingredients, IngredientType} from 'src/app/shared/ingredients';
+import { MemoIcon, MemoIcons } from '../memo-icons/memo-icons';
 import * as uuid from 'uuid';
 import {FormControl, Validators} from '@angular/forms';
+import { Memo } from '../memo.model';
 
 const _id = uuid.v4();
 @Component({
@@ -18,12 +18,22 @@ class AddNewMemoComponent implements IMemo {
   public Description: string = '';
   public CreatedDate: Date = new Date();
   public MemoIcon: MemoIcon ="📝";
-  public Ingredients: Ingredient[] = [];
+  public Ingredients: Ingredient[] = []
+  public max_width = "20rem";
+  @Input() public memo: Memo;
 
   titleControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(20)]);
-  descriptionControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(20)]);
+  descriptionControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(30)]);
 
+  constructor() {
+    this.memo = new Memo(_id,'New Memo','NewTitle',new Date(),this.MemoIcon,this.Ingredients);
+  }
 
+  AddIngredientToList(icon: HTMLParagraphElement, name: HTMLParagraphElement) {
+
+    const _newIngredinet: Ingredient = { Icon: icon.innerHTML as IngredientType, Name: name.innerHTML, Amount : 1 };
+    this.memo.AddIngredient(_newIngredinet);
+  }
   OnFirstRun() {
     console.log("Created a new Memo!")
   };
