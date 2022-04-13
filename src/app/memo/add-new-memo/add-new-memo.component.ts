@@ -6,6 +6,11 @@ import * as uuid from 'uuid';
 import {FormControl, Validators} from '@angular/forms';
 import { Memo } from '../memo.model';
 
+/*
+    Check out this component
+    app-ingredients-modal
+    And make a Output emitter where we emit the ingredients being clicked ont o add them to the current memo list!
+ */
 const _id = uuid.v4();
 @Component({
   selector: 'app-add-new-memo',
