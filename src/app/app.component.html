@@ -4,6 +4,7 @@
   <div #appWindow class="_bgimage"></div>
       <app-navbar></app-navbar>
       <app-memo-menu
+      (memoCreated)="AddNewMemoToList($event)"
       (stackMemos)="ToggleMemosFlexFlow(backToTopElement,memoItemList)"
       (orderMemosByLetter)="OrderMemosByLetter()"
       (orderMemosByID)="OrderMemosByID()"

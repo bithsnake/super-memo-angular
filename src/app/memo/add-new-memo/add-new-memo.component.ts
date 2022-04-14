@@ -1,16 +1,13 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, Inject } from '@angular/core';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { IMemo } from 'src/app/interfaces/interfaces';
-import { Ingredient, ingredients, IngredientType} from 'src/app/shared/ingredients';
-import { MemoIcon, MemoIcons } from '../memo-icons/memo-icons';
+import { Ingredient,ingredientsArray , IngredientType} from 'src/app/shared/ingredients';
+import { MemoIcon } from '../memo-icons/memo-icons';
 import * as uuid from 'uuid';
 import {FormControl, Validators} from '@angular/forms';
 import { Memo } from '../memo.model';
+import { MatDialogRef } from '@angular/material/dialog';
 
-/*
-    Check out this component
-    app-ingredients-modal
-    And make a Output emitter where we emit the ingredients being clicked ont o add them to the current memo list!
- */
 const _id = uuid.v4();
 @Component({
   selector: 'app-add-new-memo',
@@ -19,29 +16,68 @@ const _id = uuid.v4();
 })
 class AddNewMemoComponent implements IMemo {
   public Id: string = "";
-  public Title: string = '';
-  public Description: string = '';
+  public Title: string = 'Saturday groceries!';
+  public Description: string = 'Lets fill the list!';
   public CreatedDate: Date = new Date();
   public MemoIcon: MemoIcon ="📝";
   public Ingredients: Ingredient[] = []
   public max_width = "20rem";
+  public clickedChildNodeIndex = 0;
   @Input() public memo: Memo;
 
   titleControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(20)]);
   descriptionControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(30)]);
 
-  constructor() {
-    this.memo = new Memo(_id,'New Memo','NewTitle',new Date(),this.MemoIcon,this.Ingredients);
+  constructor(private dialogRef: MatDialogRef<AddNewMemoComponent>,@Inject(MAT_DIALOG_DATA) public data : Memo) {
+    this.memo = new Memo(_id,this.Title,this.Description,new Date(),this.MemoIcon,this.Ingredients);
+    data = this.memo;
   }
-
-  AddIngredientToList(icon: HTMLParagraphElement, name: HTMLParagraphElement) {
-
-    const _newIngredinet: Ingredient = { Icon: icon.innerHTML as IngredientType, Name: name.innerHTML, Amount : 1 };
-    this.memo.AddIngredient(_newIngredinet);
+  /**Sends a reference of the new memo created to parent Component */
+  public CreateNewMemo() {
+    this.dialogRef.close(this.memo);
   }
-  OnFirstRun() {
-    console.log("Created a new Memo!")
-  };
+  /**Removes 1 amount from an ingredient */
+  RemoveIngredientFromList(addedIngredientIcon: IngredientType) {
+    let currentIngredientList = this.memo.Ingredients;
+    const _tempIngredient = currentIngredientList.find(x => x.Icon === addedIngredientIcon);
+    if (_tempIngredient === undefined) return;
+    _tempIngredient.Amount > 0 ? _tempIngredient.Amount - 1 : 0;
+    if (_tempIngredient.Amount === 0) {
+      const newList = currentIngredientList.filter(x => x.Icon !== addedIngredientIcon);
+      currentIngredientList = newList;
+      console.log("From 'add-new-memo' , Removed item: ", addedIngredientIcon);
+    }
+
+  }
+  /**Adds an igredient to list if none is found, otherwise one is added to the current ingredient */
+  AddIngredientToList(addedIngredientIcon: IngredientType) {
+    console.log("From 'add-new-memo' , Added item: ", addedIngredientIcon);
+    const _tempIngredient = ingredientsArray.find(x => x.Icon === addedIngredientIcon);
+    let newIngredient: Ingredient;
+
+    if (_tempIngredient === undefined) return;
+
+    newIngredient = new Ingredient(_tempIngredient.Name, _tempIngredient.Icon, 1);
+
+    if (this.memo.Ingredients.length === 0) {
+      this.memo.Ingredients.push(newIngredient);
+      AnimateElementInChildNode(0);
+      return;
+    }
+    const _foundIngredient = this.memo.Ingredients.find(x => x.Icon === newIngredient.Icon);
+    const ingredientIndex = this.memo.Ingredients.findIndex(x => x.Icon === newIngredient.Icon);
+
+    if (_foundIngredient !== undefined) {
+      _foundIngredient.Amount += 1;
+      AnimateElementInChildNode(ingredientIndex);
+      return;
+    } else if( _foundIngredient === undefined) {
+      this.memo.Ingredients.push(newIngredient);
+      const lastIndex = this.memo.Ingredients.length - 1;
+      AnimateElementInChildNode(lastIndex);
+      return;
+    }
+  }
   getTitleErrorMessage() {
     if (this.titleControl.hasError('required')) {
       return 'Too short title';
@@ -49,7 +85,6 @@ class AddNewMemoComponent implements IMemo {
 
     return this.titleControl.hasError('formTitle') ? 'Not a valid title' : '';
   }
-
   getDescriptionErrorMessage() {
     if (this.descriptionControl.hasError('required')) {
       return 'Too short description';
@@ -65,6 +100,16 @@ class AddNewMemoComponent implements IMemo {
     return this.descriptionControl.hasError('formDescription') ? 'Not a valid description' : '';
   }
 
+}
+/**Animates a a chosen node with a specific class and resets it  */
+export const AnimateElementInChildNode = (nodeIndex : number,parentNodeId : string = '_ingredientItems',  targetClassName : string = 'ingredient_item_', addClass : string = 'grow',resetAfterMs : number = 80) => {
+  const item = document.getElementById(String(parentNodeId));
+  if (item === undefined || item === null) return;
+  document.querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.add(String(addClass));
+  console.log("");
+  setTimeout(() => {
+  document.querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.remove(String(addClass));
+  }, resetAfterMs);
 }
 
 export default AddNewMemoComponent;

@@ -50,8 +50,11 @@ export interface IIngredient {
   Amount: number;
 }
 
+/**An Ingredient with parameters : Name, Icon, Amount */
 export class Ingredient implements IIngredient{
-  constructor(public Name: string ,public Icon : IngredientType, public Amount : number = 0) {}
+  /**Name,Icon,Amount */
+  constructor(public Name: string, public Icon: IngredientType, public Amount: number) {
+  }
 }
 
 export const ingredients = {

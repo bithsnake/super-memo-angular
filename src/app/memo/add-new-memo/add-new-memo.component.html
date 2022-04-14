@@ -1,46 +1,57 @@
 <div class="flex flex-col ">
   <section  class="w-1/2 h-1/2  min-w-full">
-      <h2 class=" w-auto min-w-full">New food list memo!</h2>
-      <mat-form-field appearance="fill">
-        <mat-label for="title" class="text-white">Enter your title</mat-label>
-        <input name="title" matInput placeholder="happy sundays!..." [formControl]="titleControl" #title [(ngModel)]="Title" required>
-        <mat-error *ngIf="titleControl.invalid">{{getTitleErrorMessage()}}</mat-error>
-      </mat-form-field>
+    <h2 class=" w-auto min-w-full">New food list memo!</h2>
+    <mat-form-field appearance="fill">
+      <mat-label for="title" class="text-white">Enter your title</mat-label>
+      <input name="title" matInput placeholder="happy sundays!..." [formControl]="titleControl" #title [(ngModel)]="Title" required >
+      <mat-error *ngIf="titleControl.invalid">{{getTitleErrorMessage()}}</mat-error>
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label for="description">Enter your description</mat-label>
-        <input name="description" matInput placeholder="some description.." [formControl]="descriptionControl" #description [(ngModel)]="Description" required >
-        <mat-error *ngIf="descriptionControl.invalid">{{getDescriptionErrorMessage()}}</mat-error>
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label for="description">Enter your description</mat-label>
+      <input name="description" matInput placeholder="some description.." [formControl]="descriptionControl" #description [(ngModel)]="Description" required >
+      <mat-error *ngIf="descriptionControl.invalid">{{getDescriptionErrorMessage()}}</mat-error>
+    </mat-form-field>
 
-      <div>
-        <h2 for="description">Fill your foodlist!</h2>
-          <section>
-            <p>Current list</p>
-          </section>
-      </div>
-    </section>
+    <div>
+      <h2 for="description">Fill your foodlist!</h2>
 
-    <section [ngStyle]="{maxWidth: max_width}" class="w-1/2 h-1/2 min-w-full w3-card-4 p-6">
-        <!-- Memo Title -->
-        <header class="w-full justify-between mb-4 ">
-          <h1 class="text-black">Add Ingredients from below</h1>
-        </header>
+      <!-- "Ingredient List" -->
+      <section [ngStyle]="{maxWidth: max_width}" class="w-1/2 h-1/2 min-w-full w3-card-4 p-6">
+          <!-- Memo Title -->
+          <header class="w-full justify-between mb-4 ">
+            <h1 class="text-white">Add Ingredients from below</h1>
+          </header>
 
+          <div #ingredientMenu class="ingredient-list-default"  class="flex open-list" >
+            <app-ingredients-modal #ingredient  (NewIngredientsAdded)="AddIngredientToList($event)"  [ngStyle]="{maxWidth: max_width}" ></app-ingredients-modal>
+          </div>
+        </section>
+    </div>
+  </section>
 
-        <!-- Output all current ingredients for the current shopping list -->
-        <ul *ngFor="let ingredient of memo.Ingredients">
-          <a class="hover:bg-gray-200 hover:text-blue-800"  >
-            <li class="w-full inline-flex flex-row justify-between">
-              <div #ingredientIcon class="inline-flex gap-2 my-1 " ><p #_currenticon>{{ingredient.Icon}}</p> <p #_currentname>{{ingredient.Name}}</p></div><p class="justify-end">x{{ingredient.Amount}}</p>
-            </li>
-          </a>
-        </ul>
-
-        <!-- "Ingredient List modal" -->
-        <div #ingredientMenu class="ingredient-list-default"  class="flex open-list" >
-          <app-ingredients-modal  [ngStyle]="{maxWidth: max_width}" ></app-ingredients-modal>
-        </div>
-      </section>
-      <button #addButton id="add-button"  class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80">Create Memo</button>
+      <button #createMemoButton id="_create-memo-button" (click)="CreateNewMemo()"  class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80">Create Memo</button>
 </div>
+<!-- Current Ingredient List -->
+<section>
+  <p>Current list</p>
+  <hr>
+  <br>
+  <h4 class="text-xl" *ngIf="memo.Ingredients.length === 0">
+    List is Empty!
+  </h4>
+  <div class="bg-gray-400 bg-opacity-50">
+    <!-- Output all current ingredients for the current shopping list -->
+    <ul id="_ingredientItems" *ngFor="let ingredient of memo.Ingredients">
+      <a class="hover:bg-gray-200 hover:text-blue-800"  >
+        <li class="w-full inline-flex flex-row justify-between">
+          <div #ingredientIcon class="inline-flex gap-2 my-1 " >
+            <p class="text-white ingredient_item_" id="_ingredientItem" #_currenticon>{{ingredient.Icon}}</p> <span #_currentname>{{ingredient.Name}}</span>
+          </div>
+          <p class="justify-end">x{{ingredient.Amount}}</p>
+        </li>
+      </a>
+    </ul>
+
+  </div>
+</section>

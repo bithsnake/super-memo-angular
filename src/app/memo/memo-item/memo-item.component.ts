@@ -16,7 +16,7 @@ const MAX_WIDTH = "32rem";
 export class MemoItemComponent implements OnInit {
   // herer we are exposing this particular object to "the world"
   @Input() public memo: Memo;
-  @Output() public memoDeleted: EventEmitter<Memo> = new EventEmitter;
+  @Output() public memoDeleted: EventEmitter<Memo> = new EventEmitter();
 
   constructor() {
     this.memo = {
