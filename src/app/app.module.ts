@@ -12,6 +12,7 @@ import AddNewMemoComponent from './memo/add-new-memo/add-new-memo.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import {MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field'
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 // always add your components in the declarations array!
@@ -33,6 +34,7 @@ import {FormsModule,ReactiveFormsModule} from '@angular/forms';
     ReactiveFormsModule,
     MatDialogModule,
     MatFormFieldModule,
+    DragDropModule,
     MatInputModule,
   ],
   providers: [

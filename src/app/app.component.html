@@ -3,6 +3,7 @@
   <!-- Navbar always visible -->
   <div #appWindow class="_bgimage"></div>
       <app-navbar></app-navbar>
+      <!--  Menu -->
       <app-memo-menu
       (memoCreated)="AddNewMemoToList($event)"
       (stackMemos)="ToggleMemosFlexFlow(backToTopElement,memoItemList)"
@@ -12,9 +13,9 @@
       ></app-memo-menu>
 
       <!-- All the memos in a list -->
-      <div #memoItemList  [ngClass]="{'flex-row': UseRow, 'justify-around' : UseRow , 'flex-col' : !UseRow, 'content-center' : !UseRow}" class="flex flex-wrap gap-24 ">
+      <div class="flex flex-wrap gap-24 memo-list" cdkDropList #memoItemList  [ngClass]="{'flex-row': UseRow, 'justify-around' : UseRow , 'flex-col' : !UseRow, 'content-center' : !UseRow}" >
         <!-- <app-memo-list></app-memo-list> -->
-        <app-memo-item (memoDeleted)="RemoveMemo(memo)" *ngFor="let memo of Memos" [memo]="memo" ></app-memo-item>
+        <app-memo-item  cdkDrag class="memo-box  " (memoDeleted)="RemoveMemo(memo)" *ngFor="let memo of Memos" [memo]="memo" ></app-memo-item>
       </div>
 
   <div id="backtotop" #backToTopElement [ngClass]="{'show': !UseRow, 'hidden' : UseRow}" class="static full-opacity bottom-4 w-max p-6 bg-black bg-opacity-50">

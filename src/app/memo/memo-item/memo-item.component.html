@@ -1,4 +1,4 @@
-<div [ngStyle]="{maxWidth: max_width}" class="w-auto bg-white rounded-md ">
+<div id="__item" [ngStyle]="{maxWidth: max_width}" class="w-auto bg-white rounded-md memo-item">
     <section  class="w3-card-4 p-6">
         <!-- Memo Title -->
         <header class="w-full justify-between mb-4 ">
@@ -11,13 +11,17 @@
         </article>
 
         <!-- Output all current ingredients for the current shopping list -->
-        <ul *ngFor="let ingredient of memo.Ingredients">
-          <a class="hover:bg-gray-200 hover:text-blue-800">
-            <li class="w-full inline-flex flex-row justify-between">
-              <div #ingredientIcon class="inline-flex gap-2 my-1 "><p >{{ingredient.Icon}}</p> <p>{{ingredient.Name}}</p></div><p class="justify-end">x{{ingredient.Amount}}</p>
-            </li>
-          </a>
-        </ul>
+        <div cdkDropList class="ingredient-list" (cdkDropListDropped)="drop($event)">
+          <ul cdkDrag class="ingredient-box " *ngFor="let ingredient of memo.Ingredients">
+            <div class="hover:bg-gray-200 hover:text-blue-800 min-h-full">
+              <a >
+                <li class="w-full inline-flex flex-row justify-between">
+                  <div #ingredientIcon class="inline-flex gap-2 my-1 "><p >{{ingredient.Icon}}</p> <p>{{ingredient.Name}}</p></div><p class="justify-end">x{{ingredient.Amount}}</p>
+                </li>
+              </a>
+            </div>
+          </ul>
+        </div>
 
         <section #buttonSection [ngClass]="{'hidden': IsDisabled === true}" class="w-auto mt-4 flex flex-row items-center flex-nowrap content-center justify-between w3-monospace text-white">
           <button #removeButton id="remove-button" (click)="DeleteMemo()" class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80">{{Icons.remove.icon}}</button>

@@ -1,23 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MemoIcons } from './memo/memo-icons/memo-icons';
 import { Memo } from './memo/memo.model';
 import { Ingredient, ingredients } from './shared/ingredients';
+import { CdkDragDrop,moveItemInArray} from '@angular/cdk/drag-drop';
+
 import { compareName, compareId, compareCreatedDate, PrevScrollY,ScrollBackUp,checkOverflow } from "./methods/methods";
 import * as uuid from 'uuid';
 
 PrevScrollY();
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  ngOnInit(): void {
+    // document.querySelector('.memo-item')?.addEventListener('click', this.CheckMemoItem);
+  }
 
   public UseRow: boolean = true;
   public IsOverflowing: boolean = false;
   public ScrollBackUp = ScrollBackUp;
   public checkOverflow = checkOverflow;
+
+
+  public CheckMemoItem(e: Event) {
+    const _e = (e.currentTarget as HTMLElement);
+    _e.classList.add('rotate-element');
+    console.log("memo item is active");
+  }
 
   public AddNewMemoToList(newMemo: Memo) {
     try {
@@ -45,6 +58,11 @@ export class AppComponent {
     this.UseRow = !this.UseRow;
     this.IsOverflowing = this.checkOverflow(BackToTopElement,ItemListElement);
   }
+
+  public drop(event : CdkDragDrop<Ingredient[]>) {
+    moveItemInArray(this.Memos, event.previousIndex, event.currentIndex);
+  }
+
   title = 'super-memo-angular';
   public Memos: Memo[] = [
     new Memo(uuid.v4(),"Monday Groceries", "Fruit Monday!", new Date(), MemoIcons.memo.icon,[

@@ -4,8 +4,12 @@ import { MemoIcon, MemoIcons } from '../memo-icons/memo-icons';
 import {IMemo} from '../../interfaces/interfaces'
 import { Memo } from '../memo.model';
 import * as uuid from 'uuid';
+import { CdkDragDrop,moveItemInArray} from '@angular/cdk/drag-drop';
 let _id = uuid.v4();
 const MAX_WIDTH = "32rem";
+
+
+
 
 @Component({
   selector: 'app-memo-item',
@@ -17,6 +21,24 @@ export class MemoItemComponent implements OnInit {
   // herer we are exposing this particular object to "the world"
   @Input() public memo: Memo;
   @Output() public memoDeleted: EventEmitter<Memo> = new EventEmitter();
+
+  ngOnInit(): void {
+  // document.querySelector('#__item')?.addEventListener('mousedown', this.RotateElement);
+  // document.querySelector('#__item')?.addEventListener('mouseup', this.StopRotateElement);
+  // document.querySelectorAll('#__item').forEach(x => x.setAttribute('id', `__item${20}`));
+}
+
+
+  public RotateElement(e : Event) {
+    const _e = (e.currentTarget as HTMLDivElement);
+    _e.classList.add('rotate-element');
+    console.log("rotating element");
+  }
+  public StopRotateElement(e : Event) {
+    const _e = (e.currentTarget as HTMLDivElement);
+    _e.classList.remove('rotate-element');
+    console.log("stop rotate element");
+  }
 
   constructor() {
     this.memo = {
@@ -46,19 +68,16 @@ export class MemoItemComponent implements OnInit {
   public InputTextTest = '';
   public IsDisabled: boolean = false;
   public hasClicked: boolean = false;
-  ngOnInit(): void {
-    // setTimeout(() => {
-    //   this.IsDisabled = false;
-    // }, 2000);
-    // throw new Error('Method not implemented.');
-  }
 
+
+  public drop(event : CdkDragDrop<Ingredient[]>) {
+    moveItemInArray(this.memo.Ingredients, event.previousIndex, event.currentIndex);
+  }
   public ResetClick() {
   setTimeout(() => {
     this.hasClicked = false;
   }, 100);
   }
-
   public ChangeMemo(value: any, Id: number) {
     console.log("value in edit button: ", value);
     // console.log("value in memo: ", this.MemoList.find((m) => Id === m.Id));
