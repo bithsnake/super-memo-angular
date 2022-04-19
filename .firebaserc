@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "addb-51800": {
+      "hosting": {
+        "super-memo-angular": [
+          "addb-51800"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "addb-51800"
+  }
+}

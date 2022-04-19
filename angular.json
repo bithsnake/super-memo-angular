@@ -108,6 +108,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "super-memo-angular:build:production",
+            "firebaseProject": "addb-51800",
+            "firebaseHostingSite": "addb-51800"
+          }
         }
       }
     }

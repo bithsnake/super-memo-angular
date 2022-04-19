@@ -73,6 +73,9 @@ export class MemoItemComponent implements OnInit {
   public drop(event : CdkDragDrop<Ingredient[]>) {
     moveItemInArray(this.memo.Ingredients, event.previousIndex, event.currentIndex);
   }
+
+
+
   public ResetClick() {
   setTimeout(() => {
     this.hasClicked = false;
