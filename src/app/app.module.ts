@@ -26,6 +26,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { HomeComponent } from './home/home.component';
+import { FirebaseService } from './services/firebase.service';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -77,6 +78,7 @@ export const analytics = getAnalytics(app);
     // provideStorage(() => getStorage()),
   ],
   providers: [
+    FirebaseService
     // {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}}
   ],
   bootstrap: [AppComponent]

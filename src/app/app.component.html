@@ -1,26 +1,17 @@
+<div *ngIf="!this.isSignedin">
+  <h2>Sign up</h2>
+  <input type="text" #emailSignup>
+  <input type="text" #passwordSignup>
+  <button (click)="onSignUp(emailSignup.value,passwordSignup.value)">Sign up!</button>
+</div>
+<hr>
+<div>
+  <h2>Sign in</h2>
+  <input type="text" #email>
+  <input type="text" #password>
+  <button (click)="onSignIn(email.value,password.value)">Sign In</button>
+</div>
+<app-home *ngIf="this.isSignedin" (isLogout)="handlerLogOut()"></app-home>
 
-<main  class ="mx-auto h-screen" >
-  <!-- Navbar always visible -->
-  <div #appWindow class="_bgimage"></div>
-      <app-navbar></app-navbar>
-      <!--  Menu -->
-      <app-memo-menu
-      (memoCreated)="AddNewMemoToList($event)"
-      (stackMemos)="ToggleMemosFlexFlow(backToTopElement,memoItemList)"
-      (orderMemosByLetter)="OrderMemosByLetter()"
-      (orderMemosByID)="OrderMemosByID()"
-      (orderMemosByCreated)="OrderMemosByLetter()"
-      ></app-memo-menu>
 
-      <!-- All the memos in a list -->
-      <div class="flex flex-wrap gap-24 memo-list" cdkDropList #memoItemList  [ngClass]="{'flex-row': UseRow, 'justify-around' : UseRow , 'flex-col' : !UseRow, 'content-center' : !UseRow}" >
-        <!-- <app-memo-list></app-memo-list> -->
-        <app-memo-item  cdkDrag class="memo-box  " (memoDeleted)="RemoveMemo(memo)" *ngFor="let memo of Memos" [memo]="memo" ></app-memo-item>
-      </div>
-
-  <div id="backtotop" #backToTopElement [ngClass]="{'show': !UseRow, 'hidden' : UseRow}" class="static full-opacity bottom-4 w-max p-6 bg-black bg-opacity-50">
-    <button (click)="ScrollBackUp()" class="text-blue-200 hover:text-white hover:bg-opacity-5 hover:-translate-y-1 bg-white bg-opacity-20 p-2 rounded-lg transform">Back to top</button>
-  </div>
-  <!-- The router -->
-  <router-outlet></router-outlet>
-</main>
+<router-outlet></router-outlet>

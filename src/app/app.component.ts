@@ -6,9 +6,9 @@ import { CdkDragDrop,moveItemInArray} from '@angular/cdk/drag-drop';
 
 import { compareName, compareId, compareCreatedDate, PrevScrollY,ScrollBackUp,checkOverflow } from "./methods/methods";
 import * as uuid from 'uuid';
+import { FirebaseService } from './services/firebase.service';
 
 PrevScrollY();
-
 
 @Component({
   selector: 'app-root',
@@ -16,10 +16,34 @@ PrevScrollY();
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  public isSignedin: boolean = false;
+
+  constructor(public firebaseService : FirebaseService) {}
   ngOnInit(): void {
-    // document.querySelector('.memo-item')?.addEventListener('click', this.CheckMemoItem);
+    if (sessionStorage.getItem('user') !== null) {
+      this.isSignedin = true;
+    } else {
+      this.isSignedin = false;
+    };
+
   }
 
+  async onSignUp(email: string, password: string) {
+    await this.firebaseService.SignUp(email, password);
+    if (this.firebaseService.isLoggedIn) {
+      this.isSignedin = true;
+    }
+  }
+  async onSignIn(email: string, password: string) {
+    await this.firebaseService.SignIn(email, password);
+    if (this.firebaseService.isLoggedIn) {
+      this.isSignedin = true;
+    }
+  }
+
+  handlerLogOut() {
+    this.isSignedin = false;
+  }
   public UseRow: boolean = true;
   public IsOverflowing: boolean = false;
   public ScrollBackUp = ScrollBackUp;
@@ -62,7 +86,6 @@ export class AppComponent implements OnInit {
   public drop(event : CdkDragDrop<Ingredient[]>) {
     moveItemInArray(this.Memos, event.previousIndex, event.currentIndex);
   }
-
   title = 'super-memo-angular';
   public Memos: Memo[] = [
     new Memo(uuid.v4(),"Monday Groceries", "Fruit Monday!", new Date(), MemoIcons.memo.icon,[
@@ -94,4 +117,5 @@ export class AppComponent implements OnInit {
       new Ingredient(ingredients.applegreen.Name, ingredients.applegreen.Icon, 5),
     ]),
   ];
-}
+
+};
