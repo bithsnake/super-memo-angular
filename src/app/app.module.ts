@@ -72,13 +72,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { HomeComponent } from './home/home.component';
 import { FirebaseService } from './services/firebase.service';
-import { DashboardComponent } from './management/dashboard/dashboard.component';
-import { SignInComponent } from './management/sign-in/sign-in.component';
-import { SignUpComponent } from './management/sign-up/sign-up.component';
-import { ForgotPasswordComponent } from './management/forgot-password/forgot-password.component';
-import { VerifyEmailComponent } from './management/verify-email/verify-email.component';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { provideFirebaseApp } from '@angular/fire/app';
 
 
 // Your web app's Firebase configuration
@@ -109,11 +103,11 @@ export const analytics = getAnalytics(app);
     MemoMenuComponent,
     AddNewMemoComponent,
     HomeComponent,
-    DashboardComponent,
-    SignInComponent,
-    SignUpComponent,
-    ForgotPasswordComponent,
-    VerifyEmailComponent
+    // DashboardComponent,
+    // SignInComponent,
+    // SignUpComponent,
+    // ForgotPasswordComponent,
+    // VerifyEmailComponent
    ],
   imports: [
     BrowserModule,
@@ -167,12 +161,11 @@ export const analytics = getAnalytics(app);
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-
-    // provideFirebaseApp(() => initializeApp(environment.firebase)),
-    // provideAuth(() => getAuth()),
-    // provideDatabase(() => getDatabase()),
-    // provideFirestore(() => getFirestore()),
-    // provideStorage(() => getStorage()),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideDatabase(() => getDatabase()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
   ],
   providers: [
     FirebaseService
