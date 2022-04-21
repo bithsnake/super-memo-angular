@@ -74,22 +74,25 @@ import { HomeComponent } from './home/home.component';
 import { FirebaseService } from './services/firebase.service';
 import { provideFirebaseApp } from '@angular/fire/app';
 
+// service
+import { AuthService } from './shared/services/auth.service';
+
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyD65zUPcZYUsluklyQLElJzWRz8-No5wyI",
-  authDomain: "addb-51800.firebaseapp.com",
-  databaseURL: "https://addb-51800-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "addb-51800",
-  storageBucket: "addb-51800.appspot.com",
-  messagingSenderId: "487528309439",
-  appId: "1:487528309439:web:a967ab39e35fa891a41c0a",
-  measurementId: "G-MKCGQ3FXVZ"
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyD65zUPcZYUsluklyQLElJzWRz8-No5wyI",
+//   authDomain: "addb-51800.firebaseapp.com",
+//   databaseURL: "https://addb-51800-default-rtdb.europe-west1.firebasedatabase.app",
+//   projectId: "addb-51800",
+//   storageBucket: "addb-51800.appspot.com",
+//   messagingSenderId: "487528309439",
+//   appId: "1:487528309439:web:a967ab39e35fa891a41c0a",
+//   measurementId: "G-MKCGQ3FXVZ"
+// };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+export const app = initializeApp(environment.firebase);
 export const analytics = getAnalytics(app);
 
 // always add your components in the declarations array!
@@ -156,7 +159,7 @@ export const analytics = getAnalytics(app);
     ReactiveFormsModule,
 
 
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
@@ -168,8 +171,9 @@ export const analytics = getAnalytics(app);
     provideStorage(() => getStorage()),
   ],
   providers: [
-    FirebaseService
-    // {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}}
+  AuthService,
+  // FirebaseService
+  // {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}}
   ],
   bootstrap: [AppComponent]
 })
