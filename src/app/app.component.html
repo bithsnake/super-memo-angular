@@ -1,17 +1,4 @@
-<div *ngIf="!this.isSignedin">
-  <h2>Sign up</h2>
-  <input type="text" #emailSignup>
-  <input type="text" #passwordSignup>
-  <button (click)="onSignUp(emailSignup.value,passwordSignup.value)">Sign up!</button>
-</div>
-<hr>
-<div>
-  <h2>Sign in</h2>
-  <input type="text" #email>
-  <input type="text" #password>
-  <button (click)="onSignIn(email.value,password.value)">Sign In</button>
-</div>
-<app-home *ngIf="this.isSignedin" (isLogout)="handlerLogOut()"></app-home>
+<div #appWindow class="_bgimage"></div>
 
-
+<!-- The router -->
 <router-outlet></router-outlet>
