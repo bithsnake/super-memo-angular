@@ -27,6 +27,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { HomeComponent } from './home/home.component';
 import { FirebaseService } from './services/firebase.service';
+import { provideFirebaseApp } from '@angular/fire/app';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -71,11 +72,11 @@ export const analytics = getAnalytics(app);
     DragDropModule,
     MatInputModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    // provideFirebaseApp(() => initializeApp(environment.firebase)),
-    // provideAuth(() => getAuth()),
-    // provideDatabase(() => getDatabase()),
-    // provideFirestore(() => getFirestore()),
-    // provideStorage(() => getStorage()),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideDatabase(() => getDatabase()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
   ],
   providers: [
     FirebaseService
