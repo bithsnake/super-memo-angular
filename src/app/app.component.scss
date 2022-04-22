@@ -74,6 +74,27 @@ section{
   transform: rotate(0deg);
 }
 
+.grow{
+  animation: anim 0.1s ease-in-out;
+}
+
+@keyframes anim {
+  from{
+    font-size: large;
+    transform: rotate(0deg);
+  }
+  50%{
+    font-size: larger;
+    transform: translateY(-6px);
+  }
+  to{
+    font-size: medium;
+    transform: rotate(360deg);
+    transform: translateY(0px);
+  }
+}
+
+
 @keyframes rise {
   from{
     transform: scale(1);

@@ -8,6 +8,14 @@ import { MemoListComponent } from './memo/memo-list/memo-list/memo-list.componen
 import { IngredientsModalComponent } from './shared/ingredients-modal/ingredients-modal.component';
 import { MemoMenuComponent } from './memo-menu/memo-menu.component';
 import AddNewMemoComponent from './memo/add-new-memo/add-new-memo.component';
+
+// management components
+import { DashboardComponent } from './management/dashboard/dashboard.component';
+import { ForgotPasswordComponent } from './management/forgot-password/forgot-password.component';
+import { SignInComponent } from './management/sign-in/sign-in.component';
+import { SignUpComponent } from './management/sign-up/sign-up.component';
+import { VerifyEmailComponent } from './management/verify-email/verify-email.component';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
@@ -76,6 +84,11 @@ import { provideFirebaseApp } from '@angular/fire/app';
 
 // service
 import { AuthService } from './shared/services/auth.service';
+import { MainAppComponent } from './main-app/main-app.component';
+import { SvgComponent } from './svg/svg.component';
+import { BackdropComponent } from './backdrop/backdrop.component';
+
+
 
 
 // Your web app's Firebase configuration
@@ -97,7 +110,7 @@ export const analytics = getAnalytics(app);
 
 // always add your components in the declarations array!
 @NgModule({
-  declarations: [
+  declarations: [		
     AppComponent,
     MemoItemComponent,
     MemoListComponent,
@@ -106,11 +119,14 @@ export const analytics = getAnalytics(app);
     MemoMenuComponent,
     AddNewMemoComponent,
     HomeComponent,
-    // DashboardComponent,
-    // SignInComponent,
-    // SignUpComponent,
-    // ForgotPasswordComponent,
-    // VerifyEmailComponent
+    MainAppComponent,
+    DashboardComponent,
+    SignInComponent,
+    SignUpComponent,
+    ForgotPasswordComponent,
+    VerifyEmailComponent,
+      SvgComponent,
+      BackdropComponent
    ],
   imports: [
     BrowserModule,

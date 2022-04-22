@@ -1,33 +1,50 @@
-<div class="displayTable">
-  <div class="displayTableCell">
-    <div class="authBlock">
-      <h3>Sign In</h3>
-      <div class="formGroup">
-        <input type="text" class="formControl" placeholder="Username" #userName required>
+<!--The content below is only a placeholder and can be replaced.-->
+<app-backdrop></app-backdrop>
+<div class=" flex flex-col place-items-center place-content-center text place-self-center w-full h-full text-lg transform ">
+
+  <div class="p-8 gap-4 bg-black bg-opacity-50 rounded-md ">
+    <div class="text-center text-white">
+      <h1 class="text-center text-xl text-white">Sign In</h1>
+
+      <div class="inline-flex flex-col">
+        <mat-form-field class="bg-gray-500 bg-opacity-50" appearance="fill">
+          <mat-label for="username" class="text-white">Enter your username</mat-label>
+          <input class="cursor-pointer" name="username" matInput placeholder="...@email.com" [formControl]="userNameControl" #userName  required >
+          <mat-error *ngIf="userNameControl.invalid">{{getUsernameErrorMessage()}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="bg-gray-500 bg-opacity-50" appearance="fill">
+          <mat-label for="password" class="text-white">Enter your password</mat-label>
+          <input type="password" class="cursor-pointer" name="password" matInput placeholder="password..." [formControl]="passwordControl" #userPassword  required >
+          <mat-error #materror id="_materror" *ngIf="passwordControl.invalid; ">{{getPasswordErrorMessage()}}</mat-error>
+        </mat-form-field>
+
+        <!-- Calling SignIn Api from AuthService -->
+        <button #login (click)="authService.SignIn(userName.value, userPassword.value);" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80">Log in</button>
       </div>
-      <div class="formGroup">
-        <input type="password" class="formControl" placeholder="Password" #userPassword required>
-      </div>
-      <!-- Calling SignIn Api from AuthService -->
-      <div class="formGroup">
-        <input type="button" class="btn btnPrimary" value="Log in" (click)="authService.SignIn(userName.value, userPassword.value)">
-      </div>
+
+
       <div class="formGroup">
         <span class="or"><span class="orInner">Or</span></span>
       </div>
+
       <!-- Calling GoogleAuth Api from AuthService -->
-      <div class="formGroup">
-        <button type="button" class="btn googleBtn" (click)="authService.GoogleAuth()">
-          <i class="fab fa-google-plus-g"></i>
-          Log in with Google
+      <div class="inline-flex flex-row text-center">
+        <button (click)="authService.GoogleAuth()" routerLink="/register-user" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80">Log in with google
+          <img class="inline w-6 h-6"  src="../../../assets//svgs//google.svg" alt="">
         </button>
       </div>
+      <hr class="text-gray-400  mb-2 mt-2">
       <div class="forgotPassword">
-        <span routerLink="/forgot-password">Forgot Password?</span>
+        <span class="hover:text-blue-200 cursor-pointer" routerLink="/forgot-password">Forgot Password?</span>
       </div>
     </div>
-    <div class="redirectToLogin">
-      <span>Don't have an account?<span class="redirect" routerLink="/register-user"> Sign Up</span></span>
+
+    <div class="inline-flex flex-row items-center space-x-4 text-white">
+      <span class="text-xl">Don't have an account?</span>
+      <button #registeruser routerLink="/register-user" class="text-center rounded-lg p-2 bg-blue-400 hover:bg-opacity-80">Sign up!</button>
     </div>
+
   </div>
+
 </div>

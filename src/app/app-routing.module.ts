@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { MemoMenuComponent } from './memo-menu/memo-menu.component';
 import { AuthGuard } from './shared/guard/auth.guard';
+import { MainAppComponent } from './main-app/main-app.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
@@ -18,7 +19,7 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verify-email-address', component: VerifyEmailComponent },
 
-  { path: 'app', component: SignUpComponent, canActivate: [AuthGuard] },
+  { path: 'app', component: MainAppComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
 ];
 

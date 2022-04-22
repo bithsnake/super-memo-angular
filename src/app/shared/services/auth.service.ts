@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 import { EmailAuthProvider, FacebookAuthProvider, GithubAuthProvider } from 'firebase/auth';
 
 const _user: string = 'user';
-
 @Injectable({
   // declares that this service should be created
   // by the root application injector.
@@ -18,6 +17,7 @@ const _user: string = 'user';
 })
 export class AuthService {
   userData: any; // Save logged in user data
+  showSpinner: boolean;
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth servce
@@ -26,10 +26,12 @@ export class AuthService {
   ) {
     /* Saving user data in localStorage when
     logged in and setting up null when logged out */
+    this.showSpinner = false;
+
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userData = user;
-        localStorage.setitem(_user, JSON.stringify(this.userData));
+        localStorage.setItem(_user, JSON.stringify(this.userData));
         JSON.parse(localStorage.getItem(_user)!);
       } else {
         localStorage.setItem(_user, 'null');
@@ -40,19 +42,29 @@ export class AuthService {
 
   // sign in with email/password
   SignIn(email: string, password: string) {
+    this.showSpinner = true;
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['app']);
         });
+        if (result.user?.emailVerified === false) {
+          window.alert('Your email address is not verified yet, check your inbox for a verification mail');
+          this.showSpinner = false;
+          return;
+        }
+        this.showSpinner = false;
         this.SetUserData(result.user);
+        this.router.navigate(['app']);
       })
       .catch((error) => {
+        this.showSpinner = false;
         window.alert(error.message);
       });
   }
     // Sign up with email/password
-    SignUp(email: string, password: string) {
+  SignUp(email: string, password: string) {
+    this.showSpinner = true;
       return this.afAuth
         .createUserWithEmailAndPassword(email, password)
         .then((result) => {
@@ -60,27 +72,37 @@ export class AuthService {
           up and returns promise */
           this.SendVerificationMail();
           this.SetUserData(result.user);
+          this.showSpinner = false;
         })
         .catch((error) => {
+          this.showSpinner = false;
           window.alert(error.message);
         });
     }
   // Send email verification when new user sign up
   SendVerificationMail() {
+    this.showSpinner = true;
     return this.afAuth.currentUser
-      .then((u: any) => u.SendVerificationMail())
+      .then((u) => {
+        // u.SendVerificationMail()
+        u?.sendEmailVerification();
+      })
       .then(() => {
+        this.showSpinner = false;
         this.router.navigate(['verify-email-address']);
       });
   }
   // reset Forgotten password
   ForgotPassword(passwordResetEmail: string) {
+    this.showSpinner = true;
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
+        this.showSpinner = false;
         window.alert('Password reset email sent, check your inbox');
       })
       .catch((error) => {
+        this.showSpinner = false;
         window.alert(error);
       });
   }
@@ -92,24 +114,32 @@ export class AuthService {
   }
   // Sign in with google
   GoogleAuth() {
+    this.showSpinner = true;
     return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
       if (res) {
+        this.showSpinner = false;
         this.router.navigate(['dashboard']);
+      } else {
+        this.showSpinner = false;
+        window.alert('Something went wrong with google authentication, check the console logs');
       }
     });
   }
 
     // Auth logic to run auth providers
-    AuthLogin(provider: auth.GoogleAuthProvider | auth.GithubAuthProvider | auth.EmailAuthProvider | auth.FacebookAuthProvider) {
+  AuthLogin(provider: auth.GoogleAuthProvider | auth.GithubAuthProvider | auth.EmailAuthProvider | auth.FacebookAuthProvider) {
+    this.showSpinner = true;
       return this.afAuth
         .signInWithPopup(provider)
         .then((result) => {
           this.ngZone.run(() => {
             this.router.navigate(['dashboard']);
           });
+          this.showSpinner = false;
           this.SetUserData(result.user);
         })
         .catch((error) => {
+          this.showSpinner = false;
           window.alert(error);
         });
     }
@@ -134,9 +164,11 @@ export class AuthService {
   }
   // Sign out
   SignOut() {
+    this.showSpinner = true;
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem(_user);
       this.router.navigate(['sign-in']);
+      this.showSpinner = false;
     });
   }
 }
