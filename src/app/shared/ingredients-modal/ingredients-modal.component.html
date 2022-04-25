@@ -2,7 +2,7 @@
   <div class="flex-row">
       <ul>
         <a #_item (click)="AddIngredientToList(_item)"
-          class=" cursor-pointer select-none hover:opacity-60 hover:w-1/2 hover:h-1/2 hover:text-red-500" *ngFor="let ingredient of _ingredients as Ingredient">{{ingredient.Icon}}</a>
+          class="text-xl cursor-pointer select-none hover:opacity-60 hover:w-1/2 hover:h-1/2 hover:text-red-500" *ngFor="let ingredient of _ingredients as Ingredient">{{ingredient.Icon}}</a>
       </ul>
   </div>
 </div>

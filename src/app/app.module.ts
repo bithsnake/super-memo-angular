@@ -87,6 +87,9 @@ import { AuthService } from './shared/services/auth.service';
 import { MainAppComponent } from './main-app/main-app.component';
 import { SvgComponent } from './svg/svg.component';
 import { BackdropComponent } from './backdrop/backdrop.component';
+import { AboutComponent } from './about/about.component';
+import { QuestionComponent } from './question/question.component';
+import { ChangeNameComponent } from './change-name/change-name.component';
 
 
 
@@ -125,8 +128,11 @@ export const analytics = getAnalytics(app);
     SignUpComponent,
     ForgotPasswordComponent,
     VerifyEmailComponent,
-      SvgComponent,
-      BackdropComponent
+    SvgComponent,
+    BackdropComponent,
+    AboutComponent,
+      QuestionComponent,
+      ChangeNameComponent
    ],
   imports: [
     BrowserModule,

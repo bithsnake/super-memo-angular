@@ -10,8 +10,8 @@ import {CdkPortalOutletAttachedRef, Portal, PortalModule} from '@angular/cdk/por
 export class SignInComponent implements OnInit  {
 
   // original state is empty string
-  userNameControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(20)]);
-  passwordControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(30)]);
+  userNameControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(100)]);
+  passwordControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(100)]);
   constructor(public authService: AuthService) {
 
   }

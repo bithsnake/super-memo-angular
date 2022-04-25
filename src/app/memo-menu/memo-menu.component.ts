@@ -41,7 +41,7 @@ export class MemoMenuComponent implements OnInit {
       throw new Error("Incoming object is not a type of Memo");
     }
   }
-  public OpeNewMemoDialog() {
+  public OpenNewMemoDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       Id: '',
@@ -54,11 +54,21 @@ export class MemoMenuComponent implements OnInit {
 
     const dialogRef = this.dialog.open(AddNewMemoComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
+      if (data === null || data === undefined) return;
       this.MemoCreated(data);
       console.log("data from dialog component: ", data);
     });
 
   }
+
   ngOnInit() {
+    let menuElement = document.getElementById('memomenu');
+    if (menuElement === undefined || menuElement === null) return;
+    if (!menuElement.classList.contains('scaleUp'))
+    {
+      menuElement.classList.add('scaleUp');
+    } else {
+      menuElement.classList.remove('scaleUp');
+    }
   }
 }

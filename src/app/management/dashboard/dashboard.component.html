@@ -1,47 +1,36 @@
-<!-- Top navigation -->
-<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-sm-3 col-md-2 mr-0">
-    <img class="brand-logo" src="assets/logo-positronx-white.svg" alt="positronX.io Logo">
-  </a>
-</nav>
-<!-- Sidebar navigation -->
-<div class="container-fluid">
-  <div class="row">
-    <nav class="col-md-2 d-md-block bg-light sidebar">
-      <div class="sidebar-sticky">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active">
-              <i class="fas fa-user"></i>User Profile
-            </a>
-          </li>
-          <!-- Calling SignOut() Api from AuthService -->
-          <li class="nav-item">
-            <a class="nav-link" (click)="authService.SignOut()">
-              <i class="fas fa-sign-out-alt"></i>Log out
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+
+<div class="flex flex-row place-content-center place-items-center  container w-full h-auto">
+  <div class=" bg-black bg-opacity-40 rounded-md text-white">
     <!-- Main content -->
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-      <div class="inner-adjust">
+    <main role="main" class="py-10 px-4">
+      <div class="inline-grid">
         <div class="pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">User Profile</h1>
+          <h1 class="text-2xl">User Profile</h1>
         </div>
         <!-- Show user data when logged in -->
-        <div class="row" *ngIf="authService.userData as user">
+        <div class="" *ngIf="authService.userData as user">
           <div class="col-md-12">
             <div class="media">
-              <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-user.png'}}"
+              <img class="w-10 h-10" src="{{(user.photoURL) ? user.photoURL : '../../../../../assets/images/dummy-user.png'}}"
                 alt="{{user.displayName}}">
-              <div class="media-body">
-                <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
-                <p>User ID: <strong>{{user.uid}}</strong></p>
+
+                <div class="align-bottom align-items-center space-y-6">
+                  <div class="inline-flex flex-row justify-between space-x-8 ">
+                    <h1>Hello <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong> !</h1>
+                    <button #changeDisplayName (click)="OpenChangeDisplayNameDialog()" class="text-center align-middle rounded-lg p-2 bg-blue-400 hover:bg-opacity-80">Change DisplayName</button>
+                </div>
+                <br>
+                <hr class="text-gray-400 py-4">
+                <!-- <p>User ID: <strong>{{user.uid}}</strong></p> -->
                 <p>Email: <strong>{{user.email}}</strong></p>
                 <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
               </div>
+              <br>
+              <hr class="text-gray-400 py-4">
+              <div class="inline-flex flex-row justify-between gap-8">
+                <button #resetpassword (click)="OpenDeleteAccountDialog()" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80">Delete account</button>
+              </div>
+
             </div>
           </div>
         </div>

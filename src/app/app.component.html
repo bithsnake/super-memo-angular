@@ -1,4 +1,5 @@
 <div #appWindow class="_bgimage"></div>
+<app-navbar *ngIf="this.authService.isLoggedIn"></app-navbar>
 <!-- <app-navbar></app-navbar>
 
 <div *ngIf="!this.isSignedin">

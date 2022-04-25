@@ -10,10 +10,11 @@ import { HomeComponent } from './home/home.component';
 import { MemoMenuComponent } from './memo-menu/memo-menu.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { MainAppComponent } from './main-app/main-app.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
-  // { path: '**', 'home', component: HomeComponent },
+  // { path: '**',  component: SignInComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'register-user', component: SignUpComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
 
   { path: 'app', component: MainAppComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

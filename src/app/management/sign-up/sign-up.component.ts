@@ -11,8 +11,9 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class SignUpComponent implements OnInit {
   isProgressVisible: boolean;
 
-  userNameControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(20)]);
-  passwordControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(30)]);
+  userNameControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(100)]);
+  passwordControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(100)]);
+  displayNameControl = new FormControl('', [Validators.required,Validators.minLength(3), Validators.maxLength(25)]);
 
   constructor(public authService: AuthService) {
     this.isProgressVisible = false;
@@ -24,13 +25,21 @@ export class SignUpComponent implements OnInit {
       return 'Too short title';
     }
     return this.userNameControl.hasError('formTitle') ? 'Not a valid title' : '';
-  }
+  };
+
   getPasswordErrorMessage() {
     if (this.passwordControl.hasError('required')) {
       return 'Too short description';
     }
-    return this.passwordControl.hasError('formDescription') ? 'Not a valid description' : '';
-  }
+    return this.passwordControl.hasError('formDescription') ? 'Needs to be between 5-100 characters' : '';
+  };
+
+  getDisplayNameErrorMessage() {
+    if (this.displayNameControl.hasError('required')) {
+      return 'Needs to be between 3-25 characters';
+    }
+    return this.displayNameControl.hasError('formDescription') ? 'Not a valid display name' : '';
+  };
 
   ShowProgressSpinner() {
     if (!this.authService.isLoggedIn) {
@@ -38,7 +47,8 @@ export class SignUpComponent implements OnInit {
     } else {
       this.isProgressVisible = false;
     }
-  }
+  };
+
   ngOnInit(): void {
   }
 

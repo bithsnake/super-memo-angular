@@ -8,6 +8,8 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { EmailAuthProvider, FacebookAuthProvider, GithubAuthProvider } from 'firebase/auth';
+import { stringify } from 'querystring';
+import { AuthGuard } from '../guard/auth.guard';
 
 const _user: string = 'user';
 @Injectable({
@@ -16,46 +18,66 @@ const _user: string = 'user';
   providedIn: 'root'
 })
 export class AuthService {
-  userData: any; // Save logged in user data
+  userData: User = {
+    uid : '',
+    displayName: '',
+    email: null,
+    photoURL: null,
+    emailVerified : false
+  }; // Save logged in user data
   showSpinner: boolean;
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth servce
     public router: Router,
-    public ngZone : NgZone // nGZone service to remove outside scope warnings
+    public ngZone: NgZone, // nGZone service to remove outside scope warnings
   ) {
     /* Saving user data in localStorage when
     logged in and setting up null when logged out */
     this.showSpinner = false;
 
+    // save data to localStorage
     this.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.userData = user;
-        localStorage.setItem(_user, JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem(_user)!);
+          this.userData = user as User;
+          localStorage.setItem(_user, JSON.stringify(this.userData));
+          JSON.parse(localStorage.getItem(_user)!);
+
+          if (this.router.url === '/sign-in') {
+            this.ngZone.run(() => {
+              this.router.navigate(['app']);
+            });
+          };
+
       } else {
         localStorage.setItem(_user, 'null');
         JSON.parse(localStorage.getItem(_user)!)
-      }
+      };
     });
   }
+
 
   // sign in with email/password
   SignIn(email: string, password: string) {
     this.showSpinner = true;
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['app']);
-        });
-        if (result.user?.emailVerified === false) {
-          window.alert('Your email address is not verified yet, check your inbox for a verification mail');
-          this.showSpinner = false;
-          return;
+
+        if (result.user !== null) {
+          if (result.user.emailVerified === false) {
+            this.SendVerificationMail();
+            window.alert('Your email address is not verified yet, check your inbox for a verification mail, a new verification mail has been sent');
+            this.showSpinner = false;
+            return;
+          }
         }
-        this.showSpinner = false;
-        this.SetUserData(result.user);
-        this.router.navigate(['app']);
+        this.showSpinner = false
+
+        this.SetUserData(result.user)
+          // this.router.navigate(['app'])
+          .catch((error) => {
+            window.alert(error);
+          });
       })
       .catch((error) => {
         this.showSpinner = false;
@@ -63,13 +85,19 @@ export class AuthService {
       });
   }
     // Sign up with email/password
-  SignUp(email: string, password: string) {
+  SignUp(email: string, password: string, displayName : string = '') {
     this.showSpinner = true;
-      return this.afAuth
+    return this.afAuth
         .createUserWithEmailAndPassword(email, password)
         .then((result) => {
           /* Call the SendVerificaitonMail() function when new user sign
           up and returns promise */
+          if (result.user !== null) {
+            result.user.updateProfile({
+              displayName: displayName !== '' && displayName !== null ? displayName : "JohnDoe"
+            });
+          }
+
           this.SendVerificationMail();
           this.SetUserData(result.user);
           this.showSpinner = false;
@@ -82,14 +110,39 @@ export class AuthService {
   // Send email verification when new user sign up
   SendVerificationMail() {
     this.showSpinner = true;
+    if (this.ngZone.onError.hasError) {
+      window.alert("error : ");
+    }
     return this.afAuth.currentUser
       .then((u) => {
         // u.SendVerificationMail()
-        u?.sendEmailVerification();
+
+        if (this.userData !== null) {
+          console.log("this.afAuth.currentUser: ", this.afAuth.currentUser);
+          console.log("current user 'u' : ", u);
+        }
+        if (u === undefined || u === null) {
+          console.log("current user 'u' : ", u);
+          window.alert("there is no user with this mailadress..");
+          return;
+        }
+
+        u.sendEmailVerification().catch((error) => {
+
+          window.alert(error);
+        });
       })
-      .then(() => {
+      .then((something) => {
+        console.log("something: ", something);
         this.showSpinner = false;
-        this.router.navigate(['verify-email-address']);
+        if (this.router.url !== '/verify-email-address') {
+          this.router.navigate(['verify-email-address']);
+        }
+      })
+      .catch((error) => {
+        if (error.status) {
+
+        }
       });
   }
   // reset Forgotten password
@@ -142,7 +195,7 @@ export class AuthService {
           this.showSpinner = false;
           window.alert(error);
         });
-    }
+  }
 
     /* Setting up user data when sign in with username/password,
   sign up with username/password and sign in with social auth

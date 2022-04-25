@@ -9,22 +9,15 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class ForgotPasswordComponent implements OnInit {
 
-  userNameControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(20)]);
-  passwordControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(30)]);
+  emailAddressControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(100)]);
 
   constructor(public authService : AuthService) { }
 
   getUsernameErrorMessage() {
-    if (this.userNameControl.hasError('required')) {
+    if (this.emailAddressControl.hasError('required')) {
       return 'Too short title';
     }
-    return this.userNameControl.hasError('formTitle') ? 'Not a valid title' : '';
-  }
-  getPasswordErrorMessage() {
-    if (this.passwordControl.hasError('required')) {
-      return 'Too short description';
-    }
-    return this.passwordControl.hasError('formDescription') ? 'Not a valid description' : '';
+    return this.emailAddressControl.hasError('formTitle') ? 'Not a valid mailaddress' : '';
   }
 
 

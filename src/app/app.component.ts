@@ -7,6 +7,7 @@ import { CdkDragDrop,moveItemInArray} from '@angular/cdk/drag-drop';
 import { compareName, compareId, compareCreatedDate, PrevScrollY,ScrollBackUp,checkOverflow } from "./methods/methods";
 import * as uuid from 'uuid';
 import { FirebaseService } from './services/firebase.service';
+import { AuthService } from './shared/services/auth.service';
 
 PrevScrollY();
 
@@ -17,7 +18,11 @@ PrevScrollY();
 })
 export class AppComponent implements OnInit {
   // public isSignedin: boolean = false;
-
+/**
+ *
+ */
+constructor(public authService: AuthService) {
+}
   // constructor(public firebaseService : FirebaseService) {}
   ngOnInit(): void {
     // if (sessionStorage.getItem('user') !== null) {

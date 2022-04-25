@@ -16,8 +16,8 @@ const _id = uuid.v4();
 })
 class AddNewMemoComponent implements IMemo {
   public Id: string = "";
-  public Title: string = 'Saturday groceries!';
-  public Description: string = 'Lets fill the list!';
+  public Title: string = '';
+  public Description: string = '';
   public CreatedDate: Date = new Date();
   public MemoIcon: MemoIcon ="📝";
   public Ingredients: Ingredient[] = []
@@ -100,6 +100,10 @@ class AddNewMemoComponent implements IMemo {
     return this.descriptionControl.hasError('formDescription') ? 'Not a valid description' : '';
   }
 
+  ExitMemo(e: Event) {
+    e.preventDefault();
+    this.dialogRef.close();
+  }
 }
 /**Animates a a chosen node with a specific class and resets it  */
 export const AnimateElementInChildNode = (nodeIndex : number,parentNodeId : string = '_ingredientItems',  targetClassName : string = 'ingredient_item_', addClass : string = 'grow',resetAfterMs : number = 80) => {

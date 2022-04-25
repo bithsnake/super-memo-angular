@@ -5,19 +5,25 @@
 
       <div class="inline-flex flex-col">
         <mat-form-field class="bg-gray-500 bg-opacity-50" appearance="fill">
-          <mat-label for="username" class="text-white">Enter your username</mat-label>
-          <input class="cursor-pointer" name="username" matInput placeholder="...@email.com" [formControl]="userNameControl" #userName  required >
+          <mat-label for="username" class="text-white">Enter your mailaddress</mat-label>
+          <input (keydown.enter)="authService.SignUp(userName.value, userPassword.value, userDisplayName.value); ShowProgressSpinner();" class="cursor-pointer" name="username" matInput placeholder="...@email.com" [formControl]="userNameControl" #userName  required >
           <mat-error *ngIf="userNameControl.invalid">{{getUsernameErrorMessage()}}</mat-error>
         </mat-form-field>
 
         <mat-form-field class="bg-gray-500 bg-opacity-50" appearance="fill">
           <mat-label for="password" class="text-white">Enter your password</mat-label>
-          <input class="cursor-pointer" name="password" matInput placeholder="password..." [formControl]="passwordControl" #userPassword  required >
+          <input (keydown.enter)="authService.SignUp(userName.value, userPassword.value, userDisplayName.value); ShowProgressSpinner();" type="password" class="cursor-pointer" name="password" matInput placeholder="password..." [formControl]="passwordControl" #userPassword  required >
           <mat-error #materror id="_materror" *ngIf="passwordControl.invalid; ">{{getPasswordErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="bg-gray-500 bg-opacity-50" appearance="fill">
+          <mat-label for="password" class="text-white">Enter display name</mat-label>
+          <input (keydown.enter)="authService.SignUp(userName.value, userPassword.value, userDisplayName.value); ShowProgressSpinner();" type="text" class="cursor-pointer" name="displayname" matInput placeholder="caiptainjack......" [formControl]="displayNameControl" #userDisplayName  required >
+          <div class=""></div>
+          <mat-error class="w-full h-full" #materror id="_materror" *ngIf="displayNameControl.invalid; ">{{getDisplayNameErrorMessage()}}</mat-error>
         </mat-form-field>
 
         <!-- Calling SignIn Api from AuthService -->
-        <button #login (click)="authService.SignUp(userName.value, userPassword.value); ShowProgressSpinner();" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80">Register</button>
+        <button #login (click)="authService.SignUp(userName.value, userPassword.value, userDisplayName.value); ShowProgressSpinner();" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80">Register</button>
       </div>
       <!-- <div class="formGroup">
         <span class="or"><span class="orInner">Or</span></span>

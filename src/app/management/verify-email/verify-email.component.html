@@ -1,22 +1,24 @@
-<div class="displayTable">
-  <div class="displayTableCell">
-    <div class="authBlock">
-      <h3>Thank You for Registering!</h3>
+
+
+<div class=" flex flex-col place-items-center place-content-center text place-self-center w-full h-full text-lg transform ">
+  <div class="p-8 gap-4 bg-black bg-opacity-50 rounded-md ">
+    <div class="text-center text-white mb-4">
+      <h1>Thank You for Registering!</h1>
       <div class="formGroup" *ngIf="authService.userData as user">
         <p class="text-center">We have sent a confirmation email to <strong>{{user.email}}</strong>.</p>
         <p class="text-center">Please check your email and click on the link to verfiy your email address.</p>
       </div>
 
-      <!-- Calling SendVerificationMail() method using authService Api -->
-      <div class="formGroup">
-        <button type="button" class="btn btnPrimary" (click)="authService.SendVerificationMail()">
-          <i class="fas fa-redo-alt"></i>
-          Resend Verification Email
-        </button>
+      <div class="inline-flex flex-col">
+        <hr class="text-gray-400  py-4">
+        <!-- Calling SignIn Api from AuthService -->
+        <button #resendverificationmail (click)="authService.SendVerificationMail()" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80">Resend verificationmail</button>
       </div>
     </div>
-    <div class="redirectToLogin">
-      <span>Go back to?<span class="redirect" routerLink="/sign-in"> Sign in</span></span>
+
+    <hr class="text-gray-400  py-4">
+    <div class=" text-white">
+      <span>Go back to ? <button  routerLink="/sign-in" class="text-center rounded-lg p-2 bg-blue-400 hover:bg-opacity-80">Sign in</button></span>
     </div>
   </div>
 </div>
