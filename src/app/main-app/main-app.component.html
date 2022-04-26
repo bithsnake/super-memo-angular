@@ -14,7 +14,12 @@
       <!-- All the memos in a list -->
       <div cdkDropList class="flex flex-row flex-wrap gap-12 memo-list justify-center"  #memoItemList  >
         <!-- <app-memo-list></app-memo-list> -->
-        <app-memo-item  cdkDrag class="memo-box  " (memoDeleted)="RemoveMemo(memo)" *ngFor="let memo of Memos" [memo]="memo" ></app-memo-item>
+        <app-memo-item cdkDrag class="memo-box"
+        [currentActiveMemoIndex]="currentActiveMemoIndex"
+        (onMemoClicked)="CheckCurrentMemoIndex($event)"
+        (memoDeleted)="RemoveMemo(memo)"
+        (onResetCurrentMemoIndexOnAll)="ResetCurrentMemoIndexOnAll($event)"
+        *ngFor="let memo of Memos"  [memo]="memo" ></app-memo-item>
       </div>
 
   <div id="backtotop" #backToTopElement [ngClass]="{'show': !UseRow, 'hidden' : UseRow}" class="static full-opacity bottom-4 w-max p-6 bg-black bg-opacity-50">

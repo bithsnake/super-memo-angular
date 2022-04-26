@@ -53,6 +53,7 @@ class AddNewMemoComponent implements IMemo {
   /**Adds an igredient to list if none is found, otherwise one is added to the current ingredient */
   AddIngredientToList(addedIngredientIcon: IngredientType) {
     // console.log("From 'add-new-memo' , Added item: ", addedIngredientIcon);
+
     const _tempIngredient = ingredientsArray.find(x => x.Icon === addedIngredientIcon);
     let newIngredient: Ingredient;
 
@@ -62,7 +63,7 @@ class AddNewMemoComponent implements IMemo {
 
     if (this.memo.Ingredients.length === 0) {
       this.memo.Ingredients.push(newIngredient);
-      AnimateElementInChildNode(0);
+      this.AnimateElementInChildNode(0);
       return;
     }
     const _foundIngredient = this.memo.Ingredients.find(x => x.Icon === newIngredient.Icon);
@@ -70,12 +71,12 @@ class AddNewMemoComponent implements IMemo {
 
     if (_foundIngredient !== undefined) {
       _foundIngredient.Amount += 1;
-      AnimateElementInChildNode(ingredientIndex);
+      this.AnimateElementInChildNode(ingredientIndex);
       return;
     } else if( _foundIngredient === undefined) {
       this.memo.Ingredients.push(newIngredient);
       const lastIndex = this.memo.Ingredients.length - 1;
-      AnimateElementInChildNode(lastIndex);
+      this.AnimateElementInChildNode(lastIndex);
       return;
     }
   }
@@ -101,8 +102,8 @@ class AddNewMemoComponent implements IMemo {
         return;
       }
     }
-
   }
+
   getTitleErrorMessage() {
     if (this.titleControl.hasError('required')) {
       return 'Too short title';
@@ -133,20 +134,17 @@ class AddNewMemoComponent implements IMemo {
   public drop(event : CdkDragDrop<Ingredient[]>) {
     moveItemInArray(this.memo.Ingredients, event.previousIndex, event.currentIndex);
   }
+  /**Animates a a chosen node with a specific class and resets it  */
+  AnimateElementInChildNode = (nodeIndex : number,parentNodeId : string = '_ingredientItems',  targetClassName : string = 'ingredient_item_', addClass : string = 'grow',resetAfterMs : number = 80) => {
+    const item = document.getElementById(String(parentNodeId));
+    if (item === undefined || item === null) return;
+    document.querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.add(String(addClass));
+
+    setTimeout(() => {
+    document.querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.remove(String(addClass));
+    }, resetAfterMs);
+  }
 }
 
-
-
-
-/**Animates a a chosen node with a specific class and resets it  */
-export const AnimateElementInChildNode = (nodeIndex : number,parentNodeId : string = '_ingredientItems',  targetClassName : string = 'ingredient_item_', addClass : string = 'grow',resetAfterMs : number = 80) => {
-  const item = document.getElementById(String(parentNodeId));
-  if (item === undefined || item === null) return;
-  document.querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.add(String(addClass));
-
-  setTimeout(() => {
-  document.querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.remove(String(addClass));
-  }, resetAfterMs);
-}
 
 export default AddNewMemoComponent;

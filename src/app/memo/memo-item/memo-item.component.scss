@@ -78,13 +78,31 @@
   animation: rotate5 0.2s ease-in-out both;
 }
 
+.grow{
+  font-size: xx-large;
+  animation: anim 0.1s ease-in-out;
+}
+
+@keyframes anim {
+  from{
+    font-size: small;
+    transform: scale(1.5);
+  }
+  50%{
+    font-size: larger;
+  }
+  to{
+    font-size: medium;
+    transform: scale(1);
+  }
+}
+
+
 @keyframes rotate5{
   to{
     transform: rotate(5deg);
   }
 }
-
-
 @keyframes growFade{
   from {
     opacity : 80;

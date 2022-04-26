@@ -71,6 +71,6 @@ export class MemoMenuComponent implements OnInit {
       menuElement.classList.remove('scaleUp');
     }
 
-    this.OpenNewMemoDialog();
+
   }
 }

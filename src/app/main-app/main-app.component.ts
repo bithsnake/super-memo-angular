@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { MemoIcons } from '../memo/memo-icons/memo-icons';
 import { Memo } from '../memo/memo.model';
 import { ScrollBackUp, checkOverflow, compareName, compareId, compareCreatedDate, PrevScrollY } from '../methods/methods';
@@ -18,7 +18,7 @@ PrevScrollY();
 export class MainAppComponent implements OnInit {
 
   public isSignedin: boolean = false;
-
+  @Input() public currentActiveMemoIndex: number = -1;
   constructor(public firebaseService : AuthService) {}
   ngOnInit(): void {
     if (sessionStorage.getItem('user') !== null) {
@@ -26,7 +26,6 @@ export class MainAppComponent implements OnInit {
     } else {
       this.isSignedin = false;
     };
-
   }
 
   async onSignUp(email: string, password: string) {
@@ -54,7 +53,7 @@ export class MainAppComponent implements OnInit {
   public CheckMemoItem(e: Event) {
     const _e = (e.currentTarget as HTMLElement);
     _e.classList.add('rotate-element');
-    console.log("memo item is active");
+    // console.log("memo item is active");
   }
 
   public AddNewMemoToList(newMemo: Memo) {
@@ -87,8 +86,18 @@ export class MainAppComponent implements OnInit {
   public drop(event : CdkDragDrop<Ingredient[]>) {
     moveItemInArray(this.Memos, event.previousIndex, event.currentIndex);
   }
+
+  public ResetCurrentMemoIndexOnAll(memo : Memo) {
+    this.currentActiveMemoIndex = -1;
+  }
+  public CheckCurrentMemoIndex(checkThisMemo: Memo) {
+    if (checkThisMemo === null || checkThisMemo === undefined) return;
+    const currentIndex = this.Memos.indexOf(checkThisMemo, 0);
+    this.currentActiveMemoIndex = currentIndex;
+  }
+
   title = 'super-memo-angular';
-  public Memos: Memo[] = [
+   public Memos: Memo[] = [
     new Memo(uuid.v4(),"Monday Groceries", "Fruit Monday!", new Date(), MemoIcons.memo.icon,[
       new Ingredient(ingredients.applered.Name, ingredients.applered.Icon, 5),
       new Ingredient(ingredients.banana.Name, ingredients.banana.Icon, 10),
@@ -118,6 +127,4 @@ export class MainAppComponent implements OnInit {
       new Ingredient(ingredients.applegreen.Name, ingredients.applegreen.Icon, 5),
     ]),
   ];
-
-
 }
