@@ -6,7 +6,6 @@ import { DashboardComponent } from './management/dashboard/dashboard.component';
 import { ForgotPasswordComponent } from './management/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './management/verify-email/verify-email.component';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { MemoMenuComponent } from './memo-menu/memo-menu.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { MainAppComponent } from './main-app/main-app.component';

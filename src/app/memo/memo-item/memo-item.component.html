@@ -11,7 +11,7 @@
         </article>
 
         <!-- Output all current ingredients for the current shopping list -->
-        <div cdkDropList class="ingredient-list" (cdkDropListDropped)="drop($event)">
+        <div cdkDropList class="ingredient-list cursor-move" (cdkDropListDropped)="drop($event)">
           <ul cdkDrag class="ingredient-box " *ngFor="let ingredient of memo.Ingredients">
             <div class="hover:bg-gray-200 hover:text-blue-800 min-h-full">
               <a >

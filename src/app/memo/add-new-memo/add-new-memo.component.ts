@@ -7,6 +7,7 @@ import * as uuid from 'uuid';
 import {FormControl, Validators} from '@angular/forms';
 import { Memo } from '../memo.model';
 import { MatDialogRef } from '@angular/material/dialog';
+import { CdkDragDrop,moveItemInArray} from '@angular/cdk/drag-drop';
 
 const _id = uuid.v4();
 @Component({
@@ -51,7 +52,7 @@ class AddNewMemoComponent implements IMemo {
   }
   /**Adds an igredient to list if none is found, otherwise one is added to the current ingredient */
   AddIngredientToList(addedIngredientIcon: IngredientType) {
-    console.log("From 'add-new-memo' , Added item: ", addedIngredientIcon);
+    // console.log("From 'add-new-memo' , Added item: ", addedIngredientIcon);
     const _tempIngredient = ingredientsArray.find(x => x.Icon === addedIngredientIcon);
     let newIngredient: Ingredient;
 
@@ -77,6 +78,30 @@ class AddNewMemoComponent implements IMemo {
       AnimateElementInChildNode(lastIndex);
       return;
     }
+  }
+
+  DecrementIngredient(chosenIngredientIcon: HTMLElement) {
+    const icon = chosenIngredientIcon.innerText as IngredientType;
+    if (icon === undefined || icon === null) return;
+    let targetedIngredientInList = this.memo.Ingredients.find(x => x.Icon === icon);
+    if (targetedIngredientInList === undefined) return;
+
+    if (targetedIngredientInList.Amount > 1 ) {
+      targetedIngredientInList.Amount--;
+
+    } else {
+      targetedIngredientInList.Amount--;
+      let newIngredientList = this.memo.Ingredients.filter(removeIngredient => removeIngredient.Icon === icon);
+      if (this.memo.Ingredients.length === 1 && newIngredientList[0].Amount <= 0) {
+        this.memo.Ingredients = [];
+        return;
+      } else {
+        const objectIndex = this.memo.Ingredients.indexOf(targetedIngredientInList, 0);
+        this.memo.Ingredients.splice(objectIndex, 1);
+        return;
+      }
+    }
+
   }
   getTitleErrorMessage() {
     if (this.titleControl.hasError('required')) {
@@ -104,13 +129,21 @@ class AddNewMemoComponent implements IMemo {
     e.preventDefault();
     this.dialogRef.close();
   }
+
+  public drop(event : CdkDragDrop<Ingredient[]>) {
+    moveItemInArray(this.memo.Ingredients, event.previousIndex, event.currentIndex);
+  }
 }
+
+
+
+
 /**Animates a a chosen node with a specific class and resets it  */
 export const AnimateElementInChildNode = (nodeIndex : number,parentNodeId : string = '_ingredientItems',  targetClassName : string = 'ingredient_item_', addClass : string = 'grow',resetAfterMs : number = 80) => {
   const item = document.getElementById(String(parentNodeId));
   if (item === undefined || item === null) return;
   document.querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.add(String(addClass));
-  console.log("");
+
   setTimeout(() => {
   document.querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.remove(String(addClass));
   }, resetAfterMs);

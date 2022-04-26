@@ -19,11 +19,9 @@ import { VerifyEmailComponent } from './management/verify-email/verify-email.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
 
 // materials
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -78,8 +76,7 @@ import { environment } from '../environments/environment';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { HomeComponent } from './home/home.component';
-import { FirebaseService } from './services/firebase.service';
+// import { FirebaseService } from './services/firebase.service';
 import { provideFirebaseApp } from '@angular/fire/app';
 
 // service
@@ -92,28 +89,13 @@ import { QuestionComponent } from './question/question.component';
 import { ChangeNameComponent } from './change-name/change-name.component';
 
 
-
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: "AIzaSyD65zUPcZYUsluklyQLElJzWRz8-No5wyI",
-//   authDomain: "addb-51800.firebaseapp.com",
-//   databaseURL: "https://addb-51800-default-rtdb.europe-west1.firebasedatabase.app",
-//   projectId: "addb-51800",
-//   storageBucket: "addb-51800.appspot.com",
-//   messagingSenderId: "487528309439",
-//   appId: "1:487528309439:web:a967ab39e35fa891a41c0a",
-//   measurementId: "G-MKCGQ3FXVZ"
-// };
-
 // Initialize Firebase
 export const app = initializeApp(environment.firebase);
 export const analytics = getAnalytics(app);
 
 // always add your components in the declarations array!
 @NgModule({
-  declarations: [		
+  declarations: [
     AppComponent,
     MemoItemComponent,
     MemoListComponent,
@@ -121,7 +103,6 @@ export const analytics = getAnalytics(app);
     NavbarComponent,
     MemoMenuComponent,
     AddNewMemoComponent,
-    HomeComponent,
     MainAppComponent,
     DashboardComponent,
     SignInComponent,
