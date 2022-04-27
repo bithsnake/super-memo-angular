@@ -1,4 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
+import { MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { User } from '../services/user';
 import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -6,10 +7,12 @@ import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
-import { Router } from '@angular/router';
+import { RouteConfigLoadStart, Router } from '@angular/router';
 import { EmailAuthProvider, FacebookAuthProvider, GithubAuthProvider } from 'firebase/auth';
 import { stringify } from 'querystring';
 import { AuthGuard } from '../guard/auth.guard';
+import { NotificationComponent } from 'src/app/notification/notification.component';
+import { NewDialogComponent } from '../new-dialog/new-dialog.component';
 
 const _user: string = 'user';
 @Injectable({
@@ -31,6 +34,7 @@ export class AuthService {
     public afAuth: AngularFireAuth, // Inject Firebase auth servce
     public router: Router,
     public ngZone: NgZone, // nGZone service to remove outside scope warnings
+    public dialog: MatDialog,
   ) {
     /* Saving user data in localStorage when
     logged in and setting up null when logged out */
@@ -66,7 +70,8 @@ export class AuthService {
         if (result.user !== null) {
           if (result.user.emailVerified === false) {
             this.SendVerificationMail();
-            window.alert('Your email address is not verified yet, check your inbox for a verification mail, a new verification mail has been sent');
+            new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your email address is not verified yet, check your inbox for a verification mail, a new verification mail has been sent');
+            // window.alert('Your email address is not verified yet, check your inbox for a verification mail, a new verification mail has been sent');
             this.showSpinner = false;
             return;
           }
@@ -81,7 +86,8 @@ export class AuthService {
       })
       .catch((error) => {
         this.showSpinner = false;
-        window.alert(error.message);
+        new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error.message);
+        // window.alert(error.message);
       });
   }
     // Sign up with email/password
@@ -104,14 +110,16 @@ export class AuthService {
         })
         .catch((error) => {
           this.showSpinner = false;
-          window.alert(error.message);
+          new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error.message);
+          // window.alert(error.message);
         });
     }
   // Send email verification when new user sign up
   SendVerificationMail() {
     this.showSpinner = true;
     if (this.ngZone.onError.hasError) {
-      window.alert("error : ");
+      new NewDialogComponent(this.dialog).OpenNewNotificationDialog('some ngZone error..try again');
+      // window.alert("error : ");
     }
     return this.afAuth.currentUser
       .then((u) => {
@@ -122,8 +130,8 @@ export class AuthService {
           console.log("current user 'u' : ", u);
         }
         if (u === undefined || u === null) {
-          console.log("current user 'u' : ", u);
-          window.alert("there is no user with this mailadress..");
+          new NewDialogComponent(this.dialog).OpenNewNotificationDialog('There is no user with this mailadress.');
+          // window.alert("there is no user with this mailadress..");
           return;
         }
 
@@ -140,6 +148,7 @@ export class AuthService {
         }
       })
       .catch((error) => {
+        new NewDialogComponent(this.dialog).OpenNewNotificationDialog(String(error));
         if (error.status) {
 
         }
@@ -152,11 +161,13 @@ export class AuthService {
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
         this.showSpinner = false;
-        window.alert('Password reset email sent, check your inbox');
+        new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Password reset email sent, check your inbox');
+        // window.alert('Password reset email sent, check your inbox');
       })
       .catch((error) => {
         this.showSpinner = false;
-        window.alert(error);
+        new NewDialogComponent(this.dialog).OpenNewNotificationDialog(String(error));
+        // window.alert(error);
       });
   }
   // Returns true when user is logged in and email is verified
@@ -177,7 +188,8 @@ export class AuthService {
         this.showSpinner = false;
       }
     }).catch(error => {
-      window.alert('Something went wrong with google authentication, check the console logs');
+      new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Something went wrong with google authentication, check the console logs');
+      // window.alert('Something went wrong with google authentication, check the console logs');
     });
   }
 
@@ -195,7 +207,8 @@ export class AuthService {
         })
         .catch((error) => {
           this.showSpinner = false;
-          window.alert(error);
+          new NewDialogComponent(this.dialog).OpenNewNotificationDialog(String(error));
+          // window.alert(error);
         });
   }
 
