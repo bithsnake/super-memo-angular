@@ -87,6 +87,7 @@ import { BackdropComponent } from './backdrop/backdrop.component';
 import { AboutComponent } from './about/about.component';
 import { QuestionComponent } from './question/question.component';
 import { ChangeNameComponent } from './change-name/change-name.component';
+import { NotificationComponent } from './notification/notification.component';
 
 
 // Initialize Firebase
@@ -95,7 +96,7 @@ export const analytics = getAnalytics(app);
 
 // always add your components in the declarations array!
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
     MemoItemComponent,
     MemoListComponent,
@@ -113,7 +114,8 @@ export const analytics = getAnalytics(app);
     BackdropComponent,
     AboutComponent,
       QuestionComponent,
-      ChangeNameComponent
+      ChangeNameComponent,
+      NotificationComponent
    ],
   imports: [
     BrowserModule,
