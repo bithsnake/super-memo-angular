@@ -133,7 +133,7 @@ export class AuthService {
         });
       })
       .then((something) => {
-        console.log("something: ", something);
+        // console.log("something: ", something);
         this.showSpinner = false;
         if (this.router.url !== '/verify-email-address') {
           this.router.navigate(['verify-email-address']);
@@ -172,10 +172,12 @@ export class AuthService {
       if (res) {
         this.showSpinner = false;
         this.router.navigate(['dashboard']);
+        return;
       } else {
         this.showSpinner = false;
-        window.alert('Something went wrong with google authentication, check the console logs');
       }
+    }).catch(error => {
+      window.alert('Something went wrong with google authentication, check the console logs');
     });
   }
 

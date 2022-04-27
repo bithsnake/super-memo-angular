@@ -27,10 +27,10 @@ export function compareCreatedDate( memo_a : Memo, memo_b : Memo ) {
   }
   return 0;
 }
+
 function SetBackToTopElement(InFrame : boolean) {
   let element = document.getElementById('backtotop');
-  if (element === null) throw new Error("There is no element with the id: ");
-
+  if (element === null) return;
     if (!InFrame) {
       element.classList.replace('full-opacity', 'fade-in');
       element.classList.replace('static', 'sticky');

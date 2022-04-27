@@ -135,13 +135,14 @@ class AddNewMemoComponent implements IMemo {
     moveItemInArray(this.memo.Ingredients, event.previousIndex, event.currentIndex);
   }
   /**Animates a a chosen node with a specific class and resets it  */
-  AnimateElementInChildNode = (nodeIndex : number,parentNodeId : string = '_ingredientItems',  targetClassName : string = 'ingredient_item_', addClass : string = 'grow',resetAfterMs : number = 80) => {
+  AnimateElementInChildNode = (nodeIndex : number,parentNodeId : string = '_ingredientItems',  targetClassName : string = 'new_ingredient_items_', addClass : string = 'grow',resetAfterMs : number = 80) => {
     const item = document.getElementById(String(parentNodeId));
     if (item === undefined || item === null) return;
-    document.querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.add(String(addClass));
+    let currentNode = document.querySelectorAll(`.${targetClassName}`)[nodeIndex];
+    currentNode.classList.add(String(addClass));
 
     setTimeout(() => {
-    document.querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.remove(String(addClass));
+      currentNode.classList.remove(String(addClass));
     }, resetAfterMs);
   }
 }

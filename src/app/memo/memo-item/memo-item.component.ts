@@ -172,7 +172,6 @@ export class MemoItemComponent implements OnInit {
       const item = document.getElementsByClassName('_memo_lists');
 
       if (item === undefined || item === null || this.currentActiveMemoIndex === -1) return;
-      let currentIngredient = item[this.currentActiveMemoIndex].childNodes[0].childNodes[3].childNodes[nodeIndex].childNodes[0].childNodes[0].childNodes[0].childNodes[0].firstChild;
       document.querySelectorAll(`.${'_memo_lists'}`)[this.currentActiveMemoIndex].querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.add(String(addClass));
       setTimeout(() => {
         document.querySelectorAll(`.${'_memo_lists'}`)[this.currentActiveMemoIndex].querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.remove(String(addClass));
