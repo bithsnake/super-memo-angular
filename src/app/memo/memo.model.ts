@@ -28,9 +28,10 @@ export class Memo implements IMemo {
   };
   constructor(
     public Id: string,
+    public Index : number,
     public Title: string,
     public Description: string,
-    public CreatedDate : Date = new Date(),
+    public CreatedDate : string,
     public MemoIcon: MemoIcon,
     public Ingredients: Ingredient[] = [],
   ) {

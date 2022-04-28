@@ -5,22 +5,23 @@
       <!--  Menu -->
       <app-memo-menu
       (memoCreated)="AddNewMemoToList($event)"
-      (stackMemos)="ToggleMemosFlexFlow(backToTopElement,memoItemList)"
       (orderMemosByLetter)="OrderMemosByLetter()"
       (orderMemosByID)="OrderMemosByID()"
       (orderMemosByCreated)="OrderMemosByLetter()"
       ></app-memo-menu>
 
       <!-- All the memos in a list -->
-      <div cdkDropList class="flex flex-row flex-wrap gap-12 memo-list justify-center"  #memoItemList  >
-        <!-- <app-memo-list></app-memo-list> -->
-        <app-memo-item cdkDrag class="memo-box"
-        [currentActiveMemoIndex]="currentActiveMemoIndex"
-        (onMemoClicked)="CheckCurrentMemoIndex($event)"
-        (memoDeleted)="RemoveMemo(memo)"
-        (onResetCurrentMemoIndexOnAll)="ResetCurrentMemoIndexOnAll($event)"
-        *ngFor="let memo of Memos"  [memo]="memo" ></app-memo-item>
-      </div>
+
+        <div *ngIf="Memos.length > 0" cdkDropList class="flex flex-row flex-wrap gap-12 memo-list justify-center" >
+          <app-memo-item   cdkDrag class="memo-box"
+          [currentActiveMemoIndex]="currentActiveMemoIndex"
+          (onMemoClicked)="CheckCurrentMemoIndex($event)"
+          (memoDeleted)="OpenDeleteMemoDialog(memo)"
+          (onUpdateMemo)="GetMemos()"
+          (onResetCurrentMemoIndexOnAll)="ResetCurrentMemoIndexOnAll($event)"
+          *ngFor="let memo of Memos"  [memo]="memo" ></app-memo-item>
+        </div>
+
 
   <div id="backtotop" #backToTopElement [ngClass]="{'show': !UseRow, 'hidden' : UseRow}" class="static full-opacity bottom-4 w-max p-6 bg-black bg-opacity-50">
     <button (click)="ScrollBackUp()" class="text-blue-200 hover:text-white hover:bg-opacity-5 hover:-translate-y-1 bg-white bg-opacity-20 p-2 rounded-lg transform">Back to top</button>

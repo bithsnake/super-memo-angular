@@ -4,13 +4,17 @@ import { MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { QuestionComponent } from 'src/app/question/question.component';
 import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 import { ChangeNameComponent } from 'src/app/change-name/change-name.component';
+import { authState } from '@angular/fire/auth';
+import { UrlService } from 'src/app/shared/url.service';
+import { Router } from '@angular/router';
+import { AppComponent } from 'src/app/app.component';
 interface DeleteQuestion {
-  deleteAccount : boolean
+  deleteItem : boolean
 }
-class YesNoQuestion implements DeleteQuestion {
-  deleteAccount: boolean;
+export class YesNoQuestion implements DeleteQuestion {
+  deleteItem: boolean;
   constructor() {
-    this.deleteAccount = false;
+    this.deleteItem = false;
   }
 }
 @Component({
@@ -19,12 +23,17 @@ class YesNoQuestion implements DeleteQuestion {
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  constructor(public authService: AuthService, public dialog: MatDialog) { }
+  color = {
+    red: 'rgba(255,148,148)',
+    green: 'rgb(72, 245, 66)'
+  };
+  constructor(public authService: AuthService, public dialog: MatDialog, private urlService : UrlService, private router: Router) {}
 
   public OpenDeleteAccountDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data  = {
-      deleteAccount: false,
+      deleteItem: false,
+      message : 'Are you sure you want to delete your account?'
     }
 
     const dialogRef = this.dialog.open(QuestionComponent, dialogConfig);
@@ -76,5 +85,9 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-  ngOnInit(): void {}
+  public GoBack() {
+    this.urlService.GoBack();
+  }
+
+  ngOnInit(): void { }
 }

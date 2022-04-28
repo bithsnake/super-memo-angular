@@ -2,6 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { User } from '../services/user';
 import * as auth from 'firebase/auth';
+import * as uuid from 'uuid';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
@@ -13,7 +14,10 @@ import { stringify } from 'querystring';
 import { AuthGuard } from '../guard/auth.guard';
 import { NotificationComponent } from 'src/app/notification/notification.component';
 import { NewDialogComponent } from '../new-dialog/new-dialog.component';
-
+import { UrlService } from '../url.service';
+import { Memo } from 'src/app/memo/memo.model';
+import { Ingredient } from '../ingredients';
+import firebase from 'firebase/compat/app';
 const _user: string = 'user';
 @Injectable({
   // declares that this service should be created
@@ -26,7 +30,7 @@ export class AuthService {
     displayName: '',
     email: null,
     photoURL: null,
-    emailVerified : false
+    emailVerified: false,
   }; // Save logged in user data
   showSpinner: boolean;
   constructor(
@@ -35,6 +39,7 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone, // nGZone service to remove outside scope warnings
     public dialog: MatDialog,
+    public urlService : UrlService,
   ) {
     /* Saving user data in localStorage when
     logged in and setting up null when logged out */
@@ -95,7 +100,7 @@ export class AuthService {
     this.showSpinner = true;
     return this.afAuth
         .createUserWithEmailAndPassword(email, password)
-        .then((result) => {
+      .then((result) => {
           /* Call the SendVerificaitonMail() function when new user sign
           up and returns promise */
           if (result.user !== null) {
@@ -229,14 +234,26 @@ export class AuthService {
     return userRef.set(userData, {
       merge: true,
     });
+  };
+
+  async GetAllMemos() {
+    return new Promise<any>((resolve) => {
+      const snapShot = this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get().subscribe(data => {
+        console.log("data.docs: ", data.docs);
+        const mappedDocument = data.docs.map(x => x.data() as Memo[]);
+        resolve(mappedDocument);
+      });
+    });
   }
   // Sign out
   SignOut() {
     this.showSpinner = true;
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem(_user);
-      this.router.navigate(['sign-in']);
+      this.urlService._previousUrl = '';
+      this.urlService.currentUrl = '';
       this.showSpinner = false;
+      this.router.navigate(['sign-in']);
     });
   }
 }

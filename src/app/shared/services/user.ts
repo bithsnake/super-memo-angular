@@ -1,3 +1,5 @@
+import { Memo } from "src/app/memo/memo.model";
+
 export interface User {
   uid: string;
   email: string | null;

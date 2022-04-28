@@ -88,6 +88,7 @@ import { AboutComponent } from './about/about.component';
 import { QuestionComponent } from './question/question.component';
 import { ChangeNameComponent } from './change-name/change-name.component';
 import { NotificationComponent } from './notification/notification.component';
+import { UrlService } from './shared/url.service';
 
 
 // Initialize Firebase
@@ -96,7 +97,7 @@ export const analytics = getAnalytics(app);
 
 // always add your components in the declarations array!
 @NgModule({
-  declarations: [	
+  declarations: [
     AppComponent,
     MemoItemComponent,
     MemoListComponent,
@@ -176,7 +177,9 @@ export const analytics = getAnalytics(app);
     provideStorage(() => getStorage()),
   ],
   providers: [
-  AuthService,
+    AuthService,
+    UrlService,
+    AppComponent
   // FirebaseService
   // {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}}
   ],

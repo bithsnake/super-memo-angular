@@ -1,6 +1,6 @@
 
-<div class="flex flex-row place-content-center place-items-center  w-full h-auto">
-  <div class=" bg-black bg-opacity-40 rounded-md text-white">
+<div class="flex flex-row place-content-center place-items-center  w-full h-auto  bg-gray-600 bg-opacity-30">
+  <div class=" bg-black bg-opacity-50 rounded-md text-white">
     <!-- Main content -->
     <main role="main" class="py-10 px-4 w-min-[50%]">
       <div class="inline-grid">
@@ -14,21 +14,22 @@
               <img class="w-10 h-10" src="{{(user.photoURL) ? user.photoURL : '../../../../../assets/images/dummy-user.png'}}"
                 alt="{{user.displayName}}">
 
-                <div class="align-bottom align-items-center space-y-6">
-                  <div class="inline-flex flex-row justify-between space-x-8 ">
-                    <h1>Hello <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong> !</h1>
+                <div class="space-y-6">
+                  <div class="inline-flex flex-row justify-between space-x-8 place-items-center align-baseline ">
+                    <h1 [ngStyle]="{margin: 0}">Hello <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong> !</h1>
                     <button #changeDisplayName (click)="OpenChangeDisplayNameDialog()" class="text-center align-middle rounded-lg p-2 bg-blue-400 hover:bg-opacity-80">Change DisplayName</button>
                 </div>
                 <br>
                 <hr class="text-gray-400 py-4">
                 <!-- <p>User ID: <strong>{{user.uid}}</strong></p> -->
-                <p>Email: <strong>{{user.email}}</strong></p>
-                <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
+                <p>Email: <b class="tracking-widest text-blue-300">{{user.email}}</b></p>
+                <p>Email Verified: <b class="tracking-widest" [ngStyle]="{color: user.emailVerified ? color.green : color.red}" >{{user.emailVerified}}</b></p>
               </div>
               <br>
               <hr class="text-gray-400 py-4">
               <div class="inline-flex flex-row justify-between gap-8">
-                <button #resetpassword (click)="OpenDeleteAccountDialog()" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80">Delete account</button>
+                <button #deleteAccount (click)="OpenDeleteAccountDialog()" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80">Delete account</button>
+                <button (click)="GoBack()" class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80">Go back?</button>
               </div>
 
             </div>

@@ -6,9 +6,10 @@ export interface IIcons {
 }
 export interface IMemo {
   Id: string;
+  Index: number;
   Title: string;
   Description: string;
-  CreatedDate: Date;
+  CreatedDate: string;
   MemoIcon: MemoIcon;
   Ingredients: Ingredient[];
 }

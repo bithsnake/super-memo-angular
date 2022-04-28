@@ -6,7 +6,7 @@
       <hr class="text-gray-400  py-4">
         <mat-form-field class="bg-gray-500 bg-opacity-50" appearance="fill">
           <mat-label for="displayname" class="text-white">Enter a new displayname</mat-label>
-          <input #displayName class="cursor-pointer" name="displayname" matInput placeholder="Mega man.." [formControl]="displayNameControl" required >
+          <input (keydown.enter)="ChangeName(true, displayName.value)" #displayName class="cursor-pointer" name="displayname" matInput placeholder="Mega man.." [formControl]="displayNameControl" required >
           <mat-error *ngIf="displayNameControl.invalid">{{getDisplayNameErrorMessage()}}</mat-error>
         </mat-form-field>
       <div class="inline-flex flex-row space-x-4 ml-4">

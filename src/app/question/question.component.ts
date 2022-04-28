@@ -7,12 +7,18 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./question.component.scss']
 })
 export class QuestionComponent implements OnInit {
+  public message: string = 'Are you sure you want to delete your account?';
+  constructor(
+    private dialogRef: MatDialogRef<QuestionComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { deleteItem: boolean, message : string },
 
-  constructor(private dialogRef: MatDialogRef<QuestionComponent>, @Inject(MAT_DIALOG_DATA) public data: {deleteAccount : boolean}) { }
+  ) {
+    this.message = data.message;
+  }
 
   DeleteAccount(answer: boolean) {
-    this.data.deleteAccount = answer;
-    this.dialogRef.close(this.data.deleteAccount);
+    this.data.deleteItem = answer;
+    this.dialogRef.close(this.data.deleteItem);
   }
   ngOnInit() {
   }

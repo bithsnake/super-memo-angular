@@ -17,9 +17,10 @@ const _id = uuid.v4();
 })
 class AddNewMemoComponent implements IMemo {
   public Id: string = "";
+  public Index: number = -1;
   public Title: string = '';
   public Description: string = '';
-  public CreatedDate: Date = new Date();
+  public CreatedDate: string = new Date().toLocaleDateString();
   public MemoIcon: MemoIcon ="📝";
   public Ingredients: Ingredient[] = []
   public max_width = "20rem";
@@ -29,12 +30,15 @@ class AddNewMemoComponent implements IMemo {
   titleControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(20)]);
   descriptionControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(30)]);
 
-  constructor(private dialogRef: MatDialogRef<AddNewMemoComponent>,@Inject(MAT_DIALOG_DATA) public data : Memo) {
-    this.memo = new Memo(_id,this.Title,this.Description,new Date(),this.MemoIcon,this.Ingredients);
+  constructor(private dialogRef: MatDialogRef<AddNewMemoComponent>, @Inject(MAT_DIALOG_DATA) public data: Memo) {
+    const date = new Date().toLocaleDateString();
+    this.memo = new Memo(_id,-1,this.Title,this.Description,date,this.MemoIcon,this.Ingredients);
     data = this.memo;
   }
   /**Sends a reference of the new memo created to parent Component */
   public CreateNewMemo() {
+    this.memo.Title = this.Title;
+    this.memo.Description = this.Description;
     this.dialogRef.close(this.memo);
   }
   /**Removes 1 amount from an ingredient */
@@ -53,7 +57,6 @@ class AddNewMemoComponent implements IMemo {
   /**Adds an igredient to list if none is found, otherwise one is added to the current ingredient */
   AddIngredientToList(addedIngredientIcon: IngredientType) {
     // console.log("From 'add-new-memo' , Added item: ", addedIngredientIcon);
-
     const _tempIngredient = ingredientsArray.find(x => x.Icon === addedIngredientIcon);
     let newIngredient: Ingredient;
 

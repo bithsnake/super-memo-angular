@@ -10,10 +10,10 @@ export function compareName( memo_a : Memo, memo_b : Memo ) {
   return 0;
 }
 export function compareId( memo_a : Memo, memo_b : Memo ) {
-  if ( memo_a.Id < memo_b.Id ){
+  if ( memo_a.Index < memo_b.Index ){
     return -1;
   }
-  if ( memo_a.Id > memo_b.Id ){
+  if ( memo_a.Index > memo_b.Index ){
     return 1;
   }
   return 0;

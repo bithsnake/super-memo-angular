@@ -29,6 +29,7 @@ export class ChangeNameComponent implements OnInit {
     return this.displayNameControl.hasError('formTitle') ? 'Not a valid displayname' : '';
   }
 
+
   ngOnInit() {
 
   }
