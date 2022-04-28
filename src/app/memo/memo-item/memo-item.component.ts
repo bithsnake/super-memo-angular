@@ -82,6 +82,20 @@ export class MemoItemComponent implements OnInit {
   public InputTextTest = '';
   public IsDisabled: boolean = false;
   public hasClicked: boolean = false;
+  public snapShotOfCurrentMemo: Memo = {
+    Id: '',
+    Index : -1,
+    Title: '',
+    Description: 'string',
+    CreatedDate : 'string',
+    MemoIcon: '📝',
+    AddIngredients: false,
+    EditMemo: false,
+    Ingredients: [] = [],
+    AddIngredient: () => { },
+    ChangeIngredientAmount: () => { },
+    DeleteIngredient: ()=>{},
+  }
 
 
   public drop(event : CdkDragDrop<Ingredient[]>) {
@@ -95,6 +109,7 @@ export class MemoItemComponent implements OnInit {
     this.memo.EditMemo = !this.memo.EditMemo;
     this.hasClicked = true;
     this.currentActiveMemoIndex = -1;
+
     if (cancel) {
       this.onUpdateMemo.emit()
       this.onResetCurrentMemoIndexOnAll.emit(this.memo);
@@ -164,30 +179,30 @@ export class MemoItemComponent implements OnInit {
             CreatedDate : this.memo.CreatedDate,
             Ingredients : this.memo.Ingredients
           });
-        } else {
-          mem.set({
-            Id: this.memo.Id,
-            Index: this.memo.Index,
-            Title: this.memo.Title,
-            Description: this.memo.Description,
-            CreatedDate : this.memo.CreatedDate,
-            Ingredients : this.memo.Ingredients
-          });
-          // for (let i = 0; i < this.memo.Ingredients.length; i++) {
-          //   const ingredient = this.memo.Ingredients[i];
-          //   mem.update({
-          //     Ingredients: firebase.firestore.FieldValue.arrayUnion({
-          //       Name: ingredient.Name,
-          //       Icon: ingredient.Icon,
-          //       Amount: ingredient.Amount
-          //     })
-          //   }).catch(error => {
-          //     const e = error as FirebaseError;
-          //     console.log("error: ", e.message);
-          //   })
-          // }
+        } else if (!sameLength) {
+          this.snapShotOfCurrentMemo = memoOnDb;
+          console.log("snapshot of current memo: ", this.snapShotOfCurrentMemo);
+          for (let i = 0; i < this.memo.Ingredients.length; i++) {
+            const ingredient = this.memo.Ingredients[i];
+            mem.update({
+              Ingredients: firebase.firestore.FieldValue.arrayUnion({
+                Name: ingredient.Name,
+                Icon: ingredient.Icon,
+                Amount: ingredient.Amount
+              })
+            }).catch(error => {
+              const e = error as FirebaseError;
+              console.log("error: ", e.message);
+            })
+            if (i >= this.memo.Ingredients.length -1) {
+              isfound.closed = true;
+            }
+          }
         }
-        isfound.closed = true;
+        if (isfound.closed) {
+          this.onUpdateMemo.emit();
+          return;
+        }
       })
 
 
