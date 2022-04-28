@@ -1,18 +1,13 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input, NgZone, OnInit, Output } from '@angular/core';
-import { MemoIcons } from '../memo/memo-icons/memo-icons';
+import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { Memo } from '../memo/memo.model';
 import { ScrollBackUp, checkOverflow, compareName, compareId, compareCreatedDate, PrevScrollY } from '../methods/methods';
-import { Ingredient, ingredients } from '../shared/ingredients';
+import { Ingredient } from '../shared/ingredients';
 import { AuthService } from '../shared/services/auth.service';
-import * as uuid from 'uuid';
 import { NewDialogComponent } from '../shared/new-dialog/new-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
 import { FirebaseError } from 'firebase/app';
-import { FieldValue, QueryDocumentSnapshot } from 'firebase/firestore';
 import { AngularFirestoreCollection, DocumentReference } from '@angular/fire/compat/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 import { map } from 'rxjs/operators'
 import { Observable } from 'rxjs';
@@ -56,9 +51,11 @@ export class MainAppComponent implements OnInit {
       console.log("error getting memos from db: ", error)
     });
     this.memoObservable.subscribe(change => {
-      console.log("change happened: ", change);
-
+      // console.log("change happened: ", change);
       this.GetMemos().catch(error => {
+        const e = error as FirebaseError;
+        new NewDialogComponent(this.dialog).OpenNewNotificationDialog('An error occured when fetching memos from the database, error message reported to the support department: ' +  e.message);
+
         console.log("error getting memos from db: ", error)
       });
     })
@@ -120,19 +117,19 @@ export class MainAppComponent implements OnInit {
             })
           }).catch(error => {
             const e = error as FirebaseError;
-            console.log("error: ", e.message);
+            throw new Error(`${e}`);
           })
-
         }
         }).then(() => {
+          new NewDialogComponent(this.dialog).OpenNewNotificationDialog('A memo was added!');
           this.GetMemos();
       }).catch(error => {
         const e = error as FirebaseError;
-        console.log("from AddNewMemoToList adding memo: ", e.message);
+        new NewDialogComponent(this.dialog).OpenNewNotificationDialog('An error occured when creating a memo, error message reported to the support department: ' +  e.message);
       });
     } catch (error) {
       let e = error as FirebaseError;
-      console.log("Error creating new memo: ", e.message);
+      new NewDialogComponent(this.dialog).OpenNewNotificationDialog('An error occured when creating a memo, error message reported to the support department: ' +  e.message);
     }
   }
   public OpenDeleteMemoDialog(deleteMemo : Memo) {
@@ -157,32 +154,31 @@ export class MainAppComponent implements OnInit {
         } catch (error) {
           let e = error as FirebaseError;
           new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Something went wrong deleting an memp item\n' + e.message);
-
         }
       }
     });
   }
   // delete later or use for local mockup
-  public RemoveMemo(memo: Memo) {
-    // const objectIndex = this.Memos.indexOf(memo, 0);
-    // this.Memos.splice(objectIndex, 1);
-    try {
-      // const snapShot = this.authService.afs.collection(`users`).doc(this.authService.userData.uid).collection('memos').doc(this.memo.Id).get().subscribe(data => {
-        this.authService.afs.collection('users').doc(this.authService.userData.uid).collection('memos').doc(memo.Id).delete().then(() => {
-          this.GetMemos();
-        }).catch(error => {
-          const e = error as FirebaseError;
-          console.log("error: ", e);
-        })
-      // })
-      // snapShot.closed = true;
-    } catch (error) {
-      let e = error as FirebaseError;
-      console.log("Error creating new memo: ", e.message);
-    }
-  }
+  // public RemoveMemo(memo: Memo) {
+  //   // const objectIndex = this.Memos.indexOf(memo, 0);
+  //   // this.Memos.splice(objectIndex, 1);
+  //   try {
+  //     // const snapShot = this.authService.afs.collection(`users`).doc(this.authService.userData.uid).collection('memos').doc(this.memo.Id).get().subscribe(data => {
+  //       this.authService.afs.collection('users').doc(this.authService.userData.uid).collection('memos').doc(memo.Id).delete().then(() => {
+  //         this.GetMemos();
+  //       }).catch(error => {
+  //         const e = error as FirebaseError;
+  //         console.log("error: ", e);
+  //       })
+  //     // })
+  //     // snapShot.closed = true;
+  //   } catch (error) {
+  //     let e = error as FirebaseError;
+  //     console.log("Error creating new memo: ", e.message);
+  //   }
+  // }
   public EditMemo(currentMemo : Memo) {
-    console.log("value in edit button: ", currentMemo);
+    // console.log("value in edit button: ", currentMemo);
   }
 
   public OrderMemosByLetter = () => this.Memos.sort(compareName);
@@ -212,8 +208,8 @@ export class MainAppComponent implements OnInit {
 
     if (newMemos !== null || newMemos !== undefined) {
       this.Memos = newMemos;
-      console.log("update memos: ", newMemos);
-      console.log("this.Memos: ", this.Memos);
+      // console.log("update memos: ", newMemos);
+      // console.log("this.Memos: ", this.Memos);
     }
   }
 }
