@@ -37,6 +37,6 @@ export class IngredientsModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("IngredientsModalComponent initiated, current new memo: " , this.NewMemo);
+    // console.log("IngredientsModalComponent initiated, current new memo: " , this.NewMemo);
   }
 }

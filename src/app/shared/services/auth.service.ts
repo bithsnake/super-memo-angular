@@ -18,6 +18,7 @@ import { UrlService } from '../url.service';
 import { Memo } from 'src/app/memo/memo.model';
 import { Ingredient } from '../ingredients';
 import firebase from 'firebase/compat/app';
+import { FirebaseError } from 'firebase/app';
 const _user: string = 'user';
 @Injectable({
   // declares that this service should be created
@@ -76,7 +77,6 @@ export class AuthService {
           if (result.user.emailVerified === false) {
             this.SendVerificationMail();
             new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your email address is not verified yet, check your inbox for a verification mail, a new verification mail has been sent');
-            // window.alert('Your email address is not verified yet, check your inbox for a verification mail, a new verification mail has been sent');
             this.showSpinner = false;
             return;
           }
@@ -166,13 +166,15 @@ export class AuthService {
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
         this.showSpinner = false;
+
         new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Password reset email sent, check your inbox');
-        // window.alert('Password reset email sent, check your inbox');
+        this.dialog.afterAllClosed.subscribe(x => {
+          this.router.navigate(['sign-in']);
+        })
       })
       .catch((error) => {
         this.showSpinner = false;
         new NewDialogComponent(this.dialog).OpenNewNotificationDialog(String(error));
-        // window.alert(error);
       });
   }
   // Returns true when user is logged in and email is verified
@@ -236,7 +238,7 @@ export class AuthService {
     });
   };
 
-  async GetAllMemos() {
+   async GetAllMemos() {
     return new Promise<any>((resolve) => {
       const snapShot = this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get().subscribe(data => {
         console.log("data.docs: ", data.docs);

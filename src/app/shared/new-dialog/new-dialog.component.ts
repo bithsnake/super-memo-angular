@@ -20,7 +20,7 @@ export class NewDialogComponent implements OnInit {
     const dialogRef = this.dialog.open(NotificationComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
       if (data === null || data === undefined) return;
-      console.log('Dialog closed');
+      // console.log('Dialog closed');
     });
 
   }

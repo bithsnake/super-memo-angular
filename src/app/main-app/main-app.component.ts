@@ -55,6 +55,13 @@ export class MainAppComponent implements OnInit {
     this.GetMemos().catch(error => {
       console.log("error getting memos from db: ", error)
     });
+    this.memoObservable.subscribe(change => {
+      console.log("change happened: ", change);
+
+      this.GetMemos().catch(error => {
+        console.log("error getting memos from db: ", error)
+      });
+    })
   }
   async onSignUp(email: string, password: string) {
     await this.authService.SignUp(email, password);

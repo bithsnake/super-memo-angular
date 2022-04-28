@@ -12,11 +12,12 @@ import { FirebaseError } from '@angular/fire/app';
 import {  Query, QueryDocumentSnapshot } from 'firebase/firestore';
 
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { NewDialogComponent } from 'src/app/shared/new-dialog/new-dialog.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { QuestionComponent } from 'src/app/question/question.component';
 
 let _id = uuid.v4();
-const MAX_WIDTH = "32rem";
-
-
+const MAX_WIDTH = "20rem";
 
 
 @Component({
@@ -52,7 +53,7 @@ export class MemoItemComponent implements OnInit {
     console.log("stop rotate element");
   }
 
-  constructor(private authService : AuthService) {
+  constructor(private authService : AuthService,private dialog: MatDialog) {
     this.memo = {
       Id: _id,
       Index : 0,
@@ -156,9 +157,6 @@ export class MemoItemComponent implements OnInit {
 
         if (sameLength) {
           mem.set({
-            Ingredients : []
-          });
-          mem.set({
             Id: this.memo.Id,
             Index: this.memo.Index,
             Title: this.memo.Title,
@@ -167,19 +165,27 @@ export class MemoItemComponent implements OnInit {
             Ingredients : this.memo.Ingredients
           });
         } else {
-          for (let i = 0; i < this.memo.Ingredients.length; i++) {
-            const ingredient = this.memo.Ingredients[i];
-            mem.update({
-              Ingredients: firebase.firestore.FieldValue.arrayUnion({
-                Name: ingredient.Name,
-                Icon: ingredient.Icon,
-                Amount: ingredient.Amount
-              })
-            }).catch(error => {
-              const e = error as FirebaseError;
-              console.log("error: ", e.message);
-            })
-          }
+          mem.set({
+            Id: this.memo.Id,
+            Index: this.memo.Index,
+            Title: this.memo.Title,
+            Description: this.memo.Description,
+            CreatedDate : this.memo.CreatedDate,
+            Ingredients : this.memo.Ingredients
+          });
+          // for (let i = 0; i < this.memo.Ingredients.length; i++) {
+          //   const ingredient = this.memo.Ingredients[i];
+          //   mem.update({
+          //     Ingredients: firebase.firestore.FieldValue.arrayUnion({
+          //       Name: ingredient.Name,
+          //       Icon: ingredient.Icon,
+          //       Amount: ingredient.Amount
+          //     })
+          //   }).catch(error => {
+          //     const e = error as FirebaseError;
+          //     console.log("error: ", e.message);
+          //   })
+          // }
         }
         isfound.closed = true;
       })
@@ -191,7 +197,15 @@ export class MemoItemComponent implements OnInit {
 
     } catch (error) {
       let e = error as FirebaseError;
-      console.log("Error creating new memo: ", e.message);
+      // console.log("Error creating new memo: ", e.message);
+      // const dialogConfig = new MatDialogConfig();
+      // dialogConfig.data = {
+      //   deleteItem: false,
+      //   message : 'Are you sure you want to delete this memo item?',
+      // }
+      // const dialogRef = this.dialog.open(QuestionComponent, dialogConfig);
+      new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Something went wrong updating this memo item\n' + e.message);
+
     }
   }
   DecrementIngredient(chosenIngredientIcon: HTMLElement) {
@@ -222,19 +236,15 @@ export class MemoItemComponent implements OnInit {
     this.hasClicked = false;
   }, 100);
   }
-  public ChangeMemo(value: any, Id: number) {
-    console.log("value in edit button: ", value);
-    // console.log("value in memo: ", this.MemoList.find((m) => Id === m.Id));
-  }
+
   public DeleteMemo() {
-    console.log("this.memo to delete: ", this.memo);
     this.memoDeleted.emit(this.memo);
   }
-  public UpdateInputText(e: Event) {
-    // Telling angular that we know that this is an input element with explicit casting
-    // works almost exactly like useRef() in React
-    this.InputTextTest = (<HTMLInputElement>e.target).value
-  }
+  // public UpdateInputText(e: Event) {
+  //   // Telling angular that we know that this is an input element with explicit casting
+  //   // works almost exactly like useRef() in React
+  //   this.InputTextTest = (<HTMLInputElement>e.target).value
+  // }
   public GetColor() {
     return this.IsDisabled ? 'red' : 'green';
   };

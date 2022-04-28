@@ -15,7 +15,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   getUsernameErrorMessage() {
     if (this.emailAddressControl.hasError('required')) {
-      return 'Too short title';
+      return 'Not an email address';
     }
     return this.emailAddressControl.hasError('formTitle') ? 'Not a valid mailaddress' : '';
   }
