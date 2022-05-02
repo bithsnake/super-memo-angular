@@ -19,6 +19,8 @@ import { Memo } from 'src/app/memo/memo.model';
 import { Ingredient } from '../ingredients';
 import firebase from 'firebase/compat/app';
 import { FirebaseError } from 'firebase/app';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Subscription } from 'rxjs';
 const _user: string = 'user';
 @Injectable({
   // declares that this service should be created
@@ -40,30 +42,50 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone, // nGZone service to remove outside scope warnings
     public dialog: MatDialog,
-    public urlService : UrlService,
+    public urlService: UrlService,
   ) {
     /* Saving user data in localStorage when
     logged in and setting up null when logged out */
     this.showSpinner = false;
 
     // save data to localStorage
+
     this.afAuth.authState.subscribe((user) => {
+      console.log("subscribtion triggered");
       if (user) {
           this.userData = user as User;
           localStorage.setItem(_user, JSON.stringify(this.userData));
           JSON.parse(localStorage.getItem(_user)!);
 
+        if (this.userData.emailVerified === true) {
           if (this.router.url === '/sign-in') {
             this.ngZone.run(() => {
               this.router.navigate(['app']);
             });
           };
+        }
 
       } else {
         localStorage.setItem(_user, 'null');
         JSON.parse(localStorage.getItem(_user)!)
       };
     });
+
+
+    if (this.userData.uid) {
+      this.afs.collection('users').doc(this.userData.uid).snapshotChanges().subscribe(user => {
+        if (user.payload) {
+          console.log("something happened with this user.payload): ", user.payload);
+          if (this.userData.emailVerified === true && router.url === '/sign-in') {
+            this.ngZone.run(() => {
+              this.router.navigate(['app']);
+            });
+          }
+        }
+        console.log("something happened with this userstate: ", user);;
+      })
+    }
+
   }
 
 
@@ -78,16 +100,45 @@ export class AuthService {
             this.SendVerificationMail();
             new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your email address is not verified yet, check your inbox for a verification mail, a new verification mail has been sent');
             this.showSpinner = false;
+          }
+          if (result.user.emailVerified === true) {
+            this.afAuth.authState.subscribe((user) => {
+              console.log("subscribtion triggered");
+              if (user) {
+                  this.userData = user as User;
+                  localStorage.setItem(_user, JSON.stringify(this.userData));
+                  JSON.parse(localStorage.getItem(_user)!);
+                  if (this.router.url === '/sign-in') {
+                    this.ngZone.run(() => {
+                      this.router.navigate(['app']);
+                    });
+                  };
+              } else {
+                localStorage.setItem(_user, 'null');
+                JSON.parse(localStorage.getItem(_user)!)
+              };
+            });
+            this.showSpinner = false;
+          }
+          if (!result.user) {
+            this.showSpinner = false;
             return;
           }
-        }
-        this.showSpinner = false
 
-        this.SetUserData(result.user)
-          // this.router.navigate(['app'])
-          .catch((error) => {
-            window.alert(error);
-          });
+          this.SetUserData(result.user).then(_result => {
+            if (result.user != null) {
+              this.afs.schedulers.outsideAngular.now();
+
+              this.showSpinner = false;
+            }
+            this.showSpinner = false;
+          })
+            .catch((error) => {
+              this.showSpinner = false;
+              new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error);
+              // window.alert(error);
+            });
+        }
       })
       .catch((error) => {
         this.showSpinner = false;
@@ -96,8 +147,12 @@ export class AuthService {
       });
   }
     // Sign up with email/password
-  SignUp(email: string, password: string, displayName : string = '') {
+  SignUp(email: string, password: string, displayName: string = '') {
     this.showSpinner = true;
+    if (displayName === '' || displayName.length === 0) {
+      new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your display name can not be empty.');
+      return;
+    }
     return this.afAuth
         .createUserWithEmailAndPassword(email, password)
       .then((result) => {
@@ -105,8 +160,11 @@ export class AuthService {
           up and returns promise */
           if (result.user !== null) {
             result.user.updateProfile({
-              displayName: displayName !== '' && displayName !== null ? displayName : "JohnDoe"
-            });
+              displayName: (displayName === '' || displayName === null) ? 'NoName' : displayName,
+            }).then((res) => {
+              console.log("current displayname: ", result.user?.displayName);
+
+            })
           }
 
           this.SendVerificationMail();
@@ -116,7 +174,6 @@ export class AuthService {
         .catch((error) => {
           this.showSpinner = false;
           new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error.message);
-          // window.alert(error.message);
         });
     }
   // Send email verification when new user sign up
@@ -124,7 +181,6 @@ export class AuthService {
     this.showSpinner = true;
     if (this.ngZone.onError.hasError) {
       new NewDialogComponent(this.dialog).OpenNewNotificationDialog('some ngZone error..try again');
-      // window.alert("error : ");
     }
     return this.afAuth.currentUser
       .then((u) => {
@@ -141,7 +197,6 @@ export class AuthService {
         }
 
         u.sendEmailVerification().catch((error) => {
-
           window.alert(error);
         });
       })
@@ -210,7 +265,7 @@ export class AuthService {
             this.router.navigate(['dashboard']);
           });
           this.showSpinner = false;
-          this.SetUserData(result.user);
+          // this.SetUserData(result.user);
         })
         .catch((error) => {
           this.showSpinner = false;
@@ -240,8 +295,8 @@ export class AuthService {
 
    async GetAllMemos() {
     return new Promise<any>((resolve) => {
-      const snapShot = this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get().subscribe(data => {
-        console.log("data.docs: ", data.docs);
+      this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get().subscribe(data => {
+        console.log("this.userData.uid: ", this.userData.uid);
         const mappedDocument = data.docs.map(x => x.data() as Memo[]);
         resolve(mappedDocument);
       });

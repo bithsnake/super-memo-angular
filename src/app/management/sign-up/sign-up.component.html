@@ -12,12 +12,12 @@
 
         <mat-form-field class="bg-gray-500 bg-opacity-50" appearance="fill">
           <mat-label for="password" class="text-white">Enter your password</mat-label>
-          <input (keydown.enter)="authService.SignUp(userName.value, userPassword.value, userDisplayName.value); ShowProgressSpinner();" type="password" class="cursor-pointer" name="password" matInput placeholder="password..." [formControl]="passwordControl" #userPassword  required >
+          <input  autocomplete="false" (keydown.enter)="authService.SignUp(userName.value, userPassword.value, userDisplayName.value); ShowProgressSpinner();" type="password" class="cursor-pointer" name="password" matInput placeholder="password..." [formControl]="passwordControl" #userPassword  required >
           <mat-error #materror id="_materror" *ngIf="passwordControl.invalid; ">{{getPasswordErrorMessage()}}</mat-error>
         </mat-form-field>
         <mat-form-field class="bg-gray-500 bg-opacity-50" appearance="fill">
           <mat-label for="password" class="text-white">Enter display name</mat-label>
-          <input (keydown.enter)="authService.SignUp(userName.value, userPassword.value, userDisplayName.value); ShowProgressSpinner();" type="text" class="cursor-pointer" name="displayname" matInput placeholder="caiptainjack......" [formControl]="displayNameControl" #userDisplayName  required >
+          <input (keydown.enter)="authService.SignUp(userName.value, userPassword.value, userDisplayName.value); ShowProgressSpinner();" type="text" class="cursor-pointer" name="displayname" matInput placeholder="name.." [formControl]="displayNameControl" #userDisplayName  required>
           <div class=""></div>
           <mat-error class="w-full h-full" #materror id="_materror" *ngIf="displayNameControl.invalid; ">{{getDisplayNameErrorMessage()}}</mat-error>
         </mat-form-field>

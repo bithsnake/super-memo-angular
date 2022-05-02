@@ -10,10 +10,12 @@ import { MemoMenuComponent } from './memo-menu/memo-menu.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { MainAppComponent } from './main-app/main-app.component';
 import { AboutComponent } from './about/about.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AuthService } from './services/auth.service';
 
+let afAuth = new AuthService();
 const routes: Routes = [
-  { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
-  // { path: '**',  component: SignInComponent },
+  { path: '', redirectTo: '/sign-in', pathMatch: 'full'},
   { path: 'sign-in', component: SignInComponent },
   { path: 'register-user', component: SignUpComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
@@ -22,6 +24,7 @@ const routes: Routes = [
   { path: 'app', component: MainAppComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
+  { path: '**',  redirectTo: window.location.pathname, },
 ];
 
 @NgModule({

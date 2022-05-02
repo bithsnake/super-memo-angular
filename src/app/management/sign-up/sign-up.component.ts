@@ -11,8 +11,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class SignUpComponent implements OnInit {
   isProgressVisible: boolean;
 
-  userNameControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(100)]);
-  passwordControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(100)]);
+  userNameControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(50)]);
+  passwordControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(14)]);
   displayNameControl = new FormControl('', [Validators.required,Validators.minLength(3), Validators.maxLength(25)]);
 
   constructor(public authService: AuthService) {
@@ -29,7 +29,7 @@ export class SignUpComponent implements OnInit {
 
   getPasswordErrorMessage() {
     if (this.passwordControl.hasError('required')) {
-      return 'Too short description';
+      return 'Needs to be between 4-20 characters';
     }
     return this.passwordControl.hasError('formDescription') ? 'Needs to be between 5-100 characters' : '';
   };

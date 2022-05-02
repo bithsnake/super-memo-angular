@@ -1,4 +1,4 @@
-<main  class ="mx-auto h-screen" >
+<main  class ="mx-auto" >
   <!-- Navbar always visible -->
   <div #appWindow class="_bgimage"></div>
 
@@ -12,8 +12,10 @@
 
       <!-- All the memos in a list -->
 
-        <div *ngIf="Memos.length > 0" cdkDropList class="flex flex-row flex-wrap gap-12 memo-list justify-center" >
-          <app-memo-item   cdkDrag class="memo-box"
+        <div *ngIf="Memos.length > 0" class="flex flex-row flex-wrap gap-12 memo-list justify-center" >
+        <!-- <div *ngIf="Memos.length > 0" cdkDropList class="flex flex-row flex-wrap gap-12 memo-list justify-center" > -->
+          <!-- <app-memo-item cdkDrag class="memo-box" -->
+          <app-memo-item class="memo-box"
           [currentActiveMemoIndex]="currentActiveMemoIndex"
           (onMemoClicked)="CheckCurrentMemoIndex($event)"
           (memoDeleted)="OpenDeleteMemoDialog(memo)"

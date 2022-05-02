@@ -37,7 +37,9 @@ export class MainAppComponent implements OnInit {
         this.Memos = data;
         return data;
       })
-    )
+    );
+
+    console.log("location pathname: ", window.location.pathname);
 
   }
   ngOnInit(): void {

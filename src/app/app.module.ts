@@ -89,6 +89,7 @@ import { QuestionComponent } from './question/question.component';
 import { ChangeNameComponent } from './change-name/change-name.component';
 import { NotificationComponent } from './notification/notification.component';
 import { UrlService } from './shared/url.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 // Initialize Firebase
@@ -97,7 +98,7 @@ export const analytics = getAnalytics(app);
 
 // always add your components in the declarations array!
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
     MemoItemComponent,
     MemoListComponent,
@@ -116,7 +117,8 @@ export const analytics = getAnalytics(app);
     AboutComponent,
       QuestionComponent,
       ChangeNameComponent,
-      NotificationComponent
+      NotificationComponent,
+      PageNotFoundComponent
    ],
   imports: [
     BrowserModule,

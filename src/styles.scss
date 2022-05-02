@@ -22,6 +22,17 @@ border-radius: 20%;
 
 }
 
+.cdk-overlay-container{
+  overflow-y: scroll;
+}
+.cdk-global-scrollblock {
+  overflow-y: unset;
+}
+
+.cdk-global-scrollblock {
+  pointer-events:all;
+  height: 100vh;
+}
 
 // override
 .custom-dialog-container .mat-dialog-container{
