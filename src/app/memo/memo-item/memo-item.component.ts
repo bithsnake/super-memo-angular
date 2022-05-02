@@ -45,12 +45,12 @@ export class MemoItemComponent implements OnInit {
   public RotateElement(e : Event) {
     const _e = (e.currentTarget as HTMLDivElement);
     _e.classList.add('rotate-element');
-    console.log("rotating element");
+    // console.log("rotating element");
   }
   public StopRotateElement(e : Event) {
     const _e = (e.currentTarget as HTMLDivElement);
     _e.classList.remove('rotate-element');
-    console.log("stop rotate element");
+    // console.log("stop rotate element");
   }
 
   constructor(private authService : AuthService,private dialog: MatDialog) {
@@ -100,6 +100,7 @@ export class MemoItemComponent implements OnInit {
 
   public drop(event : CdkDragDrop<Ingredient[]>) {
     moveItemInArray(this.memo.Ingredients, event.previousIndex, event.currentIndex);
+    this.UpdateIngredientsOnMemo();
   }
 
   public async CheckCurrentMemoIndex() {
@@ -126,7 +127,7 @@ export class MemoItemComponent implements OnInit {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
+      // console.log(doc.id, " => ", doc.data());
     })
   }
   /**Adds an igredient to list if none is found, otherwise one is added to the current ingredient */
@@ -162,47 +163,20 @@ export class MemoItemComponent implements OnInit {
   UpdateIngredientsOnMemo() {
     try {
       let mem = this.authService.afs.collection('users').doc(this.authService.userData.uid).collection('memos').doc(this.memo.Id);
-      let sameLength: boolean = false;
       const isfound = mem.get().subscribe(data => {
-        const memoOnDb = data.data() as Memo;
-        if (memoOnDb.Ingredients.length === this.memo.Ingredients.length) {
-          sameLength = true;
-        }
-        console.log(data);
-
-        if (sameLength) {
-          mem.set({
-            Id: this.memo.Id,
-            Index: this.memo.Index,
-            Title: this.memo.Title,
-            Description: this.memo.Description,
-            CreatedDate : this.memo.CreatedDate,
-            Ingredients : this.memo.Ingredients
-          });
-        } else if (!sameLength) {
-          this.snapShotOfCurrentMemo = memoOnDb;
-          console.log("snapshot of current memo: ", this.snapShotOfCurrentMemo);
-          for (let i = 0; i < this.memo.Ingredients.length; i++) {
-            const ingredient = this.memo.Ingredients[i];
-            mem.update({
-              Ingredients: firebase.firestore.FieldValue.arrayUnion({
-                Name: ingredient.Name,
-                Icon: ingredient.Icon,
-                Amount: ingredient.Amount
-              })
-            }).catch(error => {
-              const e = error as FirebaseError;
-              console.log("error: ", e.message);
-            })
-            if (i >= this.memo.Ingredients.length -1) {
-              isfound.closed = true;
-            }
-          }
-        }
-        if (isfound.closed) {
+        // const memoOnDb = data.data() as Memo;
+        mem.set({
+          Id: this.memo.Id,
+          Index: this.memo.Index,
+          Title: this.memo.Title,
+          Description: this.memo.Description,
+          CreatedDate : this.memo.CreatedDate,
+          Ingredients : this.memo.Ingredients
+        }).then(() => {
+          isfound.closed = true;
           this.onUpdateMemo.emit();
           return;
-        }
+        });
       })
 
 

@@ -39,7 +39,7 @@ export class MainAppComponent implements OnInit {
       })
     );
 
-    console.log("location pathname: ", window.location.pathname);
+    // console.log("location pathname: ", window.location.pathname);
 
   }
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class MainAppComponent implements OnInit {
         const e = error as FirebaseError;
         new NewDialogComponent(this.dialog).OpenNewNotificationDialog('An error occured when fetching memos from the database, error message reported to the support department: ' +  e.message);
 
-        console.log("error getting memos from db: ", error)
+        // console.log("error getting memos from db: ", error)
       });
     })
   }

@@ -15,7 +15,6 @@ import { AuthService } from './services/auth.service';
 
 let afAuth = new AuthService();
 const routes: Routes = [
-  { path: '', redirectTo: '/sign-in', pathMatch: 'full'},
   { path: 'sign-in', component: SignInComponent },
   { path: 'register-user', component: SignUpComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
@@ -24,7 +23,12 @@ const routes: Routes = [
   { path: 'app', component: MainAppComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
-  { path: '**',  redirectTo: window.location.pathname, },
+  //keep commented
+  { path: '', redirectTo: '/sign-in', pathMatch: 'full'},
+  //switchback this one later
+  // { path: '**', redirectTo: window.location.pathname === '' ? '/sign-in' : window.location.pathname, },
+  // old
+  { path: '**',  redirectTo: '/app', },
 ];
 
 @NgModule({

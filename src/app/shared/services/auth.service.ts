@@ -51,7 +51,8 @@ export class AuthService {
     // save data to localStorage
 
     this.afAuth.authState.subscribe((user) => {
-      console.log("subscribtion triggered");
+      // console.log("subscribtion triggered");
+      // console.log("current location in memory");
       if (user) {
           this.userData = user as User;
           localStorage.setItem(_user, JSON.stringify(this.userData));
@@ -63,6 +64,15 @@ export class AuthService {
               this.router.navigate(['app']);
             });
           };
+
+
+          // if (this.router.url === '/' && (this.urlService.currentUrl === '/' || this.urlService.currentUrl === '') && this.userData.emailVerified === true) {
+          //   this.ngZone.run(() => {
+          //     this.router.navigate(['app']);
+          //   });
+          // };
+
+
         }
 
       } else {
@@ -296,7 +306,8 @@ export class AuthService {
    async GetAllMemos() {
     return new Promise<any>((resolve) => {
       this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get().subscribe(data => {
-        console.log("this.userData.uid: ", this.userData.uid);
+        // console.log("this.userData.uid: ", this.userData.uid);
+
         const mappedDocument = data.docs.map(x => x.data() as Memo[]);
         resolve(mappedDocument);
       });
