@@ -22,16 +22,16 @@ export class SignUpComponent implements OnInit {
 
   getUsernameErrorMessage() {
     if (this.userNameControl.hasError('required')) {
-      return 'Too short title';
+      return 'A mailaddress required.';
     }
-    return this.userNameControl.hasError('formTitle') ? 'Not a valid title' : '';
+    return this.userNameControl.hasError('formTitle') ? 'Not a valid mailaddress' : '';
   };
 
   getPasswordErrorMessage() {
     if (this.passwordControl.hasError('required')) {
-      return 'Needs to be between 4-20 characters';
+      return 'Too short password.';
     }
-    return this.passwordControl.hasError('formDescription') ? 'Needs to be between 5-100 characters' : '';
+    return this.passwordControl.hasError('formDescription') ? 'Not a valid password' : '';
   };
 
   getDisplayNameErrorMessage() {

@@ -1,40 +1,33 @@
 import { Injectable, NgZone } from '@angular/core';
-import { MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { MatDialog} from '@angular/material/dialog';
 import { User } from '../services/user';
 import * as auth from 'firebase/auth';
-import * as uuid from 'uuid';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
-import { RouteConfigLoadStart, Router } from '@angular/router';
-import { EmailAuthProvider, FacebookAuthProvider, GithubAuthProvider } from 'firebase/auth';
-import { stringify } from 'querystring';
-import { AuthGuard } from '../guard/auth.guard';
-import { NotificationComponent } from 'src/app/notification/notification.component';
+import {Router } from '@angular/router';
 import { NewDialogComponent } from '../new-dialog/new-dialog.component';
 import { UrlService } from '../url.service';
 import { Memo } from 'src/app/memo/memo.model';
-import { Ingredient } from '../ingredients';
-import firebase from 'firebase/compat/app';
-import { FirebaseError } from 'firebase/app';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Subscription } from 'rxjs';
+
 const _user: string = 'user';
+// declares that this service should be created
+// by the root application injector.
 @Injectable({
-  // declares that this service should be created
-  // by the root application injector.
   providedIn: 'root'
 })
 export class AuthService {
-  userData: User = {
+
+  public userData: User = {
     uid : '',
     displayName: '',
     email: null,
     photoURL: null,
     emailVerified: false,
-  }; // Save logged in user data
+  };
+
   showSpinner: boolean;
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
@@ -44,20 +37,16 @@ export class AuthService {
     public dialog: MatDialog,
     public urlService: UrlService,
   ) {
-    /* Saving user data in localStorage when
-    logged in and setting up null when logged out */
+
     this.showSpinner = false;
 
-    // save data to localStorage
-
     this.afAuth.authState.subscribe((user) => {
-      // console.log("subscribtion triggered");
-      // console.log("current location in memory");
       if (user) {
           this.userData = user as User;
           localStorage.setItem(_user, JSON.stringify(this.userData));
-          JSON.parse(localStorage.getItem(_user)!);
+        JSON.parse(localStorage.getItem(_user)!);
 
+        // force navigation from /sign-in to /app after logging in and email is verfified
         if (this.userData.emailVerified === true) {
           if (this.router.url === '/sign-in') {
             this.ngZone.run(() => {
@@ -65,14 +54,12 @@ export class AuthService {
             });
           };
 
-
-          // if (this.router.url === '/' && (this.urlService.currentUrl === '/' || this.urlService.currentUrl === '') && this.userData.emailVerified === true) {
-          //   this.ngZone.run(() => {
-          //     this.router.navigate(['app']);
-          //   });
-          // };
-
-
+          // if route is empty, weird or anything but is verified, navigate to /app
+          if (this.router.url === '/' && (this.urlService.currentUrl === '/' || this.urlService.currentUrl === '') && this.userData.emailVerified === true) {
+            this.ngZone.run(() => {
+              this.router.navigate(['app']);
+            });
+          };
         }
 
       } else {
@@ -81,39 +68,36 @@ export class AuthService {
       };
     });
 
-
     if (this.userData.uid) {
       this.afs.collection('users').doc(this.userData.uid).snapshotChanges().subscribe(user => {
         if (user.payload) {
-          console.log("something happened with this user.payload): ", user.payload);
           if (this.userData.emailVerified === true && router.url === '/sign-in') {
             this.ngZone.run(() => {
               this.router.navigate(['app']);
             });
-          }
-        }
-        console.log("something happened with this userstate: ", user);;
-      })
-    }
+          };
+        };
+      });
+    };
+  };
 
-  }
-
-
-  // sign in with email/password
+  /**sign in with email/password */
   SignIn(email: string, password: string) {
     this.showSpinner = true;
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
-
         if (result.user !== null) {
+
           if (result.user.emailVerified === false) {
             this.SendVerificationMail();
             new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your email address is not verified yet, check your inbox for a verification mail, a new verification mail has been sent');
             this.showSpinner = false;
           }
+
           if (result.user.emailVerified === true) {
             this.afAuth.authState.subscribe((user) => {
               console.log("subscribtion triggered");
+
               if (user) {
                   this.userData = user as User;
                   localStorage.setItem(_user, JSON.stringify(this.userData));
@@ -127,6 +111,7 @@ export class AuthService {
                 localStorage.setItem(_user, 'null');
                 JSON.parse(localStorage.getItem(_user)!)
               };
+
             });
             this.showSpinner = false;
           }
@@ -136,27 +121,20 @@ export class AuthService {
           }
 
           this.SetUserData(result.user).then(_result => {
-            if (result.user != null) {
-              this.afs.schedulers.outsideAngular.now();
-
-              this.showSpinner = false;
-            }
             this.showSpinner = false;
           })
             .catch((error) => {
               this.showSpinner = false;
               new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error);
-              // window.alert(error);
             });
         }
       })
       .catch((error) => {
         this.showSpinner = false;
         new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error.message);
-        // window.alert(error.message);
       });
   }
-    // Sign up with email/password
+  /**Sign up with email/password */
   SignUp(email: string, password: string, displayName: string = '') {
     this.showSpinner = true;
     if (displayName === '' || displayName.length === 0) {
@@ -166,8 +144,7 @@ export class AuthService {
     return this.afAuth
         .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-          /* Call the SendVerificaitonMail() function when new user sign
-          up and returns promise */
+          /* Call the SendVerificaitonMail() function when new user sign up and returns promise */
           if (result.user !== null) {
             result.user.updateProfile({
               displayName: (displayName === '' || displayName === null) ? 'NoName' : displayName,
@@ -176,7 +153,6 @@ export class AuthService {
 
             })
           }
-
           this.SendVerificationMail();
           this.SetUserData(result.user);
           this.showSpinner = false;
@@ -186,7 +162,7 @@ export class AuthService {
           new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error.message);
         });
     }
-  // Send email verification when new user sign up
+  /**Send email verification when new user sign up */
   SendVerificationMail() {
     this.showSpinner = true;
     if (this.ngZone.onError.hasError) {
@@ -202,7 +178,6 @@ export class AuthService {
         }
         if (u === undefined || u === null) {
           new NewDialogComponent(this.dialog).OpenNewNotificationDialog('There is no user with this mailadress.');
-          // window.alert("there is no user with this mailadress..");
           return;
         }
 
@@ -211,7 +186,6 @@ export class AuthService {
         });
       })
       .then((something) => {
-        // console.log("something: ", something);
         this.showSpinner = false;
         if (this.router.url !== '/verify-email-address') {
           this.router.navigate(['verify-email-address']);
@@ -224,7 +198,7 @@ export class AuthService {
         }
       });
   }
-  // reset Forgotten password
+  /**reset Forgotten password */
   ForgotPassword(passwordResetEmail: string) {
     this.showSpinner = true;
     return this.afAuth
@@ -242,13 +216,12 @@ export class AuthService {
         new NewDialogComponent(this.dialog).OpenNewNotificationDialog(String(error));
       });
   }
-  // Returns true when user is logged in and email is verified
-
+  /**Returns true when user is logged in and email is verified */
   public get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem(_user)!);
     return user !== null && user.emailVerified !== false ? true : false;
   }
-  // Sign in with google
+  /**Sign in with google */
   GoogleAuth() {
     this.showSpinner = true;
     return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
@@ -261,11 +234,10 @@ export class AuthService {
       }
     }).catch(error => {
       new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Something went wrong with google authentication, check the console logs');
-      // window.alert('Something went wrong with google authentication, check the console logs');
     });
   }
 
-    // Auth logic to run auth providers
+  /**Auth logic to run auth providers */
   AuthLogin(provider: auth.GoogleAuthProvider | auth.GithubAuthProvider | auth.EmailAuthProvider | auth.FacebookAuthProvider) {
     this.showSpinner = true;
       return this.afAuth
@@ -275,16 +247,15 @@ export class AuthService {
             this.router.navigate(['dashboard']);
           });
           this.showSpinner = false;
-          // this.SetUserData(result.user);
+          this.SetUserData(result.user);
         })
         .catch((error) => {
           this.showSpinner = false;
           new NewDialogComponent(this.dialog).OpenNewNotificationDialog(String(error));
-          // window.alert(error);
         });
   }
 
-    /* Setting up user data when sign in with username/password,
+  /**Setting up user data when sign in with username/password,
   sign up with username/password and sign in with social auth
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
   SetUserData(user: any) {
@@ -306,14 +277,12 @@ export class AuthService {
    async GetAllMemos() {
     return new Promise<any>((resolve) => {
       this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get().subscribe(data => {
-        // console.log("this.userData.uid: ", this.userData.uid);
-
         const mappedDocument = data.docs.map(x => x.data() as Memo[]);
         resolve(mappedDocument);
       });
     });
   }
-  // Sign out
+  /**Sign out user*/
   SignOut() {
     this.showSpinner = true;
     return this.afAuth.signOut().then(() => {
@@ -324,4 +293,4 @@ export class AuthService {
       this.router.navigate(['sign-in']);
     });
   }
-}
+};

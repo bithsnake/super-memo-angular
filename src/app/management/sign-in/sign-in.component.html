@@ -1,6 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <app-backdrop></app-backdrop>
-<div class=" flex flex-col place-items-center place-content-center text place-self-center w-full h-full text-lg transform ">
+<div class=" flex flex-col place-items-center place-content-center text place-self-center w-full pt-24 text-lg transform ">
 
   <div class="p-8 gap-4 bg-black bg-opacity-50 rounded-md ">
     <div class="text-center text-white">
@@ -20,19 +20,15 @@
         </mat-form-field>
 
         <!-- Calling SignIn Api from AuthService -->
-        <button #login (click)="authService.SignIn(userName.value, userPassword.value);" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80">Log in</button>
-      </div>
-
-
-      <div class="formGroup">
-        <span class="or"><span class="orInner">Or</span></span>
+        <button #login (click)="authService.SignIn(userName.value, userPassword.value);" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80  w-auto">Log in</button>
+        <hr class="text-gray-400 opacity-0  mb-2 mt-2">
+        <button (click)="authService.GoogleAuth()" routerLink="/register-user" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80 w-auto">Log in with google
+          <img class="inline w-6 h-6"  src="../../../assets//svgs//google.svg" alt="">
+        </button>
       </div>
 
       <!-- Calling GoogleAuth Api from AuthService -->
       <div class="inline-flex flex-row text-center">
-        <button (click)="authService.GoogleAuth()" routerLink="/register-user" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80">Log in with google
-          <img class="inline w-6 h-6"  src="../../../assets//svgs//google.svg" alt="">
-        </button>
       </div>
       <hr class="text-gray-400  mb-2 mt-2">
       <div class="forgotPassword">
@@ -40,7 +36,7 @@
       </div>
     </div>
 
-    <div class="inline-flex flex-row items-center space-x-4 text-white">
+    <div class="inline-flex flex-col items-center space-x-4 text-white">
       <span class="text-xl">Don't have an account?</span>
       <button #registeruser routerLink="/register-user" class="text-center rounded-lg p-2 bg-blue-400 hover:bg-opacity-80">Sign up!</button>
     </div>

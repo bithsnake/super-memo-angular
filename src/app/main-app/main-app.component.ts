@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input, NgZone, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnInit, Output } from '@angular/core';
 import { Memo } from '../memo/memo.model';
 import { ScrollBackUp, checkOverflow, compareName, compareId, compareCreatedDate, PrevScrollY } from '../methods/methods';
 import { Ingredient } from '../shared/ingredients';
@@ -14,23 +14,30 @@ import { Observable } from 'rxjs';
 import { QuestionComponent } from '../question/question.component';
 import { YesNoQuestion } from '../management/dashboard/dashboard.component';
 PrevScrollY();
-
-
 @Component({
   selector: 'app-main-app',
   templateUrl: './main-app.component.html',
   styleUrls: ['./main-app.component.scss']
 })
 export class MainAppComponent implements OnInit {
-  title = 'super-memo-angular';
+  public title = 'super-memo-angular';
   public isSignedin: boolean = false;
+  public showAllComponents : boolean  = false;
   @Input() public currentActiveMemoIndex: number = -1;
   private memosCollection: AngularFirestoreCollection<Memo>;
   memoObservable: Observable<Memo[]>;
-  public Memos: Memo[] = [];
+  public Memos: Memo[];
 
-  constructor(public authService: AuthService, private dialog: MatDialog, private ngZone: NgZone) {
+  public UseRow: boolean = true;
+  public IsOverflowing: boolean = false;
+  public ScrollBackUp = ScrollBackUp;
+  public checkOverflow = checkOverflow;
+
+  constructor(public authService: AuthService, private dialog: MatDialog, private ngZone: NgZone, ) {
+    this.Memos = [];
+
     this.memosCollection = this.authService.afs.collection<Memo>(`users/${this.authService.userData.uid}/memos`);
+
     this.memoObservable = this.memosCollection.stateChanges(['added']).pipe(
       map(actions => {
         const data = actions.map(x => x.payload.doc.data() as Memo)
@@ -39,9 +46,8 @@ export class MainAppComponent implements OnInit {
       })
     );
 
-    // console.log("location pathname: ", window.location.pathname);
+  };
 
-  }
   ngOnInit(): void {
     if (sessionStorage.getItem('user') !== null) {
       this.isSignedin = true;
@@ -49,16 +55,15 @@ export class MainAppComponent implements OnInit {
       this.isSignedin = false;
     };
     this.Memos = [];
-    this.GetMemos().catch(error => {
+    this.GetMemos().then(() => {
+      this.showAllComponents = true;
+    }).catch(error => {
       console.log("error getting memos from db: ", error)
     });
     this.memoObservable.subscribe(change => {
-      // console.log("change happened: ", change);
       this.GetMemos().catch(error => {
         const e = error as FirebaseError;
         new NewDialogComponent(this.dialog).OpenNewNotificationDialog('An error occured when fetching memos from the database, error message reported to the support department: ' +  e.message);
-
-        // console.log("error getting memos from db: ", error)
       });
     })
   }
@@ -78,11 +83,6 @@ export class MainAppComponent implements OnInit {
   handlerLogOut() {
     this.isSignedin = false;
   }
-  public UseRow: boolean = true;
-  public IsOverflowing: boolean = false;
-  public ScrollBackUp = ScrollBackUp;
-  public checkOverflow = checkOverflow;
-
 
   public CheckMemoItem(e: Event) {
     const _e = (e.currentTarget as HTMLElement);
@@ -108,7 +108,7 @@ export class MainAppComponent implements OnInit {
             Index : this.Memos.length + 1
           })
           newMemo.Id = x.id;
-          // this.Memos.push(newMemo);
+
         for (let i = 0; i < newMemo.Ingredients.length; i++) {
           const ingredient = newMemo.Ingredients[i];
            addedMemo.update({
@@ -133,14 +133,15 @@ export class MainAppComponent implements OnInit {
       let e = error as FirebaseError;
       new NewDialogComponent(this.dialog).OpenNewNotificationDialog('An error occured when creating a memo, error message reported to the support department: ' +  e.message);
     }
-  }
+  };
+
   public OpenDeleteMemoDialog(deleteMemo : Memo) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.data = {
       deleteItem: false,
-      message : 'Are you sure you want to delete this memo item?',
-    }
+      message: 'Are you sure you want to delete this memo item?',
+    };
 
     const dialogRef = this.dialog.open(QuestionComponent, dialogConfig);
 
@@ -156,32 +157,10 @@ export class MainAppComponent implements OnInit {
         } catch (error) {
           let e = error as FirebaseError;
           new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Something went wrong deleting an memp item\n' + e.message);
-        }
-      }
+        };
+      };
     });
-  }
-  // delete later or use for local mockup
-  // public RemoveMemo(memo: Memo) {
-  //   // const objectIndex = this.Memos.indexOf(memo, 0);
-  //   // this.Memos.splice(objectIndex, 1);
-  //   try {
-  //     // const snapShot = this.authService.afs.collection(`users`).doc(this.authService.userData.uid).collection('memos').doc(this.memo.Id).get().subscribe(data => {
-  //       this.authService.afs.collection('users').doc(this.authService.userData.uid).collection('memos').doc(memo.Id).delete().then(() => {
-  //         this.GetMemos();
-  //       }).catch(error => {
-  //         const e = error as FirebaseError;
-  //         console.log("error: ", e);
-  //       })
-  //     // })
-  //     // snapShot.closed = true;
-  //   } catch (error) {
-  //     let e = error as FirebaseError;
-  //     console.log("Error creating new memo: ", e.message);
-  //   }
-  // }
-  public EditMemo(currentMemo : Memo) {
-    // console.log("value in edit button: ", currentMemo);
-  }
+  };
 
   public OrderMemosByLetter = () => this.Memos.sort(compareName);
   public OrderMemosByID = () => this.Memos.sort(compareId);
@@ -207,11 +186,8 @@ export class MainAppComponent implements OnInit {
 
   public async GetMemos() {
     const newMemos = await this.authService.GetAllMemos();
-
     if (newMemos !== null || newMemos !== undefined) {
       this.Memos = newMemos;
-      // console.log("update memos: ", newMemos);
-      // console.log("this.Memos: ", this.Memos);
     }
   }
-}
+};

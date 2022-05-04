@@ -5,16 +5,16 @@
     <main role="main" class="py-10 px-4 w-min-[50%]">
       <div class="inline-grid">
         <div class="pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="text-2xl">User Profile</h1>
+          <h1 class="text-2xl text-center">User Profile</h1>
         </div>
         <!-- Show user data when logged in -->
         <div class="" *ngIf="authService.userData as user">
-          <div class="col-md-12">
-            <div class="">
-              <img class="w-10 h-10" src="{{(user.photoURL) ? user.photoURL : '../../../../../assets/images/dummy-user.png'}}"
+          <div class=" p-4">
+            <div class="inline-flex  flex-col  space-y-4 justify-center place-content-between">
+              <img class="w-10 h-10 " src="{{(user.photoURL) ? user.photoURL : '../../../../../assets/images/dummy-user.png'}}"
                 alt="{{user.displayName}}">
 
-                <div class="space-y-6">
+                <div class="mt-6">
                   <div class="inline-flex flex-row justify-between space-x-8 place-items-center align-baseline ">
                     <h1 [ngStyle]="{margin: 0}">Hello <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong> !</h1>
                     <button #changeDisplayName (click)="OpenChangeDisplayNameDialog()" class="text-center align-middle rounded-lg p-2 bg-blue-400 hover:bg-opacity-80">Change DisplayName</button>

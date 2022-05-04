@@ -11,6 +11,7 @@ $dialogBackgroundColor : 115, 103, 80;
 }
 html {
   height : 100%;
+  width: 100%;
 }
 
 
@@ -26,12 +27,13 @@ border-radius: 20%;
   overflow-y: scroll;
 }
 .cdk-global-scrollblock {
-  overflow-y: unset;
+
 }
 
 .cdk-global-scrollblock {
   pointer-events:all;
   height: 100vh;
+  overflow-y: unset;
 }
 
 // override
@@ -44,5 +46,251 @@ border-radius: 20%;
   background: rgba(0,0,0,0.82) !important;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+  width: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-error {
+  color: #faaca6;
+}
+
+
+
+/* ----------- iPhone 12 Mini ----------- */
+
+/* 2340x1080 pixels at 476ppi */
+@media only screen
+and (device-width: 360px)
+and (device-height: 780px)
+and (-webkit-device-pixel-ratio: 3) {
+
+  .cdk-global-scrollblock {
+    pointer-events:all !important;
+    height: 100vh !important;
+    overflow-y: scroll !important;
+  }
+  .cdk-overlay-container {
+    pointer-events:all !important;
+  }
+
+  .cdk-global-overlay-wrapper {
+    display: flex !important;
+    position: absolute !important;
+    z-index: 1000;
+  }
+}
+
+/* ----------- iPhone 12, 12 Pro ----------- */
+
+/* 2532x1170 pixels at 460ppi */
+@media only screen
+and (device-width: 390px)
+and (device-height: 844px)
+and (-webkit-device-pixel-ratio: 3) {
+  .cdk-global-scrollblock {
+    pointer-events:all !important;
+    height: 100% !important;
+    overflow-y: scroll !important;
+  }
+  .cdk-overlay-container {
+    pointer-events:all !important;
+  }
+
+  .cdk-global-overlay-wrapper {
+    display: flex !important;
+    position: absolute !important;
+    z-index: 1000;
+  }
+}
+@media only screen and(orientation:portrait)
+and (device-width: 390px)
+and (device-height: 844px)
+and (-webkit-device-pixel-ratio: 3) {
+  .cdk-global-scrollblock {
+    pointer-events:all !important;
+    height: 100% !important;
+    overflow-y: scroll !important;
+  }
+  .cdk-overlay-container {
+    pointer-events:all !important;
+  }
+
+  .cdk-global-overlay-wrapper {
+    display: flex !important;
+    position: absolute !important;
+    z-index: 1000;
+  }
+
+  .cdk-overlay-dark-backdrop {
+    height: 100% !important;
+  }
+
+  .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    opacity: 1;
+    height: 100% !important;
+  }
+  .cdk-overlay-pane{
+    max-width: unset !important;
+    z-index: -1 !important;
+  }
+
+  #dk-overlay-0{
+    max-width: unset !important;
+  }
+}
+
+
+
+@media only screen and(orientation : portrait)
+and (device-width: 390px)
+and (device-height: 844px)
+and (-webkit-device-pixel-ratio: 3) {
+  .cdk-global-scrollblock {
+    pointer-events:all !important;
+    height: 100% !important;
+    overflow-y: scroll !important;
+  }
+  .cdk-overlay-container {
+    pointer-events:all !important;
+  }
+
+  .cdk-global-overlay-wrapper {
+    display: flex !important;
+    position: absolute !important;
+    z-index: 1000;
+  }
+
+  .cdk-overlay-dark-backdrop {
+    height: 100% !important;
+  }
+
+  .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    opacity: 1;
+    height: 100% !important;
+  }
+  .cdk-overlay-pane{
+    max-width: unset !important;
+    z-index: -1 !important;
+  }
+
+  #dk-overlay-0{
+    max-width: unset !important;
+  }
+}
+
+/* ----------- OnePlus 6 ----------- */
+@media only screen
+and (min-width: 412px)
+and (max-width: 869px) {
+
+  .cdk-global-scrollblock {
+    pointer-events:all !important;
+    height: 100% !important;
+    overflow-y: scroll !important;
+  }
+  .cdk-overlay-container {
+    pointer-events:all !important;
+  }
+
+  .cdk-global-overlay-wrapper {
+    display: flex !important;
+    position: absolute !important;
+    z-index: 1000;
+}
+
+}
+@media only screen and (orientation : portrait)
+and (min-width: 412px)
+and (max-width: 869px) {
+
+  .cdk-global-scrollblock {
+    pointer-events:all !important;
+    height: 100% !important;
+    overflow-y: scroll !important;
+  }
+  .cdk-overlay-container {
+    pointer-events:all !important;
+  }
+
+  .cdk-global-overlay-wrapper {
+    display: flex !important;
+    position: absolute !important;
+    z-index: 1000;
+  }
+
+  .cdk-overlay-dark-backdrop {
+    height: 100% !important;
+  }
+
+  .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    opacity: 1;
+    height: 100% !important;
+  }
+  .cdk-overlay-pane{
+    max-width: unset !important;
+    z-index: -1 !important;
+  }
+
+  #dk-overlay-0{
+    max-width: unset !important;
+  }
+}
+
+
+/* For extremely small screen devices (595px and below) */
+@media only screen and (max-width: 595px) and (not ( orientation:portrait))  {
+  .repeat-background-x-y{
+    background-repeat: repeat;
+  };
+  .cdk-overlay-dark-backdrop {
+    height: 100vw !important;
+  }
+
+  .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    opacity: 1;
+    height: 100vw !important;
+  }
+  .cdk-overlay-pane{
+    max-width: unset !important;
+    z-index: -1 !important;
+  }
+
+  #dk-overlay-0{
+    max-width: unset !important;
+  }
+
+}
+
+/* Small screen devices (600px and above) */
+@media only screen and (min-width: 600px) {
+  .cdk-overlay-dark-backdrop {
+    height: 100vw !important;
+  }
+
+  .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    opacity: 1;
+    height: 100vw !important;
+  }
+
+
+}
+
+/* Medium screen devices (768px and above) */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* Big screen devices (889px and above) */
+@media only screen and (min-width: 889px) {
+
+}
+
+/* Extra big screen devices (1200px and above) */
+@media only screen and (min-width: 1200px) {
+
+}

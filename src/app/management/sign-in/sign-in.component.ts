@@ -17,15 +17,15 @@ export class SignInComponent implements OnInit  {
   }
   getUsernameErrorMessage() {
     if (this.userNameControl.hasError('required')) {
-      return 'Too short title';
+      return 'A mailaddress required.';
     }
-    return this.userNameControl.hasError('formTitle') ? 'Not a valid title' : '';
+    return this.userNameControl.hasError('formTitle') ? 'Not a valid mailaddress' : '';
   }
   getPasswordErrorMessage() {
     if (this.passwordControl.hasError('required')) {
-      return 'Too short description';
+      return 'Too short password.';
     }
-    return this.passwordControl.hasError('formDescription') ? 'Not a valid description' : '';
+    return this.passwordControl.hasError('formDescription') ? 'Not a valid password' : '';
   }
 
   ngOnInit(): void {

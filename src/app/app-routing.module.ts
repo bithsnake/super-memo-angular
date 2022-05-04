@@ -19,16 +19,14 @@ const routes: Routes = [
   { path: 'register-user', component: SignUpComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verify-email-address', component: VerifyEmailComponent },
-
   { path: 'app', component: MainAppComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
   //keep commented
-  { path: '', redirectTo: '/sign-in', pathMatch: 'full'},
-  //switchback this one later
-  // { path: '**', redirectTo: window.location.pathname === '' ? '/sign-in' : window.location.pathname, },
+  // { path: '', redirectTo: '/sign-in', pathMatch: 'full'},
+  { path: '**', redirectTo: window.location.pathname === '' ? '/sign-in' : window.location.pathname, },
   // old
-  { path: '**',  redirectTo: '/app', },
+  // { path: '**',  redirectTo: '/app', },
 ];
 
 @NgModule({

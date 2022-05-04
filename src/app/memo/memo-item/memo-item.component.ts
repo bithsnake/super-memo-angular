@@ -1,25 +1,19 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Ingredient, ingredientsArray, IngredientType } from 'src/app/shared/ingredients';
-import { MemoIcon, MemoIcons } from '../memo-icons/memo-icons';
-import {IMemo} from '../../interfaces/interfaces'
+import {  MemoIcons } from '../memo-icons/memo-icons';
 import { Memo } from '../memo.model';
 import * as uuid from 'uuid';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { DocumentData, DocumentReference } from '@angular/fire/compat/firestore';
+import { DocumentData } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import firebase from 'firebase/compat/app';
 import { FirebaseError } from '@angular/fire/app';
-import {  Query, QueryDocumentSnapshot } from 'firebase/firestore';
+import {  Query } from 'firebase/firestore';
 
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { getDocs } from "firebase/firestore";
 import { NewDialogComponent } from 'src/app/shared/new-dialog/new-dialog.component';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { QuestionComponent } from 'src/app/question/question.component';
-
+import { MatDialog } from '@angular/material/dialog';
 let _id = uuid.v4();
 const MAX_WIDTH = "20rem";
-
-
 @Component({
   selector: 'app-memo-item',
   templateUrl: './memo-item.component.html',
@@ -27,7 +21,7 @@ const MAX_WIDTH = "20rem";
 })
 
 export class MemoItemComponent implements OnInit {
-  // herer we are exposing this particular object to "the world"
+
   @Input() public memo: Memo;
   @Input() public currentActiveMemoIndex: number = -1;
   @Output() public memoDeleted: EventEmitter<Memo> = new EventEmitter();
@@ -41,16 +35,13 @@ export class MemoItemComponent implements OnInit {
   // document.querySelectorAll('#__item').forEach(x => x.setAttribute('id', `__item${20}`));
 }
 
-
   public RotateElement(e : Event) {
     const _e = (e.currentTarget as HTMLDivElement);
     _e.classList.add('rotate-element');
-    // console.log("rotating element");
   }
   public StopRotateElement(e : Event) {
     const _e = (e.currentTarget as HTMLDivElement);
     _e.classList.remove('rotate-element');
-    // console.log("stop rotate element");
   }
 
   constructor(private authService : AuthService,private dialog: MatDialog) {
@@ -69,7 +60,7 @@ export class MemoItemComponent implements OnInit {
       Ingredients: []
     }
   }
-  // for this component
+
   public max_width = MAX_WIDTH;
   public height = 0;
   public Id: number = -1;
@@ -186,15 +177,7 @@ export class MemoItemComponent implements OnInit {
 
     } catch (error) {
       let e = error as FirebaseError;
-      // console.log("Error creating new memo: ", e.message);
-      // const dialogConfig = new MatDialogConfig();
-      // dialogConfig.data = {
-      //   deleteItem: false,
-      //   message : 'Are you sure you want to delete this memo item?',
-      // }
-      // const dialogRef = this.dialog.open(QuestionComponent, dialogConfig);
       new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Something went wrong updating this memo item\n' + e.message);
-
     }
   }
   DecrementIngredient(chosenIngredientIcon: HTMLElement) {
@@ -229,11 +212,6 @@ export class MemoItemComponent implements OnInit {
   public DeleteMemo() {
     this.memoDeleted.emit(this.memo);
   }
-  // public UpdateInputText(e: Event) {
-  //   // Telling angular that we know that this is an input element with explicit casting
-  //   // works almost exactly like useRef() in React
-  //   this.InputTextTest = (<HTMLInputElement>e.target).value
-  // }
   public GetColor() {
     return this.IsDisabled ? 'red' : 'green';
   };

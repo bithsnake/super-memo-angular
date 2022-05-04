@@ -1,13 +1,13 @@
-<nav class="flex flex-col w-screen mb-10 text-lg">
+<nav class="flex flex-col  mb-10 text-lg">
   <!-- <header class="text-center place-self-center text-6xl select-none"><h1>Super Memo!</h1></header> -->
-  <div class="bg-gray-900 inline-flex bg-opacity-40 w-full place-content-center">
-    <header class=" h-1/2 select-none "><img style="min-width : 32rem;"  src="../../../assets//images/logo.png" alt=""></header>
-  </div>
-  <div class=" relative -top-8 left-4 "><span class="text-gray-200">Logged in as: <span (click)="ClickHandler($event,'userprofile')" class=" text-blue-700 hover:text-blue-200 cursor-pointer"><strong> {{this.authService.isLoggedIn ? this.authService.userData.email : ''}} </strong></span></span></div>
+  <!-- <div class="bg-gray-900 inline-flex bg-opacity-40 w-full place-content-center">
+    <header class=" h-1/2 select-none "><img  src="../../../assets//images/logo.png" alt=""></header>
+  </div> -->
+  <div class=" relative -top-8 left-4 "><span (click)="ClickHandler($event,'userprofile')" class=" text-blue-300 hover:text-blue-100 cursor-pointer"><p> {{this.authService.isLoggedIn ? this.authService.userData.email : ''}} </p></span></div>
   <div class="place-self-center mt-4">
     <ul class="inline-flex space-x-8 row-end-auto">
       <li class="hover-glow"><a id="home"  href="#" (click)="ClickHandler($event,'home');">Home</a></li>
-      <!-- <li class="hover-glow"><a id="userprofile" href="#" (click)="ClickHandler($event,'userprofile');" >User profile</a></li> -->
+      <li class="hover-glow"><a id="userprofile" href="#" (click)="ClickHandler($event,'userprofile');" >User profile</a></li>
       <li class="hover-glow"><a id="about" href="#" (click)="ClickHandler($event,'about');" >About</a></li>
       <li class="hover-glow"><a id="login" href="#" (click)="ClickHandler($event,'logout');">{{this.authService.isLoggedIn ? "Log out" : "Log in"}}</a></li>
     </ul>

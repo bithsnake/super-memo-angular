@@ -1,4 +1,4 @@
-import { Component, OnInit, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Output,EventEmitter, Inject, Input } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import AddNewMemoComponent from '../memo/add-new-memo/add-new-memo.component';
 import { MemoIcons } from '../memo/memo-icons/memo-icons';
@@ -16,6 +16,8 @@ export class MemoMenuComponent implements OnInit {
   @Output() public orderMemosByID: EventEmitter<Boolean> = new EventEmitter;
   @Output() public orderMemosByCreated: EventEmitter<Boolean> = new EventEmitter;
   @Output() public stackMemos: EventEmitter<Boolean> = new EventEmitter;
+
+  @Input() Memos: Memo[] = [];
 
   constructor(public dialog: MatDialog) { }
 
@@ -62,6 +64,8 @@ export class MemoMenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.Memos = [];
+
     let menuElement = document.getElementById('memomenu');
     if (menuElement === undefined || menuElement === null) return;
     if (!menuElement.classList.contains('scaleUp'))

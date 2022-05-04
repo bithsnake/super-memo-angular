@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SvgComponent {
   fillColor = 'rgb(255, 0, 0)';
+  public url = '../../assets/svgs/google.svg';
 
   changeColor() {
     const r = Math.floor(Math.random() * 256);
