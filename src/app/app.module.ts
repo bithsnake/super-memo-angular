@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar/navbar.component';
 import { MemoItemComponent } from'./memo/memo-item/memo-item.component';
-import { MemoListComponent } from './memo/memo-list/memo-list/memo-list.component';
 import { IngredientsModalComponent } from './shared/ingredients-modal/ingredients-modal.component';
 import { MemoMenuComponent } from './memo-menu/memo-menu.component';
 import AddNewMemoComponent from './memo/add-new-memo/add-new-memo.component';
@@ -99,10 +98,9 @@ export const analytics = getAnalytics(app);
 
 // always add your components in the declarations array!
 @NgModule({
-  declarations: [		
+  declarations: [
     AppComponent,
     MemoItemComponent,
-    MemoListComponent,
     IngredientsModalComponent,
     NavbarComponent,
     MemoMenuComponent,
