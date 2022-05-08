@@ -60,6 +60,19 @@ body {
 }
 
 
+.cdk-overlay-pane{
+  top: 20% !important;
+  position: fixed !important;
+}
+
+
+.cdk-overlay-container{
+  position: static !important;
+}
+
+.cdk-overlay-backdrop, .cdk-overlay-dark-backdrop, .cdk-overlay-backdrop-showing{
+  height: 100% !important;
+}
 
 /* ----------- iPhone 12 Mini ----------- */
 
@@ -144,7 +157,9 @@ and (-webkit-device-pixel-ratio: 3) {
   }
 }
 
-
+.z-index-1000{
+  z-index: 1000 !important;
+}
 
 @media only screen and(orientation : portrait)
 and (device-width: 390px)
@@ -248,12 +263,12 @@ and (max-width: 869px) {
     background-repeat: repeat;
   };
   .cdk-overlay-dark-backdrop {
-    height: 100vw !important;
+    height: 100% !important;
   }
 
   .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
     opacity: 1;
-    height: 100vw !important;
+    height: 100% !important;
   }
   .cdk-overlay-pane{
     max-width: unset !important;
@@ -269,12 +284,12 @@ and (max-width: 869px) {
 /* Small screen devices (600px and above) */
 @media only screen and (min-width: 600px) {
   .cdk-overlay-dark-backdrop {
-    height: 100vw !important;
+    height: 100% !important;
   }
 
   .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
     opacity: 1;
-    height: 100vw !important;
+    height: 100% !important;
   }
 
 

@@ -11,7 +11,8 @@ import {  Query } from 'firebase/firestore';
 
 import { getDocs } from "firebase/firestore";
 import { NewDialogComponent } from 'src/app/shared/new-dialog/new-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { IngredientsModalComponent } from 'src/app/shared/ingredients-modal/ingredients-modal.component';
 let _id = uuid.v4();
 const MAX_WIDTH = "20rem";
 @Component({
@@ -50,7 +51,7 @@ export class MemoItemComponent implements OnInit {
       Index : 0,
       Title: 'NoData',
       Description: 'Somet description!',
-      CreatedDate : new Date().toLocaleDateString(),
+      CreatedDate : new Date(),
       MemoIcon: "📝",
       AddIngredients: false,
       EditMemo: false,
@@ -59,8 +60,9 @@ export class MemoItemComponent implements OnInit {
       DeleteIngredient: ()=>{},
       Ingredients: []
     }
-  }
 
+    this.dateText = this.memo.CreatedDate.toLocaleDateString();
+  }
   public max_width = MAX_WIDTH;
   public height = 0;
   public Id: number = -1;
@@ -78,7 +80,7 @@ export class MemoItemComponent implements OnInit {
     Index : -1,
     Title: '',
     Description: 'string',
-    CreatedDate : 'string',
+    CreatedDate : new Date(),
     MemoIcon: '📝',
     AddIngredients: false,
     EditMemo: false,
@@ -87,7 +89,7 @@ export class MemoItemComponent implements OnInit {
     ChangeIngredientAmount: () => { },
     DeleteIngredient: ()=>{},
   }
-
+  public dateText: string = "";
 
   public drop(event : CdkDragDrop<Ingredient[]>) {
     moveItemInArray(this.memo.Ingredients, event.previousIndex, event.currentIndex);
@@ -96,30 +98,56 @@ export class MemoItemComponent implements OnInit {
 
   public async CheckCurrentMemoIndex() {
     this.onMemoClicked.emit(this.memo);
-  }
+  };
+
   ToggleEditMemo(cancel : boolean) {
     this.memo.EditMemo = !this.memo.EditMemo;
     this.hasClicked = true;
     this.currentActiveMemoIndex = -1;
 
     if (cancel) {
-      this.onUpdateMemo.emit()
+      this.onUpdateMemo.emit();
       this.onResetCurrentMemoIndexOnAll.emit(this.memo);
     } else {
       if (this.memo.EditMemo === false) {
         this.UpdateIngredientsOnMemo();
         this.onResetCurrentMemoIndexOnAll.emit(this.memo);
         return;
+      } else {
+
       }
     }
     this.CheckCurrentMemoIndex();
-  }
+  };
   async getDocs(q : Query<DocumentData>){
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       // console.log(doc.id, " => ", doc.data());
     })
+  };
+
+  public AddNewIngredientsDialogue() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      Ingredients : [] = [...this.memo.Ingredients] ,
+    }
+
+    const dialogRef = this.dialog.open(IngredientsModalComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data === null || data === undefined) return;
+      console.log("current memo before: ", this.memo.Ingredients);
+      this.memo.Ingredients = [];
+      this.memo.Ingredients = data as Ingredient[];
+      console.log("current memo after: ", this.memo.Ingredients);
+      this.UpdateIngredientsOnMemo();
+    });
+  };
+
+  AddedIngredientsToCurrentMemo(IngredientsData: Ingredient[]) {
+    if (IngredientsData.length <= 0) return;
+
+
   }
   /**Adds an igredient to list if none is found, otherwise one is added to the current ingredient */
   AddIngredientToList(addedIngredientIcon: IngredientType) {
@@ -149,27 +177,32 @@ export class MemoItemComponent implements OnInit {
         this.AnimateElementInChildNode(lastIndex);
         return;
       }
-  }
+  };
 
   UpdateIngredientsOnMemo() {
     try {
       let mem = this.authService.afs.collection('users').doc(this.authService.userData.uid).collection('memos').doc(this.memo.Id);
+
       const isfound = mem.get().subscribe(data => {
         // const memoOnDb = data.data() as Memo;
-        mem.set({
-          Id: this.memo.Id,
-          Index: this.memo.Index,
-          Title: this.memo.Title,
-          Description: this.memo.Description,
-          CreatedDate : this.memo.CreatedDate,
-          Ingredients : this.memo.Ingredients
-        }).then(() => {
-          isfound.closed = true;
-          this.onUpdateMemo.emit();
-          return;
-        });
-      })
+        console.log("data: ", data);
+        console.log("data: ", data);
 
+        mem.set(
+          {
+            Id: this.memo.Id,
+            Index: this.memo.Index,
+            Title: this.memo.Title,
+            Description: this.memo.Description,
+            CreatedDate: this.memo.CreatedDate,
+            Ingredients: this.memo.Ingredients
+          }, {
+            merge : true
+          }
+        );
+        this.dateText = this.memo.CreatedDate.toLocaleDateString();
+        isfound.closed = true;
+      });
 
       if (isfound.closed) {
         this.onUpdateMemo.emit();
@@ -179,7 +212,8 @@ export class MemoItemComponent implements OnInit {
       let e = error as FirebaseError;
       new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Something went wrong updating this memo item\n' + e.message);
     }
-  }
+  };
+
   DecrementIngredient(chosenIngredientIcon: HTMLElement) {
     const icon = chosenIngredientIcon.innerText as IngredientType;
     if (icon === undefined || icon === null) return;
@@ -194,37 +228,40 @@ export class MemoItemComponent implements OnInit {
       let newIngredientList = this.memo.Ingredients.filter(removeIngredient => removeIngredient.Icon === icon);
       if (this.memo.Ingredients.length === 1 && newIngredientList[0].Amount <= 0) {
         this.memo.Ingredients = [];
+        this.DeleteMemo();
         return;
       } else {
         const objectIndex = this.memo.Ingredients.indexOf(targetedIngredientInList, 0);
         this.memo.Ingredients.splice(objectIndex, 1);
+
+        if (this.memo.Ingredients.length <= 0) {
+        }
         return;
       }
     }
-  }
+  };
 
   public ResetClick() {
   setTimeout(() => {
     this.hasClicked = false;
   }, 100);
-  }
+  };
 
   public DeleteMemo() {
     this.memoDeleted.emit(this.memo);
-  }
+  };
   public GetColor() {
     return this.IsDisabled ? 'red' : 'green';
   };
 
     /**Animates a a chosen node with a specific class and resets it  */
-    AnimateElementInChildNode = (nodeIndex : number,parentNodeId : string = '_ingredientItem',  targetClassName : string = 'ingredient_item_', addClass : string = 'grow',resetAfterMs : number = 80) => {
-      const item = document.getElementsByClassName('_memo_lists');
+  AnimateElementInChildNode = (nodeIndex: number, parentNodeId: string = '_ingredientItem', targetClassName: string = 'ingredient_item_', addClass: string = 'grow', resetAfterMs: number = 80) => {
+    const item = document.getElementsByClassName('_memo_lists');
 
-      if (item === undefined || item === null || this.currentActiveMemoIndex === -1) return;
-      document.querySelectorAll(`.${'_memo_lists'}`)[this.currentActiveMemoIndex].querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.add(String(addClass));
-      setTimeout(() => {
-        document.querySelectorAll(`.${'_memo_lists'}`)[this.currentActiveMemoIndex].querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.remove(String(addClass));
-      }, resetAfterMs);
-  }
-
-}
+    if (item === undefined || item === null || this.currentActiveMemoIndex === -1) return;
+    document.querySelectorAll(`.${'_memo_lists'}`)[this.currentActiveMemoIndex].querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.add(String(addClass));
+    setTimeout(() => {
+      document.querySelectorAll(`.${'_memo_lists'}`)[this.currentActiveMemoIndex].querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.remove(String(addClass));
+    }, resetAfterMs);
+  };
+};

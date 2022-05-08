@@ -47,19 +47,32 @@ export class AuthService {
         JSON.parse(localStorage.getItem(_user)!);
 
         // force navigation from /sign-in to /app after logging in and email is verfified
+        if (this.userData.emailVerified === false) {
+          this.ngZone.run(() => {
+            this.router.navigate(['sign-in']);
+          });
+        }
         if (this.userData.emailVerified === true) {
-          if (this.router.url === '/sign-in') {
+          if (this.router.url === '/sign-in' || this.router.url === '' || this.router.url === '/' ) {
             this.ngZone.run(() => {
               this.router.navigate(['app']);
             });
+            return;
           };
 
           // if route is empty, weird or anything but is verified, navigate to /app
-          if (this.router.url === '/' && (this.urlService.currentUrl === '/' || this.urlService.currentUrl === '') && this.userData.emailVerified === true) {
+          if ((this.router.url === '/' || this.router.url === '') && (this.urlService.currentUrl === '/' || this.urlService.currentUrl === '') && this.userData.emailVerified === true) {
             this.ngZone.run(() => {
               this.router.navigate(['app']);
             });
-          };
+            return;
+          }
+          else
+            if ((this.router.url === '/' || this.router.url === '') && (this.urlService.currentUrl === '/' || this.urlService.currentUrl === '') && this.userData.emailVerified === true) {
+            this.ngZone.run(() => {
+              this.router.navigate(['sign-in']);
+            });
+          }
         }
 
       } else {
@@ -75,6 +88,7 @@ export class AuthService {
             this.ngZone.run(() => {
               this.router.navigate(['app']);
             });
+            return;
           };
         };
       });
@@ -227,7 +241,7 @@ export class AuthService {
     return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
       if (res) {
         this.showSpinner = false;
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['app']);
         return;
       } else {
         this.showSpinner = false;

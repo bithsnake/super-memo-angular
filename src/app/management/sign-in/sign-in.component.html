@@ -22,7 +22,7 @@
         <!-- Calling SignIn Api from AuthService -->
         <button #login (click)="authService.SignIn(userName.value, userPassword.value);" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80  w-auto">Log in</button>
         <hr class="text-gray-400 opacity-0  mb-2 mt-2">
-        <button (click)="authService.GoogleAuth()" routerLink="/register-user" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80 w-auto">Log in with google
+        <button (click)="authService.GoogleAuth()" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80 w-auto">Log in with google
           <img class="inline w-6 h-6"  src="../../../assets//svgs//google.svg" alt="">
         </button>
       </div>

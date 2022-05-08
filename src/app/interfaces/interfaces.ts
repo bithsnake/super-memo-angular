@@ -9,7 +9,7 @@ export interface IMemo {
   Index: number;
   Title: string;
   Description: string;
-  CreatedDate: string;
+  CreatedDate: Date;
   MemoIcon: MemoIcon;
   Ingredients: Ingredient[];
 }

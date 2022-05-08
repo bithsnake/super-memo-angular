@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input, NgZone, OnInit, Output } from '@angular/core';
+import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { Memo } from '../memo/memo.model';
 import { ScrollBackUp, checkOverflow, compareName, compareId, compareCreatedDate, PrevScrollY } from '../methods/methods';
 import { Ingredient } from '../shared/ingredients';

@@ -58,7 +58,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 
-
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
@@ -90,6 +89,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { UrlService } from './shared/url.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PointerSvgComponent } from './pointer-svg/pointer-svg.component';
+import { CreateNewIngredientsModalComponent } from './create-new-ingredients-modal/create-new-ingredients-modal.component';
 
 
 // Initialize Firebase
@@ -118,7 +118,8 @@ export const analytics = getAnalytics(app);
       ChangeNameComponent,
       NotificationComponent,
       PageNotFoundComponent,
-      PointerSvgComponent
+      PointerSvgComponent,
+      CreateNewIngredientsModalComponent
    ],
   imports: [
     BrowserModule,

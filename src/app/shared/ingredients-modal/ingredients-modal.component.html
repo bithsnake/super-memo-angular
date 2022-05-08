@@ -1,3 +1,4 @@
+
 <div class="flex max-w-full border border-gray-400 border-opacity-50 p-4">
   <div class="flex-row justify-evenly">
       <ul>
@@ -12,5 +13,33 @@
         >{{ingredient.Icon}}
         </a>
       </ul>
+    </div>
+
   </div>
-</div>
+  <section #buttonSection  class="w-auto mt-4 flex flex-row flex-nowrap content-center justify-between w3-monospace text-white">
+    <div class="inline-flex flex-row justify-start space-x-4">
+      <button #cancelButton (click)="Cancel()" id="edit-button" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80">Cancel</button>
+      <button #editButton  (click)="UpdateAndClose()" id="edit-button" class="text-center rounded-lg p-2 hover:bg-opacity-80 bg-green-400">Update & close</button>
+    </div>
+  </section>
+  <br>
+
+  <div id="ingredientList" class="ingredient-list">
+
+    <ul class="ingredient-box" *ngFor="let ingredient of currentIngredients">
+      <div class="hover:bg-gray-200 hover:text-blue-800 min-h-full">
+        <a  class=" "  >
+          <li class="w-full inline-flex flex-row justify-between items-center">
+            <div #ingredientIcon class="inline-flex gap-2 my-1">
+              <p class="text-white ingredient_item_" id="_ingredientItem" #_currenticon>{{ingredient.Icon}}</p> <span #_currentname>{{ingredient.Name}}</span>
+            </div>
+            <div class="inline-flex flex-row justify-end  ">
+              <!-- <button  (click)="DecrementIngredient(_currenticon)" class=" hover:opacity-40  cursor-pointer mr-2 w-full h-full">➖</button> -->
+              <p >x{{ingredient.Amount}}</p>
+            </div>
+          </li>
+        </a>
+      </div>
+    </ul>
+
+  </div>

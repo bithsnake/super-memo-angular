@@ -1,5 +1,5 @@
 import { Component, Input, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { IMemo } from 'src/app/interfaces/interfaces';
 import { Ingredient,ingredientsArray , IngredientType} from 'src/app/shared/ingredients';
 import { MemoIcon } from '../memo-icons/memo-icons';
@@ -20,7 +20,7 @@ class AddNewMemoComponent implements IMemo {
   public Index: number = -1;
   public Title: string = '';
   public Description: string = '';
-  public CreatedDate: string = new Date().toLocaleDateString();
+  public CreatedDate: Date = new Date();
   public MemoIcon: MemoIcon ="📝";
   public Ingredients: Ingredient[] = []
   public max_width = "20rem";
@@ -30,8 +30,8 @@ class AddNewMemoComponent implements IMemo {
   titleControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(20)]);
   descriptionControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(30)]);
 
-  constructor(private dialogRef: MatDialogRef<AddNewMemoComponent>, @Inject(MAT_DIALOG_DATA) public data: Memo) {
-    const date = new Date().toLocaleDateString();
+  constructor(private dialogRef: MatDialogRef<AddNewMemoComponent>, @Inject(MAT_DIALOG_DATA) public data: Memo, public dialog: MatDialog) {
+    const date = new Date();
     this.memo = new Memo(_id,-1,this.Title,this.Description,date,this.MemoIcon,this.Ingredients);
     data = this.memo;
   }

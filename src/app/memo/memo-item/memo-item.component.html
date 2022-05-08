@@ -6,7 +6,7 @@
           <!-- <h1>{{memo.Title}}</h1><p>{{memo.MemoIcon}}</p> -->
           <span><h1>{{memo.Title}}</h1> Id {{memo.Index}} </span>
         </header>
-        <section><p class="text-blue-500">Created {{memo.CreatedDate}} </p></section>
+        <section><p class="text-blue-500">Created {{dateText}} </p></section>
         <!-- Description -->
         <article class="border-b-2 border-gray-300">
           <p>{{memo.Description}}</p>
@@ -30,18 +30,14 @@
           </ul>
         </div>
 
-        <section #buttonSection [ngClass]="{'hidden': IsDisabled === true}" class="w-auto mt-4 flex flex-row flex-nowrap content-center justify-between w3-monospace text-white">
-          <button #removeButton [ngClass]="{'hidden': memo.EditMemo}" id="remove-button" (click)="DeleteMemo()" class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80">{{Icons.remove.icon}}</button>
-          <div class="inline-flex flex-row justify-start space-x-4">
-            <button #editButton [ngClass]="{'hidden': !memo.EditMemo}" (click)="ToggleEditMemo(true)" id="edit-button" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80">Cancel</button>
-            <button #editButton [ngClass]="{'bg-green-400': memo.EditMemo, 'bg-gray-400': !memo.EditMemo }" (click)="ToggleEditMemo(false)" id="edit-button" class="text-center rounded-lg p-2 hover:bg-opacity-80"> {{memo.EditMemo ?  "Update & close" : Icons.edit.icon}}</button>
-            <!-- <span *ngIf="memo.EditMemo" class="text-sm text-black justify-end self-end"><strong>Add ingredients by tapping below items</strong></span> -->
+        <section #buttonSection [ngClass]="{'hidden': IsDisabled === true}" class="w-auto mt-4 flex flex-row flex-nowrap content-center justify-between  w3-monospace text-white">
+          <button #removeButton [ngClass]="{'hidden': memo.EditMemo}" id="remove-button" (click)="DeleteMemo()" class="text-center rounded-lg p-2 mx-3 bg-gray-400 hover:bg-opacity-80">{{Icons.remove.icon}}</button>
+          <button #editButton [ngClass]="{'bg-green-400': memo.EditMemo, 'bg-gray-400': !memo.EditMemo }" (click)="ToggleEditMemo(false)" id="edit-button" class="text-center rounded-lg p-2 mr-3 hover:bg-opacity-80"> {{memo.EditMemo ?  "Update & close" : Icons.edit.icon}}</button>
+          <div [ngClass]="{'hidden': !memo.EditMemo}"  class="inline-flex flex-row justify-start space-x-4">
+            <button #addNewIngredientsButton (click)="AddNewIngredientsDialogue()" id="add-new-ingredients-button" class="text-center rounded-lg p-2 mx-3 hover:bg-opacity-80 bg-green-400">Add</button>
+            <button #cancelButton (click)="ToggleEditMemo(true)" id="edit-button" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80">Cancel</button>
           </div>
         </section>
       </section>
-      <!-- "Ingredient List modal" -->
-      <div #ingredientMenu class="ingredient-list-default" [ngClass]="{'open-list': memo.EditMemo && hasClicked, 'close-list' : !memo.EditMemo && hasClicked}"  class="flex" (blur)="memo.EditMemo = false" >
-        <app-ingredients-modal (NewIngredientsAdded)="AddIngredientToList($event)"  [ngStyle]="{maxWidth: max_width}" *ngIf="memo.EditMemo"></app-ingredients-modal>
-      </div>
-</div>
+    </div>
 

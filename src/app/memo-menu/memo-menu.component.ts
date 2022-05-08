@@ -53,12 +53,14 @@ export class MemoMenuComponent implements OnInit {
       MemoIcon: MemoIcons.memo,
       Ingredients : [],
     }
+    dialogConfig.maxHeight = "64rem";
+
 
     const dialogRef = this.dialog.open(AddNewMemoComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
       if (data === null || data === undefined) return;
       this.MemoCreated(data);
-      console.log("data from dialog component: ", data);
+      // console.log("data from dialog component: ", data);
     });
 
   }
@@ -74,7 +76,5 @@ export class MemoMenuComponent implements OnInit {
     } else {
       menuElement.classList.remove('scaleUp');
     }
-
-
   }
 }

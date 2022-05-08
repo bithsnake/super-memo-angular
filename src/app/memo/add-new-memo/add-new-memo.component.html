@@ -29,7 +29,7 @@
           </header>
 
           <div #ingredientMenu class="ingredient-list-default"  class="flex justify-evenly open-list" >
-            <app-ingredients-modal #ingredient  (NewIngredientsAdded)="AddIngredientToList($event)"  [ngStyle]="{maxWidth: max_width}" ></app-ingredients-modal>
+            <app-create-new-ingredients-modal #ingredient  (NewIngredientsAdded)="AddIngredientToList($event)"  [ngStyle]="{maxWidth: max_width}" ></app-create-new-ingredients-modal>
           </div>
         </section>
     </div>
@@ -45,20 +45,24 @@
       <h4 class="text-xl" *ngIf="memo.Ingredients.length === 0">
         List is Empty!
       </h4>
+
+
       <div  class="bg-gray-400 bg-opacity-50 ">
         <!-- Output all current ingredients for the current shopping list -->
-        <ul  id="_ingredientItems"  *ngFor="let ingredient of memo.Ingredients">
-          <a  class=" "  >
-            <li class="w-full inline-flex flex-row justify-between items-center">
-              <div #ingredientIcon class="inline-flex gap-2 my-1 " >
-                <p class="text-white new_ingredient_items_" id="_ingredientItem" #_currenticon>{{ingredient.Icon}}</p> <span #_currentname>{{ingredient.Name}}</span>
-              </div>
-              <div class="inline-flex flex-row justify-end  ">
-                <button  (click)="DecrementIngredient(_currenticon)" class=" hover:opacity-40  cursor-pointer mr-2 w-full h-full">➖</button><p >x{{ingredient.Amount}}</p>
-              </div>
-            </li>
-          </a>
-        </ul>
+        <mat-dialog-content class="mat-typography">
+          <ul  id="_ingredientItems"  *ngFor="let ingredient of memo.Ingredients">
+            <a  class=" "  >
+              <li class="w-full inline-flex flex-row justify-between items-center">
+                <div #ingredientIcon class="inline-flex gap-2 my-1 " >
+                  <p class="text-white new_ingredient_items_" id="_ingredientItem" #_currenticon>{{ingredient.Icon}}</p> <span #_currentname>{{ingredient.Name}}</span>
+                </div>
+                <div class="inline-flex flex-row justify-end  ">
+                  <button  (click)="DecrementIngredient(_currenticon)" class=" hover:opacity-40  cursor-pointer mr-2 w-full h-full">➖</button><p >x{{ingredient.Amount}}</p>
+                </div>
+              </li>
+            </a>
+          </ul>
+        </mat-dialog-content>
 
   </div>
 </section>

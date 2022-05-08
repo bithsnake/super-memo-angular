@@ -31,7 +31,7 @@ export class Memo implements IMemo {
     public Index : number,
     public Title: string,
     public Description: string,
-    public CreatedDate : string,
+    public CreatedDate : Date,
     public MemoIcon: MemoIcon,
     public Ingredients: Ingredient[] = [],
   ) {

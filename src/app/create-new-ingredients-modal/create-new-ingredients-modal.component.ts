@@ -1,19 +1,17 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Memo } from 'src/app/memo/memo.model';
-import { Ingredient, ingredientsArray, IngredientType } from '../ingredients';
+import { Ingredient, ingredientsArray, IngredientType } from '.././shared/ingredients';
 import * as uuid from 'uuid';
 import { MemoIcon, MemoIcons } from 'src/app/memo/memo-icons/memo-icons';
 import { DatePipe } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 let _id = uuid.v4();
 @Component({
-  selector: 'app-ingredients-modal',
-  templateUrl: './ingredients-modal.component.html',
-  styleUrls: ['./ingredients-modal.component.scss']
+  selector: 'app-create-new-ingredients-modal',
+  templateUrl: './create-new-ingredients-modal.component.html',
+  styleUrls: ['./create-new-ingredients-modal.component.scss']
 })
-
-export class IngredientsModalComponent implements OnInit {
-
+export class CreateNewIngredientsModalComponent implements OnInit {
   @Output() public NewMemoAdded: EventEmitter<Memo> = new EventEmitter;
   @Output() public NewIngredientsAdded: EventEmitter<IngredientType> = new EventEmitter;
   @Output() public IngredientRemoved: EventEmitter<IngredientType> = new EventEmitter;
@@ -35,28 +33,30 @@ export class IngredientsModalComponent implements OnInit {
 
   public NewMemo: Memo = new Memo(uuid.v4(),this.Index = -1, this.Title = '', this.Description = '', this.CreatedDate, this.MemoIcon, this.newIngredients = []);
 
-  constructor(private dialogRef: MatDialogRef<IngredientsModalComponent>,@Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private dialogRef: MatDialogRef<CreateNewIngredientsModalComponent>,@Inject(MAT_DIALOG_DATA) public data: any) {
     this.currentIngredients = data.length <= 0 ? [] : data.Ingredients;
     this.currentIngredientsBuffer = data.length <= 0 ? [] : data.Ingredients;
     this.currentIngredientsLength = Array(this.currentIngredients).length;
-    // console.log("currentIngredients: ", this.currentIngredients);
+    console.log("currentIngredients: ", this.currentIngredients);
   }
 
   AddIngredientToList(e: any) {
-    // console.log("current ingredients: ", this.currentIngredients);
+    console.log("current ingredients: ", this.currentIngredients);
     const _addedIngredientIcon = (e as HTMLElement).textContent?.trim().replace(' ','') as IngredientType;
     this.AddedIngredientIcon = _addedIngredientIcon;
     // console.log("New Ingredient Added: " , this.AddedIngredientIcon);
     this.NewIngredientsAdded.emit(this.AddedIngredientIcon);
 
-    // console.log("From 'add-new-memo' , Added item: ", addedIngredientIcon);
-    const _tempIngredient = ingredientsArray.find(x => x.Icon === this.AddedIngredientIcon);
-    let newIngredient: Ingredient;
-    if(_tempIngredient === undefined) return;
-    newIngredient = new Ingredient(_tempIngredient.Name, _tempIngredient.Icon, 1);
     if (this.currentIngredients.length > 0) {
+      // console.log("From 'add-new-memo' , Added item: ", addedIngredientIcon);
+      const _tempIngredient = ingredientsArray.find(x => x.Icon === this.AddedIngredientIcon);
+      let newIngredient: Ingredient;
+
+      if(_tempIngredient === undefined) return;
+      newIngredient = new Ingredient(_tempIngredient.Name, _tempIngredient.Icon, 1);
+
       if (this.currentIngredients.length === 0) {
-        this.currentIngredients.push({Name : newIngredient.Name, Icon : newIngredient.Icon, Amount : newIngredient.Amount});
+        this.currentIngredients.push(newIngredient);
         this.AnimateElementInChildNode(0);
         return;
       }
@@ -69,13 +69,11 @@ export class IngredientsModalComponent implements OnInit {
         this.AnimateElementInChildNode(ingredientIndex);
         return;
       } else if( _foundIngredient === undefined) {
-        this.currentIngredients.push({Name : newIngredient.Name, Icon : newIngredient.Icon, Amount : newIngredient.Amount});
+        this.currentIngredients.push(newIngredient);
         const lastIndex = this.currentIngredients.length - 1;
         this.AnimateElementInChildNode(lastIndex);
         return;
       }
-    } else if(this.currentIngredients.length <= 0) {
-      this.currentIngredients.push({Name : newIngredient.Name, Icon : newIngredient.Icon, Amount : newIngredient.Amount});
     }
   }
 
@@ -94,7 +92,7 @@ export class IngredientsModalComponent implements OnInit {
 
   Cancel() {
     this.currentIngredients = this.currentIngredientsBuffer;
-    this.dialogRef.close();
+    this.dialogRef.close([]);
   }
 
   DecrementIngredient(chosenIngredientIcon: HTMLElement) {
