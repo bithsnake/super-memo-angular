@@ -161,6 +161,11 @@ and (-webkit-device-pixel-ratio: 3) {
   z-index: 1000 !important;
 }
 
+.custom-rotate-translate{
+  position: fixed;
+  transform: translateX(-40px) rotate(-22deg);
+}
+
 @media only screen and(orientation : portrait)
 and (device-width: 390px)
 and (device-height: 844px)

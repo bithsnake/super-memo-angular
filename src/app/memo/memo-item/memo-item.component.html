@@ -31,6 +31,7 @@
         </div>
 
         <section #buttonSection [ngClass]="{'hidden': IsDisabled === true}" class="w-auto mt-4 flex flex-row flex-nowrap content-center justify-between  w3-monospace text-white">
+          <button #sendAsMailButton id="send-as-mail-button" (click)="SendAsMailDialog()" class="text-center rounded-lg p-2 mx-3 bg-gray-400 hover:bg-opacity-80">{{Icons.sendmail.icon}}</button>
           <button #removeButton [ngClass]="{'hidden': memo.EditMemo}" id="remove-button" (click)="DeleteMemo()" class="text-center rounded-lg p-2 mx-3 bg-gray-400 hover:bg-opacity-80">{{Icons.remove.icon}}</button>
           <button #editButton [ngClass]="{'bg-green-400': memo.EditMemo, 'bg-gray-400': !memo.EditMemo }" (click)="ToggleEditMemo(false)" id="edit-button" class="text-center rounded-lg p-2 mr-3 hover:bg-opacity-80"> {{memo.EditMemo ?  "Update & close" : Icons.edit.icon}}</button>
           <div [ngClass]="{'hidden': !memo.EditMemo}"  class="inline-flex flex-row justify-start space-x-4">

@@ -43,17 +43,15 @@ export class IngredientsModalComponent implements OnInit {
   }
 
   AddIngredientToList(e: any) {
-    // console.log("current ingredients: ", this.currentIngredients);
     const _addedIngredientIcon = (e as HTMLElement).textContent?.trim().replace(' ','') as IngredientType;
     this.AddedIngredientIcon = _addedIngredientIcon;
-    // console.log("New Ingredient Added: " , this.AddedIngredientIcon);
     this.NewIngredientsAdded.emit(this.AddedIngredientIcon);
 
-    // console.log("From 'add-new-memo' , Added item: ", addedIngredientIcon);
     const _tempIngredient = ingredientsArray.find(x => x.Icon === this.AddedIngredientIcon);
     let newIngredient: Ingredient;
     if(_tempIngredient === undefined) return;
     newIngredient = new Ingredient(_tempIngredient.Name, _tempIngredient.Icon, 1);
+
     if (this.currentIngredients.length > 0) {
       if (this.currentIngredients.length === 0) {
         this.currentIngredients.push({Name : newIngredient.Name, Icon : newIngredient.Icon, Amount : newIngredient.Amount});
@@ -81,15 +79,6 @@ export class IngredientsModalComponent implements OnInit {
 
   ngOnInit() {
     document.querySelector('#__item')?.classList.add('z-index-1000');
-    // console.log("data: ", this.data);
-    // for (let i = 0; i < this.data.Ingredients.length; i++) {
-    //   const element = this.data.Ingredients[i];
-    //   this.currentIngredients.push(element);
-
-    // }
-    // console.log("current ingredients: ", this.currentIngredients);
-    // console.log("current ingredients: ", this.currentIngredients);
-
   }
 
   Cancel() {

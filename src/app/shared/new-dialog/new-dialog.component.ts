@@ -25,6 +25,7 @@ export class NewDialogComponent implements OnInit {
 
   }
   ngOnInit() {
+
   }
 
 }

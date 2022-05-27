@@ -1,0 +1,58 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<app-backdrop></app-backdrop>
+<div class=" flex flex-col place-items-center place-content-center text place-self-center w-full pt-24 text-lg transform ">
+
+  <div class="p-8 gap-4 bg-black bg-opacity-50 rounded-md ">
+    <div class="text-center text-white">
+      <h1 class="text-center text-xl text-white">Send memo as mail</h1>
+
+      <div class="inline-flex flex-col w-full">
+        <!-- <mat-form-field class="bg-gray-200 bg-opacity-50" appearance="fill"> -->
+          <mat-label for="username" class="text-white">Send to mailadress</mat-label>
+          <input class="bg-gray-200" name="username" matInput placeholder="...@email.com" [formControl]="emailAddressControl" #emailAddress required >
+          <mat-error  *ngIf="emailAddressControl.invalid">{{getEmailAddressErrorMessage()}}</mat-error>
+        <!-- </mat-form-field> -->
+
+        <div class="inline-flex flex-row text-center"></div>
+        <hr class="text-gray-400  mb-2 mt-2">
+
+        <mat-form-field class="bg-gray-500 bg-opacity-0 w-full" appearance="fill">
+          <mat-label for="password" class="text-white">Leave a message!</mat-label>
+          <textarea  autocomplete="false" wrap="soft"   class="w-full text-black" placeholder="message..." [formControl]="messageControl" #message required >
+          </textarea>
+            <mat-error #materror id="_materror" *ngIf="messageControl.invalid; ">{{getMessageErrorMessage()}}</mat-error>
+          </mat-form-field>
+
+          <div class="inline-flex flex-row text-center"></div>
+          <hr class="text-gray-400  mb-2 mt-2">
+          <div class="space-y-3 space-x-2">
+            <button (click)="Cancel()" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80">Cancel</button>
+            <button #sendmail (click)="SendMessage()" class="text-center rounded-lg p-2 bg-blue-400 hover:bg-opacity-80">Send email!</button>
+          </div>
+      </div>
+    </div>
+
+    <section class="border-2 border-gray-600 rounded-md my-4">
+      <span class="custom-rotate-translate">Current memo!</span>
+      <div class="text-white text-center">
+        <h1>{{title}}</h1>
+        <h3>{{description}}</h3>
+        <!-- <p>{{date.toLocaleDateString()}}</p> -->
+      </div>
+      <div class="flex flex-col justify-start text-white border-2 border-gray-400">
+        <ul  class="ingredient-box  m-0 p-0" #_currentList *ngFor="let ingredient of this.ingredients">
+          <div class=" min-h-full">
+            <a  class=""  >
+              <li class="w-full inline-flex flex-row justify-between items-center">
+                <div #ingredientIcon class="inline-flex gap-2 my-1 " >
+                  <p class="text-white ingredient_item_" id="_ingredientItem" #_currenticon>{{ingredient.Icon}}</p> <span #_currentname>{{ingredient.Name}}</span> <span>x{{ingredient.Amount}}</span>
+                </div>
+              </li>
+            </a>
+          </div>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+</div>

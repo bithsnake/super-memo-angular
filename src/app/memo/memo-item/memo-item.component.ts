@@ -13,6 +13,7 @@ import { getDocs } from "firebase/firestore";
 import { NewDialogComponent } from 'src/app/shared/new-dialog/new-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { IngredientsModalComponent } from 'src/app/shared/ingredients-modal/ingredients-modal.component';
+import { MemoAsMailComponent } from 'src/app/memo-as-mail/memo-as-mail.component';
 let _id = uuid.v4();
 const MAX_WIDTH = "20rem";
 @Component({
@@ -26,6 +27,7 @@ export class MemoItemComponent implements OnInit {
   @Input() public memo: Memo;
   @Input() public currentActiveMemoIndex: number = -1;
   @Output() public memoDeleted: EventEmitter<Memo> = new EventEmitter();
+  @Output() public sendMemoAsMail: EventEmitter<Memo> = new EventEmitter();
   @Output() public onMemoClicked: EventEmitter<Memo> = new EventEmitter();
   @Output() public onUpdateMemo: EventEmitter<Memo> = new EventEmitter();
   @Output() public onResetCurrentMemoIndexOnAll: EventEmitter<Memo> = new EventEmitter();
@@ -249,6 +251,30 @@ export class MemoItemComponent implements OnInit {
 
   public DeleteMemo() {
     this.memoDeleted.emit(this.memo);
+  };
+  public SendAsMailDialog() {
+    console.log("opening mail form memo sent as mail!");
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      message : "" as string,
+      memo : this.memo as Memo,
+    }
+
+    const dialogRef = this.dialog.open(MemoAsMailComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((emailData) => {
+      new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your memo was sent to : ' + emailData);
+
+      // if (data === null || data === undefined) return;
+      // console.log("current memo before: ", this.memo.Ingredients);
+      // const newData = {
+      //   data: data.memo as Memo,
+      //   email : data.
+      //   message
+      // }
+      // console.log("current memo after: ", this.memo.Ingredients);
+      // this.UpdateIngredientsOnMemo();
+    });
   };
   public GetColor() {
     return this.IsDisabled ? 'red' : 'green';

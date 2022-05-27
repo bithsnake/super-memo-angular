@@ -90,6 +90,7 @@ import { UrlService } from './shared/url.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PointerSvgComponent } from './pointer-svg/pointer-svg.component';
 import { CreateNewIngredientsModalComponent } from './create-new-ingredients-modal/create-new-ingredients-modal.component';
+import { MemoAsMailComponent } from './memo-as-mail/memo-as-mail.component';
 
 
 // Initialize Firebase
@@ -98,7 +99,7 @@ export const analytics = getAnalytics(app);
 
 // always add your components in the declarations array!
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
     MemoItemComponent,
     IngredientsModalComponent,
@@ -119,7 +120,8 @@ export const analytics = getAnalytics(app);
       NotificationComponent,
       PageNotFoundComponent,
       PointerSvgComponent,
-      CreateNewIngredientsModalComponent
+      CreateNewIngredientsModalComponent,
+      MemoAsMailComponent
    ],
   imports: [
     BrowserModule,
