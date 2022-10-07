@@ -22,7 +22,7 @@ const _user: string = 'user';
 export class AuthService {
 
   // user data
-  public firebaseUser: User = {
+  public userData: User = {
     uid : '',
     displayName: '',
     email: null,
@@ -53,19 +53,19 @@ export class AuthService {
     // Observable that checks authentication state
     this.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.firebaseUser = user as User;
-        localStorage.setItem(_user, JSON.stringify(this.firebaseUser)); // save in local storage
+        this.userData = user as User;
+        localStorage.setItem(_user, JSON.stringify(this.userData)); // save in local storage
         JSON.parse(localStorage.getItem(_user)!);
 
         // force navigation from /sign-in to /app after logging in and email is verfified
-        if (this.firebaseUser.emailVerified === false) {
+        if (this.userData.emailVerified === false) {
           this.ngZone.run(() => {
             this.RouterNavigate('sign-in');
             // this.router.navigate(['sign-in']);
           });
         }
         // check if email verification has been done
-        if (this.firebaseUser.emailVerified === true) {
+        if (this.userData.emailVerified === true) {
           if (this.router.url === '/sign-in' || this.router.url === '' || this.router.url === '/') {
             this.ngZone.run(() => {
               this.RouterNavigate('app');
@@ -74,7 +74,7 @@ export class AuthService {
             return;
           };
 
-          const routeWeirdnessCheck = (this.router.url === '/' || this.router.url === '') && (this.urlService.currentUrl === '/' || this.urlService.currentUrl === '') && this.firebaseUser.emailVerified === true;
+          const routeWeirdnessCheck = (this.router.url === '/' || this.router.url === '') && (this.urlService.currentUrl === '/' || this.urlService.currentUrl === '') && this.userData.emailVerified === true;
 
           // if route is empty, weird or anything but is verified, navigate to /app
           if (routeWeirdnessCheck) {
@@ -99,10 +99,10 @@ export class AuthService {
       };
     });
 
-    if (this.firebaseUser.uid) {
-      this.afs.collection('users').doc(this.firebaseUser.uid).snapshotChanges().subscribe(user => {
+    if (this.userData.uid) {
+      this.afs.collection('users').doc(this.userData.uid).snapshotChanges().subscribe(user => {
         if (user.payload) {
-          if (this.firebaseUser.emailVerified === true && router.url === '/sign-in') {
+          if (this.userData.emailVerified === true && router.url === '/sign-in') {
             this.ngZone.run(() => {
               this.RouterNavigate('app');
               // this.router.navigate(['app']);
@@ -136,8 +136,8 @@ export class AuthService {
               console.log("subscribtion triggered");
 
               if (user) {
-                  this.firebaseUser = user as User;
-                  localStorage.setItem(_user, JSON.stringify(this.firebaseUser));
+                  this.userData = user as User;
+                  localStorage.setItem(_user, JSON.stringify(this.userData));
                   JSON.parse(localStorage.getItem(_user)!);
                   if (this.router.url === '/sign-in') {
                     this.ngZone.run(() => {
@@ -212,7 +212,7 @@ export class AuthService {
     return this.afAuth.currentUser
       .then((u) => {
 
-        if (this.firebaseUser !== null) {
+        if (this.userData !== null) {
           // delete later
           console.log("this.afAuth.currentUser: ", this.afAuth.currentUser);
           console.log("current user 'u' : ", u);
@@ -321,7 +321,7 @@ export class AuthService {
 
    async GetAllMemos() {
     return new Promise<any>((resolve) => {
-      this.afs.collection(`users`).doc(this.firebaseUser.uid).collection('memos').get().subscribe(data => {
+      this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get().subscribe(data => {
         const mappedDocument = data.docs.map(x => x.data() as Memo[]);
         resolve(mappedDocument);
       });
