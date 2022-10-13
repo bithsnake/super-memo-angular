@@ -52,12 +52,15 @@
 
 
 .pointer-finger {
-  transform: translate(-50px,-100px) !important;
   position: relative;
   object-fit: fill;
   width: 6rem;
   height: 6rem;
   animation: wave 1.4s ease-in-out infinite;
+}
+.shake-text {
+
+  animation: shakeX 0.12s ease-in-out infinite;
 }
 
 
@@ -76,4 +79,20 @@
     // height: 6rem;
     // transform: scale(1);
     transform: translate(-75px,-80px);  }
+}
+@keyframes shakeX{
+  0% {
+    // height: 6rem;
+    // transform: scale(1);
+    transform: translateX(-5px);
+
+  }
+  50%{
+    // height: 8rem;
+    // transform: scale(1.2);
+    transform: translateX(5px);  }
+  100%{
+    // height: 6rem;
+    // transform: scale(1);
+    transform: translateX(-5px);  }
 }

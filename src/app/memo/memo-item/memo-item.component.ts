@@ -1,12 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Ingredient, ingredientsArray, IngredientType } from 'src/app/shared/ingredients';
 import {  MemoIcons } from '../memo-icons/memo-icons';
 import { Memo } from '../memo.model';
-import * as uuid from 'uuid';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DocumentData } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { FirebaseError } from '@angular/fire/app';
 import {  Query } from 'firebase/firestore';
 
 import { getDocs } from "firebase/firestore";
@@ -14,7 +12,7 @@ import { NewDialogComponent } from 'src/app/shared/new-dialog/new-dialog.compone
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { IngredientsModalComponent } from 'src/app/shared/ingredients-modal/ingredients-modal.component';
 import { MemoAsMailComponent } from 'src/app/memo-as-mail/memo-as-mail.component';
-let _id = uuid.v4();
+import { MemoServices } from 'src/app/shared/services/memo.service';
 const MAX_WIDTH = "20rem";
 @Component({
   selector: 'app-memo-item',
@@ -24,47 +22,9 @@ const MAX_WIDTH = "20rem";
 
 export class MemoItemComponent implements OnInit {
 
-  @Input() public memo: Memo;
+  @Input() public memo!: Memo;
   @Input() public currentActiveMemoIndex: number = -1;
-  @Output() public memoDeleted: EventEmitter<Memo> = new EventEmitter();
-  @Output() public sendMemoAsMail: EventEmitter<Memo> = new EventEmitter();
-  @Output() public onMemoClicked: EventEmitter<Memo> = new EventEmitter();
-  @Output() public onUpdateMemo: EventEmitter<Memo> = new EventEmitter();
-  @Output() public onResetCurrentMemoIndexOnAll: EventEmitter<Memo> = new EventEmitter();
-
-  ngOnInit(): void {
-  // document.querySelector('#__item')?.addEventListener('mousedown', this.RotateElement);
-  // document.querySelector('#__item')?.addEventListener('mouseup', this.StopRotateElement);
-  // document.querySelectorAll('#__item').forEach(x => x.setAttribute('id', `__item${20}`));
-}
-
-  public RotateElement(e : Event) {
-    const _e = (e.currentTarget as HTMLDivElement);
-    _e.classList.add('rotate-element');
-  }
-  public StopRotateElement(e : Event) {
-    const _e = (e.currentTarget as HTMLDivElement);
-    _e.classList.remove('rotate-element');
-  }
-
-  constructor(private authService : AuthService,private dialog: MatDialog) {
-    this.memo = {
-      Id: _id,
-      Index : 0,
-      Title: 'NoData',
-      Description: 'Somet description!',
-      CreatedDate : new Date(),
-      MemoIcon: "📝",
-      AddIngredients: false,
-      EditMemo: false,
-      AddIngredient: () => { },
-      ChangeIngredientAmount: () => { },
-      DeleteIngredient: ()=>{},
-      Ingredients: []
-    }
-
-    this.dateText = this.memo.CreatedDate.toLocaleDateString();
-  }
+  public dateText: string = "";
   public max_width = MAX_WIDTH;
   public height = 0;
   public Id: number = -1;
@@ -77,29 +37,39 @@ export class MemoItemComponent implements OnInit {
   public InputTextTest = '';
   public IsDisabled: boolean = false;
   public hasClicked: boolean = false;
-  public snapShotOfCurrentMemo: Memo = {
-    Id: '',
-    Index : -1,
-    Title: '',
-    Description: 'string',
-    CreatedDate : new Date(),
-    MemoIcon: '📝',
-    AddIngredients: false,
-    EditMemo: false,
-    Ingredients: [] = [],
-    AddIngredient: () => { },
-    ChangeIngredientAmount: () => { },
-    DeleteIngredient: ()=>{},
-  }
-  public dateText: string = "";
 
-  public drop(event : CdkDragDrop<Ingredient[]>) {
+  // @Output() public memoDeleted: EventEmitter<Memo> = new EventEmitter();
+  // @Output() public sendMemoAsMail: EventEmitter<Memo> = new EventEmitter();
+  // @Output() public onMemoClicked: EventEmitter<Memo> = new EventEmitter();
+  // @Output() public onUpdateMemo: EventEmitter<Memo> = new EventEmitter();
+  // @Output() public onResetCurrentMemoIndexOnAll: EventEmitter<Memo> = new EventEmitter();
+
+  ngOnInit(): void {
+  // document.querySelector('#__item')?.addEventListener('mousedown', this.RotateElement);
+  // document.querySelector('#__item')?.addEventListener('mouseup', this.StopRotateElement);
+  // document.querySelectorAll('#__item').forEach(x => x.setAttribute('id', `__item${20}`));
+  this.dateText = this.memo.CreatedDate.toLocaleDateString();
+}
+
+  // private RotateElement(e : Event) {
+  //   const _e = (e.currentTarget as HTMLDivElement);
+  //   _e.classList.add('rotate-element');
+  // }
+  // private StopRotateElement(e : Event) {
+  //   const _e = (e.currentTarget as HTMLDivElement);
+  //   _e.classList.remove('rotate-element');
+  // }
+
+
+  constructor(private authService : AuthService,private dialog: MatDialog, public memoService : MemoServices) {}
+
+  public drop(event: CdkDragDrop<Ingredient[]>) {
     moveItemInArray(this.memo.Ingredients, event.previousIndex, event.currentIndex);
     this.UpdateIngredientsOnMemo();
   }
 
   public async CheckCurrentMemoIndex() {
-    this.onMemoClicked.emit(this.memo);
+    this.memoService.onMemoClicked.emit(this.memo);
   };
 
   ToggleEditMemo(cancel : boolean) {
@@ -108,12 +78,12 @@ export class MemoItemComponent implements OnInit {
     this.currentActiveMemoIndex = -1;
 
     if (cancel) {
-      this.onUpdateMemo.emit();
-      this.onResetCurrentMemoIndexOnAll.emit(this.memo);
+      this.memoService.onUpdateMemo.emit();
+      this.memoService.onResetCurrentMemoIndexOnAll.emit(this.memo);
     } else {
       if (this.memo.EditMemo === false) {
         this.UpdateIngredientsOnMemo();
-        this.onResetCurrentMemoIndexOnAll.emit(this.memo);
+        this.memoService.onResetCurrentMemoIndexOnAll.emit(this.memo);
         return;
       } else {
 
@@ -121,11 +91,9 @@ export class MemoItemComponent implements OnInit {
     }
     this.CheckCurrentMemoIndex();
   };
-  async getDocs(q : Query<DocumentData>){
+  private async getDocs(q : Query<DocumentData>){
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
     })
   };
 
@@ -182,50 +150,24 @@ export class MemoItemComponent implements OnInit {
   };
 
   UpdateIngredientsOnMemo() {
-    try {
-      let mem = this.authService.afs.collection('users').doc(this.authService.userData.uid).collection('memos').doc(this.memo.Id);
-
-      const isfound = mem.get().subscribe(data => {
-        // const memoOnDb = data.data() as Memo;
-        console.log("data: ", data);
-        console.log("data: ", data);
-
-        mem.set(
-          {
-            Id: this.memo.Id,
-            Index: this.memo.Index,
-            Title: this.memo.Title,
-            Description: this.memo.Description,
-            CreatedDate: this.memo.CreatedDate,
-            Ingredients: this.memo.Ingredients
-          }, {
-            merge : true
-          }
-        );
-        this.dateText = this.memo.CreatedDate.toLocaleDateString();
-        isfound.closed = true;
-      });
-
-      if (isfound.closed) {
-        this.onUpdateMemo.emit();
-      }
-
-    } catch (error) {
-      let e = error as FirebaseError;
-      new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Something went wrong updating this memo item\n' + e.message);
-    }
+    this.dateText = this.memoService.UpgradeCurrentMemoIngredients(this.memo);
   };
 
+  /*Decrement Ingredient from current memo list */
   DecrementIngredient(chosenIngredientIcon: HTMLElement) {
     const icon = chosenIngredientIcon.innerText as IngredientType;
+
     if (icon === undefined || icon === null) return;
+
     let targetedIngredientInList = this.memo.Ingredients.find(x => x.Icon === icon);
+
     if (targetedIngredientInList === undefined) return;
 
+    // if amount is over 1 then decrement
     if (targetedIngredientInList.Amount > 1 ) {
       targetedIngredientInList.Amount--;
 
-    } else {
+    } else { // else remove the whole item
       targetedIngredientInList.Amount--;
       let newIngredientList = this.memo.Ingredients.filter(removeIngredient => removeIngredient.Icon === icon);
       if (this.memo.Ingredients.length === 1 && newIngredientList[0].Amount <= 0) {
@@ -249,9 +191,12 @@ export class MemoItemComponent implements OnInit {
   }, 100);
   };
 
+  /*Delete memo */
   public DeleteMemo() {
-    this.memoDeleted.emit(this.memo);
+    this.memoService.memoDeleted.emit(this.memo);
   };
+
+  /*Send memo as mail */
   public SendAsMailDialog() {
     console.log("opening mail form memo sent as mail!");
 
@@ -264,18 +209,10 @@ export class MemoItemComponent implements OnInit {
     const dialogRef = this.dialog.open(MemoAsMailComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((emailData) => {
       new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your memo was sent to : ' + emailData);
-
-      // if (data === null || data === undefined) return;
-      // console.log("current memo before: ", this.memo.Ingredients);
-      // const newData = {
-      //   data: data.memo as Memo,
-      //   email : data.
-      //   message
-      // }
-      // console.log("current memo after: ", this.memo.Ingredients);
-      // this.UpdateIngredientsOnMemo();
     });
+
   };
+  /*Set different color if disabled */
   public GetColor() {
     return this.IsDisabled ? 'red' : 'green';
   };
@@ -283,7 +220,6 @@ export class MemoItemComponent implements OnInit {
     /**Animates a a chosen node with a specific class and resets it  */
   AnimateElementInChildNode = (nodeIndex: number, parentNodeId: string = '_ingredientItem', targetClassName: string = 'ingredient_item_', addClass: string = 'grow', resetAfterMs: number = 80) => {
     const item = document.getElementsByClassName('_memo_lists');
-
     if (item === undefined || item === null || this.currentActiveMemoIndex === -1) return;
     document.querySelectorAll(`.${'_memo_lists'}`)[this.currentActiveMemoIndex].querySelectorAll(`.${targetClassName}`)[nodeIndex].classList.add(String(addClass));
     setTimeout(() => {

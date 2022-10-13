@@ -6,11 +6,16 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
+  DocumentData,
+  QuerySnapshot,
 } from '@angular/fire/compat/firestore';
 import {Router } from '@angular/router';
 import { NewDialogComponent } from '../new-dialog/new-dialog.component';
 import { UrlService } from '../url.service';
 import { Memo } from 'src/app/memo/memo.model';
+import { Observable, of, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 
 // user data in localstorage
 const _user: string = 'user';
@@ -319,13 +324,9 @@ export class AuthService {
     });
   };
 
-   async GetAllMemos() {
-    return new Promise<any>((resolve) => {
-      this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get().subscribe(data => {
-        const mappedDocument = data.docs.map(x => x.data() as Memo[]);
-        resolve(mappedDocument);
-      });
-    });
+  GetAllMemos() : Observable<QuerySnapshot<DocumentData>> {
+    const observable = this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get();
+    return observable;
    }
   // Changed from return to async await
   /**Sign out user*/

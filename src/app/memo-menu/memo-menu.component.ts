@@ -3,41 +3,39 @@ import { MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import AddNewMemoComponent from '../memo/add-new-memo/add-new-memo.component';
 import { MemoIcons } from '../memo/memo-icons/memo-icons';
 import { Memo } from '../memo/memo.model';
-import * as uuid from 'uuid';
-let _id = uuid.v4();
+import { MemoServices } from '../shared/services/memo.service';
 @Component({
   selector: 'app-memo-menu',
   templateUrl: './memo-menu.component.html',
   styleUrls: ['./memo-menu.component.scss']
 })
 export class MemoMenuComponent implements OnInit {
-  @Output() public memoCreated: EventEmitter<Memo> = new EventEmitter;
-  @Output() public orderMemosByLetter: EventEmitter<Boolean> = new EventEmitter;
-  @Output() public orderMemosByID: EventEmitter<Boolean> = new EventEmitter;
-  @Output() public orderMemosByCreated: EventEmitter<Boolean> = new EventEmitter;
-  @Output() public stackMemos: EventEmitter<Boolean> = new EventEmitter;
 
-  @Input() Memos: Memo[] = [];
+  @Input() Memos!: Memo[];
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, public memoService: MemoServices) {
+
+    console.log("memo menu created");
+   }
 
   OrderMemosByLetter() {
-    this.orderMemosByLetter.emit(true);
+    this.memoService.orderMemosByLetter.emit(true);
   }
   OrderMemosByID() {
-    this.orderMemosByID.emit(true);
+    this.memoService.orderMemosByID.emit(true);
   }
   OrderMemosByCreated() {
-    this.orderMemosByCreated.emit(true);
+    this.memoService.orderMemosByCreated.emit(true);
   }
   StackMemos() {
-    this.stackMemos.emit();
+    this.memoService.stackMemos.emit();
   }
 
   /**Emits newly created memo and makes sure the incoming data is a Memo class object*/
   MemoCreated(newMemo: Memo) {
     try {
-      this.memoCreated.emit(newMemo);
+
+      this.memoService.memoCreated.emit(newMemo);
     } catch (error) {
       console.log("message: ", error);
       throw new Error("Incoming object is not a type of Memo");

@@ -91,6 +91,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { PointerSvgComponent } from './pointer-svg/pointer-svg.component';
 import { CreateNewIngredientsModalComponent } from './create-new-ingredients-modal/create-new-ingredients-modal.component';
 import { MemoAsMailComponent } from './memo-as-mail/memo-as-mail.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
+import { CanDeactivateGuard } from './shared/services/can-deactivate-guard.service';
 
 
 // Initialize Firebase
@@ -99,7 +101,7 @@ export const analytics = getAnalytics(app);
 
 // always add your components in the declarations array!
 @NgModule({
-  declarations: [	
+  declarations: [
     AppComponent,
     MemoItemComponent,
     IngredientsModalComponent,
@@ -121,7 +123,8 @@ export const analytics = getAnalytics(app);
       PageNotFoundComponent,
       PointerSvgComponent,
       CreateNewIngredientsModalComponent,
-      MemoAsMailComponent
+      MemoAsMailComponent,
+      ErrorPageComponent
    ],
   imports: [
     BrowserModule,
@@ -184,7 +187,8 @@ export const analytics = getAnalytics(app);
   providers: [
     AuthService,
     UrlService,
-    AppComponent
+    AppComponent,
+    CanDeactivateGuard,
   // FirebaseService
   // {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}}
   ],

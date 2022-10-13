@@ -25,8 +25,8 @@ export class UrlService {
 
 
   public setPreviousUrl(previousUrl: string) {
-    this._previousUrl = previousUrl;
-    this.previousUrl.next(previousUrl);
+    // this._previousUrl = previousUrl;
+    // this.previousUrl.next(previousUrl);
   }
     /*Goes back to previous page */
     public GoBack() {
