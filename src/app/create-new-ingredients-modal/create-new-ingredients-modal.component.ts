@@ -3,9 +3,7 @@ import { Memo } from 'src/app/memo/memo.model';
 import { Ingredient, ingredientsArray, IngredientType } from '.././shared/ingredients';
 import * as uuid from 'uuid';
 import { MemoIcon, MemoIcons } from 'src/app/memo/memo-icons/memo-icons';
-import { DatePipe } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-let _id = uuid.v4();
 @Component({
   selector: 'app-create-new-ingredients-modal',
   templateUrl: './create-new-ingredients-modal.component.html',
@@ -27,24 +25,27 @@ export class CreateNewIngredientsModalComponent implements OnInit {
   public currentIngredients: Ingredient[] = [];
   public currentIngredientsBuffer: Ingredient[] = [];
   public currentIngredientsLength: number = -1;
-
+  public item: any;
+  public showTitle: boolean = false;
   @Input() public currentActiveMemoIndex: number = -1;
   @Output() public AddedIngredientIcon: IngredientType = '🍆';
 
   public NewMemo: Memo = new Memo(uuid.v4(),this.Index = -1, this.Title = '', this.Description = '', this.CreatedDate, this.MemoIcon, this.newIngredients = []);
 
-  constructor(private dialogRef: MatDialogRef<CreateNewIngredientsModalComponent>,@Inject(MAT_DIALOG_DATA) public data: any) {
-    this.currentIngredients = data.length <= 0 ? [] : data.Ingredients;
-    this.currentIngredientsBuffer = data.length <= 0 ? [] : data.Ingredients;
-    this.currentIngredientsLength = Array(this.currentIngredients).length;
+  constructor() {
+    // this.currentIngredients = data.length <= 0 ? [] : data.Ingredients;
+    // this.currentIngredientsBuffer = data.length <= 0 ? [] : data.Ingredients;
+    // this.currentIngredientsLength = Array(this.currentIngredients).length;
     console.log("currentIngredients: ", this.currentIngredients);
+  }
+
+  SetText(element: HTMLAnchorElement, ingredientName: string) {
   }
 
   AddIngredientToList(e: any) {
     console.log("current ingredients: ", this.currentIngredients);
     const _addedIngredientIcon = (e as HTMLElement).textContent?.trim().replace(' ','') as IngredientType;
     this.AddedIngredientIcon = _addedIngredientIcon;
-    // console.log("New Ingredient Added: " , this.AddedIngredientIcon);
     this.NewIngredientsAdded.emit(this.AddedIngredientIcon);
 
     if (this.currentIngredients.length > 0) {
@@ -92,7 +93,7 @@ export class CreateNewIngredientsModalComponent implements OnInit {
 
   Cancel() {
     this.currentIngredients = this.currentIngredientsBuffer;
-    this.dialogRef.close([]);
+    // this.dialogRef.close([]);
   }
 
   DecrementIngredient(chosenIngredientIcon: HTMLElement) {
@@ -119,7 +120,7 @@ export class CreateNewIngredientsModalComponent implements OnInit {
   }
 
   UpdateAndClose() {
-    this.dialogRef.close(this.currentIngredients);
+    // this.dialogRef.close(this.currentIngredients);
   }
 
       /**Animates a a chosen node with a specific class and resets it  */

@@ -1,15 +1,17 @@
 <div class="flex max-w-full border border-gray-400 border-opacity-50 p-4">
   <div class="flex-row justify-evenly">
-      <ul>
-          <a
-          #_item
-          (click)="AddIngredientToList(_item)"
-          class="text-xl cursor-pointer select-none hover:opacity-60 hover:w-1/2 hover:h-1/2 hover:text-red-500 p-1"
-          *ngFor="let ingredient of _ingredients as Ingredient"
-
-          matTooltip="{{ingredient.Name}}"
-          matTooltipPosition="above"
-          >{{ingredient.Icon}}
-        </a>
+      <ul >
+        <a
+        *ngFor="let ingredient of _ingredients as Ingredient"
+        id="__item"
+        #_item
+        (click)="AddIngredientToList(_item)"
+        class="text-xl cursor-pointer select-none hover:opacity-60 hover:w-1/2 hover:h-1/2 hover:text-red-100 p-1"
+        (title)="ingredient.Name"
+        matTooltip="{{ingredient.Name}}"
+        matTooltipPosition="above"
+         >
+          {{ingredient.Icon}}
+      </a>
     </ul>
   </div>

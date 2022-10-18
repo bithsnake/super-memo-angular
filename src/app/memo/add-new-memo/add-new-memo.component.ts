@@ -1,4 +1,4 @@
-import { Component, Input, Inject } from '@angular/core';
+import { Component, Input, Inject, OnInit } from '@angular/core';
 import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { IMemo } from 'src/app/interfaces/interfaces';
 import { Ingredient,ingredientsArray , IngredientType} from 'src/app/shared/ingredients';
@@ -15,7 +15,7 @@ const _id = uuid.v4();
   templateUrl: './add-new-memo.component.html',
   styleUrls: ['./add-new-memo.component.scss']
 })
-class AddNewMemoComponent implements IMemo {
+class AddNewMemoComponent implements IMemo, OnInit {
   public Id: string = "";
   public Index: number = -1;
   public Title: string = '';
@@ -25,21 +25,22 @@ class AddNewMemoComponent implements IMemo {
   public Ingredients: Ingredient[] = []
   public max_width = "20rem";
   public clickedChildNodeIndex = 0;
-  @Input() public memo: Memo;
+  @Input() public memo!: Memo;
 
   titleControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(20)]);
   descriptionControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(30)]);
 
-  constructor(private dialogRef: MatDialogRef<AddNewMemoComponent>, @Inject(MAT_DIALOG_DATA) public data: Memo, public dialog: MatDialog) {
-    const date = new Date();
-    this.memo = new Memo(_id,-1,this.Title,this.Description,date,this.MemoIcon,this.Ingredients);
-    data = this.memo;
-  }
+  constructor(private dialogRef: MatDialogRef<AddNewMemoComponent>, @Inject(MAT_DIALOG_DATA) public data: Memo, public dialog: MatDialog) {}
   /**Sends a reference of the new memo created to parent Component */
   public CreateNewMemo() {
     this.memo.Title = this.Title;
     this.memo.Description = this.Description;
     this.dialogRef.close(this.memo);
+  }
+  ngOnInit(): void {
+    this.memo = new Memo(_id,-1,this.Title,this.Description,new Date(),this.MemoIcon,this.Ingredients);
+    this.data =  this.memo;
+
   }
   /**Removes 1 amount from an ingredient */
   RemoveIngredientFromList(addedIngredientIcon: IngredientType) {

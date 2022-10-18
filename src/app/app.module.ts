@@ -88,7 +88,7 @@ import { ChangeNameComponent } from './change-name/change-name.component';
 import { NotificationComponent } from './notification/notification.component';
 import { UrlService } from './shared/url.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { PointerSvgComponent } from './pointer-svg/pointer-svg.component';
+import { PointerSvgComponent } from './shared/pointer-svg/pointer-svg.component';
 import { CreateNewIngredientsModalComponent } from './create-new-ingredients-modal/create-new-ingredients-modal.component';
 import { MemoAsMailComponent } from './memo-as-mail/memo-as-mail.component';
 import { ErrorPageComponent } from './error-page/error-page.component';

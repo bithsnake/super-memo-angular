@@ -24,7 +24,7 @@ export class MemoItemComponent implements OnInit {
 
   @Input() public memo!: Memo;
   @Input() public currentActiveMemoIndex: number = -1;
-  public dateText: string = "";
+  public dateText!: string;
   public max_width = MAX_WIDTH;
   public height = 0;
   public Id: number = -1;
@@ -48,7 +48,9 @@ export class MemoItemComponent implements OnInit {
   // document.querySelector('#__item')?.addEventListener('mousedown', this.RotateElement);
   // document.querySelector('#__item')?.addEventListener('mouseup', this.StopRotateElement);
   // document.querySelectorAll('#__item').forEach(x => x.setAttribute('id', `__item${20}`));
-  this.dateText = this.memo.CreatedDate.toLocaleDateString();
+    const dateText = this.memo.CreatedDate as unknown as {seconds : number, nanoseconds : number };
+    console.log("dateText: ", dateText);
+    this.dateText = (this.memo.CreatedDate as Date).toLocaleDateString();
 }
 
   // private RotateElement(e : Event) {
@@ -99,19 +101,24 @@ export class MemoItemComponent implements OnInit {
 
   public AddNewIngredientsDialogue() {
     const dialogConfig = new MatDialogConfig();
+
     dialogConfig.data = {
       Ingredients : [] = [...this.memo.Ingredients] ,
     }
 
     const dialogRef = this.dialog.open(IngredientsModalComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe((data) => {
-      if (data === null || data === undefined) return;
-      console.log("current memo before: ", this.memo.Ingredients);
-      this.memo.Ingredients = [];
-      this.memo.Ingredients = data as Ingredient[];
-      console.log("current memo after: ", this.memo.Ingredients);
-      this.UpdateIngredientsOnMemo();
-    });
+    dialogRef.afterClosed().subscribe(
+      {
+      next : (data) =>  {
+        if (data === null || data === undefined) return;
+        this.memo.Ingredients = [];
+        this.memo.Ingredients = data as Ingredient[];
+        this.UpdateIngredientsOnMemo();
+        },
+        error: (error => console.log(error)),
+        complete: ()=> console.log("completed adding new ingredients")
+    }
+    );
   };
 
   AddedIngredientsToCurrentMemo(IngredientsData: Ingredient[]) {
@@ -193,7 +200,7 @@ export class MemoItemComponent implements OnInit {
 
   /*Delete memo */
   public DeleteMemo() {
-    this.memoService.memoDeleted.emit(this.memo);
+    this.memoService.OpenDeleteMemoDialog(this.memo);
   };
 
   /*Send memo as mail */

@@ -1,6 +1,6 @@
 import { Component,  NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Memo } from '../memo/memo.model';
-import { ScrollBackUp, checkOverflow,PrevScrollY } from '../methods/methods';
+import { ScrollBackUp, checkOverflow,PrevScrollY } from '../shared/methods/methods';
 import { AuthService } from '../shared/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MemoServices } from '../shared/services/memo.service';
@@ -16,7 +16,6 @@ PrevScrollY();
 })
 
 export class MainAppComponent implements OnInit, OnDestroy {
-
   // switch between row and col (css)
   public UseRow: boolean = true;
   // page scroll features
@@ -24,12 +23,14 @@ export class MainAppComponent implements OnInit, OnDestroy {
   public ScrollBackUp = ScrollBackUp;
   public checkOverflow = checkOverflow;
   protected memosSubscription!: Subscription;
+  protected memoCreatedSubscription!: Subscription;
   public Memos: Memo[] = [];
 
   constructor(public authService: AuthService, private dialog: MatDialog, private ngZone: NgZone, public memoService: MemoServices, private router : Router) { }
   ngOnDestroy(): void {
     this.memosSubscription.unsubscribe();
-    this.memoService.showAllComponents = false;
+    this.memoCreatedSubscription.unsubscribe();
+    this.memoService.showAllComponents = true;
     console.log("unsubscribed from memoArraySubcription");
   }
 
@@ -40,25 +41,45 @@ export class MainAppComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.memosSubscription = this.authService.GetAllMemos().subscribe(
-      {
-        next: (data) => data.docs.map((memoArray) => memoArray.data()).forEach(data => {
-          this.Memos.push(data as Memo);
-          console.log("Current memos: ", this.Memos);
+    //initial memos get, sub on observable
+    this.GetMemos();
 
-        }),
-        error: (error) => { new NewDialogComponent(this.dialog).OpenNewNotificationDialog(`Something went wrong getting memos: ${error}`) },
-        complete: () => {
-          this.memoService.showAllComponents = true;
-          console.log("completed the stream")
-        }
-      }
-    );
+    this.memoService.onUpdateMemo.subscribe(updatedMemo => {
+      const index = this.Memos.findIndex(memo => { return memo.Id === updatedMemo.Id });
+      console.log("before update: " , this.Memos[index]);
+      this.Memos[index] = updatedMemo;
+      console.log("after update: " , this.Memos[index]);
+    })
+    this.memoService.memoDeleted.subscribe(deletedMemo => {
+      const index = this.Memos.findIndex(memo => { return memo.Id === deletedMemo.Id });
+      this.Memos.splice(index, 1);
+
+    })
+    this.memoCreatedSubscription = this.memoService.memoCreated.subscribe(memo => {
+      console.log("new memo created: " , memo);
+      this.Memos.push(memo);
+      // this.memoCreatedSubscription.unsubscribe();
+    })
+
     setInterval(() => {
       document.getElementById('nomemos')?.classList.toggle('shake-text');
     }, 4000);
-    console.log("current memos from /app: ", this.Memos);
+    console.log("current memos from /app: ", this.memoService.Memos);
 
   }
 
+  public GetMemos() : void {
+    this.memosSubscription = this.authService.GetAllMemos$().subscribe(
+      {
+       next :  (data) => data.docs.map((memoArray) => memoArray.data()).forEach(data => {
+          this.Memos.push(data as Memo);
+          console.log("Current memos locally: ", this.Memos);
+          console.log("Current memos from service: ", this.memoService.Memos);
+       }),
+        complete: () => {
+          this.memoService.showAllComponents = true;
+          console.log('completed downloading the memos')
+        }
+    });
+  }
 };

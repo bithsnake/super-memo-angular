@@ -1,4 +1,4 @@
-import { Memo } from "../memo/memo.model";
+import { Memo } from "../../memo/memo.model";
 
 export function compareName( memo_a : Memo, memo_b : Memo ) {
   if ( memo_a.Title < memo_b.Title ){

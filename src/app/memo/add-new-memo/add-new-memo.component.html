@@ -28,10 +28,12 @@
             <h1 class="text-white text-center">Add Ingredients from below</h1>
           </header>
 
-          <div #ingredientMenu class="ingredient-list-default"  class="flex justify-evenly open-list" >
+          <div #ingredientMenu class="flex justify-evenly open-list ingredient-list-default"   >
             <app-create-new-ingredients-modal #ingredient  (NewIngredientsAdded)="AddIngredientToList($event)"  [ngStyle]="{maxWidth: max_width}" ></app-create-new-ingredients-modal>
           </div>
         </section>
+
+
     </div>
   </section>
 
@@ -66,3 +68,4 @@
 
   </div>
 </section>
+

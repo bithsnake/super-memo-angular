@@ -101,123 +101,123 @@ export const ingredients = {
 };
 export const ingredientsArray = [
   {
-    Name: "Red Apple", Icon: '🍎' as IngredientType
+    Name: "Red Apple", Icon: '🍎' as IngredientType, showTitle : false,
   },
   {
-    Name: "Green Apple",Icon: '🍏' as IngredientType,
+    Name: "Green Apple",Icon: '🍏' as IngredientType, showTitle : false,
   },
   {
-    Name: "Avocado", Icon: '🥑' as IngredientType,
+    Name: "Avocado", Icon: '🥑' as IngredientType, showTitle : false,
   },
   {
-    Name: "Bacon", Icon: '🥓' as IngredientType,
+    Name: "Bacon", Icon: '🥓' as IngredientType, showTitle : false,
   },
   {
-    Name: "Banana" , Icon: '🍌' as IngredientType,
+    Name: "Banana", Icon: '🍌' as IngredientType, showTitle: false,
   },
   {
-    Name: "Baguette bread", Icon: '🥖' as IngredientType,
+    Name: "Baguette bread", Icon: '🥖' as IngredientType, showTitle : false,
   },
   {
-    Name: "Bread", Icon: '🍞' as IngredientType,
+    Name: "Bread", Icon: '🍞' as IngredientType, showTitle : false,
   },
   {
-    Name: "Broccoli", Icon: '🥦' as IngredientType,
+    Name: "Broccoli", Icon: '🥦' as IngredientType, showTitle : false,
   },
   {
-    Name: "Brown egg",Icon: '🟤' as IngredientType,
+    Name: "Brown egg",Icon: '🟤' as IngredientType,showTitle : false,
   },
   {
-    Name: "Carrot", Icon: '🥕' as IngredientType,
+    Name: "Carrot", Icon: '🥕' as IngredientType,showTitle : false,
   },
   {
-    Name: "Cattle", Icon: '🐄' as IngredientType,
+    Name: "Cattle", Icon: '🐄' as IngredientType,showTitle : false,
   },
   {
-    Name: "Corn", Icon: '🌽' as IngredientType,
+    Name: "Corn", Icon: '🌽' as IngredientType,showTitle : false,
   },
   {
-    Name: "Coconut", Icon: '🥥' as IngredientType,
+    Name: "Coconut", Icon: '🥥' as IngredientType,showTitle : false,
   },
   {
-    Name: "Cucumber", Icon: '🥒' as IngredientType,
+    Name: "Cucumber", Icon: '🥒' as IngredientType,showTitle : false,
   },
   {
-    Name: "Eggplant", Icon: '🍆' as IngredientType,
+    Name: "Eggplant", Icon: '🍆' as IngredientType,showTitle : false,
   },
   {
-    Name: "Egg", Icon: '🥚' as IngredientType,
+    Name: "Egg", Icon: '🥚' as IngredientType,showTitle : false,
   },
   {
-    Name: "Salmon", Icon: '🐟' as IngredientType,
+    Name: "Salmon", Icon: '🐟' as IngredientType,showTitle : false,
   },
   {
-    Name: "Fries", Icon: '🍟' as IngredientType,
+    Name: "Fries", Icon: '🍟' as IngredientType,showTitle : false,
   },
   {
-    Name: "Grapes",Icon: '🍇' as IngredientType,
+    Name: "Grapes",Icon: '🍇' as IngredientType,showTitle : false,
   },
   {
-    Name: "Hot pepper",Icon: '🌶️' as IngredientType,
+    Name: "Hot pepper",Icon: '🌶️' as IngredientType,showTitle : false,
   },
   {
-    Name: "Kiwi", Icon: '🥝' as IngredientType,
+    Name: "Kiwi", Icon: '🥝' as IngredientType,showTitle : false,
   },
   {
-    Name: "Leafy greens",Icon: '🥬' as IngredientType,
+    Name: "Leafy greens",Icon: '🥬' as IngredientType,showTitle : false,
   },
   {
-    Name: "Lemon",Icon:  '🍋' as IngredientType,
+    Name: "Lemon",Icon:  '🍋' as IngredientType,showTitle : false,
   },
   {
-    Name: "Mango", Icon: '🥭' as IngredientType,
+    Name: "Mango", Icon: '🥭' as IngredientType,showTitle : false,
   },
   {
-    Name: "Melon", Icon: '🍈' as IngredientType,
+    Name: "Melon", Icon: '🍈' as IngredientType,showTitle : false,
   },
   {
-    Name: "Mushroom", Icon: '🍄' as IngredientType,
+    Name: "Mushroom", Icon: '🍄' as IngredientType,showTitle : false,
   },
   {
-    Name: "Onion",Icon:  '🧅' as IngredientType,
+    Name: "Onion",Icon:  '🧅' as IngredientType,showTitle : false,
   },
   {
-    Name: "Rice", Icon: '🍙' as IngredientType,
+    Name: "Rice", Icon: '🍙' as IngredientType,showTitle : false,
   },
   {
-    Name: "Sausage/Hot dog", Icon: '🌭' as IngredientType,
+    Name: "Sausage/Hot dog", Icon: '🌭' as IngredientType,showTitle : false,
   },
   {
-    Name: "Strawberry", Icon: '🍓' as IngredientType,
+    Name: "Strawberry", Icon: '🍓' as IngredientType,showTitle : false,
   },
   {
-    Name: "Sweetpotato", Icon: '🍠' as IngredientType,
+    Name: "Sweetpotato", Icon: '🍠' as IngredientType,showTitle : false,
   },
   {
-    Name: "Tomato", Icon: '🍅' as IngredientType,
+    Name: "Tomato", Icon: '🍅' as IngredientType,showTitle : false,
   },
   {
-    Name: "Peanuts", Icon: '🥜' as IngredientType,
+    Name: "Peanuts", Icon: '🥜' as IngredientType,showTitle : false,
   },
   {
-    Name: "Pear", Icon: '🍐' as IngredientType,
+    Name: "Pear", Icon: '🍐' as IngredientType,showTitle : false,
   },
   {
-    Name: "Pasta", Icon: '🍝' as IngredientType,
+    Name: "Pasta", Icon: '🍝' as IngredientType,showTitle : false,
   },
   {
-    Name: "Pineapple",Icon: '🍍' as IngredientType,
+    Name: "Pineapple",Icon: '🍍' as IngredientType,showTitle : false,
   },
   {
-    Name: "Potato",Icon: '🥔' as IngredientType,
+    Name: "Potato",Icon: '🥔' as IngredientType,showTitle : false,
   },
   {
-     Name: "Pork",Icon: '🐖' as IngredientType
+     Name: "Pork",Icon: '🐖' as IngredientType,showTitle : false,
   },
   {
-     Name: "Popcorn",Icon: '🍿' as IngredientType
+     Name: "Popcorn",Icon: '🍿' as IngredientType,showTitle : false,
   },
   {
-    Name: "Watermelon", Icon: '🍉' as IngredientType
+    Name: "Watermelon", Icon: '🍉' as IngredientType,showTitle : false,
   }
 ];

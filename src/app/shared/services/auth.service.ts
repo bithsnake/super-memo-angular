@@ -14,12 +14,9 @@ import { NewDialogComponent } from '../new-dialog/new-dialog.component';
 import { UrlService } from '../url.service';
 import { Memo } from 'src/app/memo/memo.model';
 import { Observable, of, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-
-
+import { map, tap } from 'rxjs/operators';
 // user data in localstorage
 const _user: string = 'user';
-
 
 @Injectable({
   providedIn: 'root'
@@ -34,11 +31,10 @@ export class AuthService {
     photoURL: null,
     emailVerified: false,
   };
-
-
+  public memos$!: Observable<Memo[]>;
+  private Memos!: Memo[];
   // spinner that shows when page is loading
   showSpinner: boolean;
-
 
   /*Authorization */
   constructor(
@@ -53,6 +49,8 @@ export class AuthService {
 
     // Init spinner
     this.showSpinner = false;
+
+
 
 
     // Observable that checks authentication state
@@ -117,8 +115,7 @@ export class AuthService {
         };
       });
     };
-  }
-;
+  };
 
   /**sign in with email/password */
   SignIn(email: string, password: string) {
@@ -178,7 +175,6 @@ export class AuthService {
         new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error.message);
       });
   }
-
   /**Sign up with email/password */
   SignUp(email: string, password: string, displayName: string = '') {
     this.showSpinner = true;
@@ -206,7 +202,7 @@ export class AuthService {
             this.StopSpinner();
             new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error.message);
           });
-    }
+  }
   /**Send email verification when new user sign up */
   SendVerificationMail() {
     this.showSpinner = true;
@@ -285,7 +281,6 @@ export class AuthService {
       new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Something went wrong with google authentication, check the console logs');
     });
   }
-
   /**Authentication logic to run different authentication providers */
   AuthLogin(provider: auth.GoogleAuthProvider | auth.GithubAuthProvider | auth.EmailAuthProvider | auth.FacebookAuthProvider) {
     this.showSpinner = true;
@@ -304,7 +299,6 @@ export class AuthService {
           new NewDialogComponent(this.dialog).OpenNewNotificationDialog(String(error));
         });
   }
-
   /**Setting up user data when sign in with username/password,
   sign up with username/password and sign in with social auth
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
@@ -323,11 +317,22 @@ export class AuthService {
       merge: true,
     });
   };
+  GetAllMemos$() : Observable<QuerySnapshot<DocumentData>> {
+    return this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get().pipe(
+      tap(data => {
+        this.Memos = data.docs.map(data => (data.data() as Memo));
+        console.log('from authservice GetAllmemos' + JSON.stringify(data))
+      }),
+    )
 
-  GetAllMemos() : Observable<QuerySnapshot<DocumentData>> {
-    const observable = this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get();
-    return observable;
-   }
+    //   .pipe(
+    //    map((data) => {
+    //      const newMemoArray = data.docs.map(x => x.data() as Memo);
+    //      this.Memos = newMemoArray;
+    //   })
+    // );
+
+  }
   // Changed from return to async await
   /**Sign out user*/
   async SignOut() {
@@ -340,7 +345,6 @@ export class AuthService {
     this.RouterNavigate('sign-in');
     // this.router.navigate(['sign-in']);
   }
-
   /*Local router navigate method */
   RouterNavigate = (path: string) : void => {
     this.router.navigate([path]);
@@ -349,4 +353,3 @@ export class AuthService {
     this.showSpinner = false;
   }
 };
-

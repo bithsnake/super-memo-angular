@@ -10,9 +10,9 @@
     <div *ngIf="Memos.length > 0; else noMemos;" class="flex flex-row flex-wrap gap-12 memo-list justify-center" >
       <!-- <div *ngIf="Memos.length > 0" cdkDropList class="flex flex-row flex-wrap gap-12 memo-list justify-center" > -->
         <!-- <app-memo-item cdkDrag class="memo-box" -->
-          <app-memo-item class="memo-box" *ngFor="let memo of Memos"  [memo]="memo" ></app-memo-item>
+          <app-memo-item class="memo-box" *ngFor="let memo of this.Memos"  [memo]="memo" ></app-memo-item>
     </div>
-        <ng-template  #noMemos>
+        <ng-template   #noMemos>
           <div class="flex place-content-center place-items-center items-center content-center -translate-x-10" >
             <div class="w-12 h-12 ">
               <img class=" pointer-finger inline"  src="../../assets//svgs//pointing_finger.svg" alt="">
@@ -32,5 +32,4 @@
   <div id="backtotop" #backToTopElement [ngClass]="{'show': !UseRow, 'hidden' : UseRow}" class="static full-opacity bottom-4 w-max p-6 bg-black bg-opacity-50">
     <button (click)="ScrollBackUp()" class="text-blue-200 hover:text-white hover:bg-opacity-5 hover:-translate-y-1 bg-white bg-opacity-20 p-2 rounded-lg transform">Back to top</button>
   </div>
-
 </main>

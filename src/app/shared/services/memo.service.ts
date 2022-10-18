@@ -2,11 +2,11 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { EventEmitter, Injectable, NgZone } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FirebaseError } from 'firebase/app';
-import { Observable } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { YesNoQuestion } from 'src/app/management/dashboard/dashboard.component';
 import { Memo } from 'src/app/memo/memo.model';
-import { ScrollBackUp, checkOverflow, compareName, compareId, compareCreatedDate } from 'src/app/methods/methods';
+import { ScrollBackUp, checkOverflow, compareName, compareId, compareCreatedDate } from 'src/app/shared/methods/methods';
 import { QuestionComponent } from 'src/app/question/question.component';
 import { Ingredient } from '../ingredients';
 import { NewDialogComponent } from '../new-dialog/new-dialog.component';
@@ -20,7 +20,8 @@ import firebase from 'firebase/compat/app';
   providedIn: 'root'
 })
 export class MemoServices {
-  public memoCreated: EventEmitter<Memo> = new EventEmitter;
+  public memoCreated: Subject<Memo> = new Subject();
+  public memoCreatedSubscrition!: Subscription;
   public orderMemosByLetter: EventEmitter<Boolean> = new EventEmitter;
   public orderMemosByID: EventEmitter<Boolean> = new EventEmitter;
   public orderMemosByCreated: EventEmitter<Boolean> = new EventEmitter;
@@ -36,6 +37,7 @@ export class MemoServices {
   private memosCollection: AngularFirestoreCollection<Memo>;
   public currentActiveMemoIndex: number = -1;
   public memoObservable: Observable<Memo[]>;
+
   public Memos: Memo[];
   public UseRow: boolean = false;
 
@@ -51,7 +53,18 @@ export class MemoServices {
         return data;
       })
     );
-  }
+
+
+    // this.memoCreatedSubscrition = this.memoCreated.subscribe({
+    //   next: (data) => {
+    //     this.Memos.push(data as Memo);
+    //     this.AddNewMemoToList(data as Memo);
+    //   },
+    //   error: (error) => { console.log(error) }
+    // });
+
+
+  };
 
 async onSignUp(email: string, password: string) {
   await this.authService.SignUp(email, password);
@@ -109,8 +122,8 @@ public async AddNewMemoToList(newMemo: Memo) {
         })
       }
       }).then(() => {
-        new NewDialogComponent(this.dialog).OpenNewNotificationDialog('A memo was added!');
-        this.GetMemos();
+        // emit
+        this.memoCreated.next(newMemo);
     }).catch(error => {
       const e = error as FirebaseError;
       new NewDialogComponent(this.dialog).OpenNewNotificationDialog('An error occured when creating a memo, error message reported to the support department: ' +  e.message);
@@ -135,7 +148,7 @@ public OpenDeleteMemoDialog(deleteMemo : Memo) {
     if (data) {
       try {
           this.authService.afs.collection('users').doc(this.authService.userData.uid).collection('memos').doc(deleteMemo.Id).delete().then(() => {
-            this.GetMemos();
+            this.memoDeleted.emit(deleteMemo);
           }).catch(error => {
             const e = error as FirebaseError;
             console.log("error: ", e);
@@ -192,7 +205,7 @@ public CheckCurrentMemoIndex(checkThisMemo: Memo) : void {
       });
 
       if (isfound.closed) {
-        this.onUpdateMemo.emit();
+        this.onUpdateMemo.emit(currentMemo);
       }
 
     } catch (error) {
@@ -202,8 +215,8 @@ public CheckCurrentMemoIndex(checkThisMemo: Memo) : void {
     return String(currentMemo.CreatedDate.toLocaleDateString());
   }
 
-public async GetMemos(): Promise<Memo[]> {
-    const currentMemos = await this.authService.GetAllMemos().subscribe(data => data.docs.map(data => data.data() as Memo[])) as unknown as Promise<Memo[]>;
+private async GetMemos(): Promise<Memo[]> {
+    const currentMemos = await this.authService.GetAllMemos$().subscribe(data => data.docs.map(data => data.data() as Memo[])) as unknown as Promise<Memo[]>;
   try {
   } catch (error) {
     new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Could not retreive memos, call support 010-0000000');
