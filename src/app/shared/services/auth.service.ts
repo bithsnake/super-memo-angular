@@ -349,7 +349,5 @@ export class AuthService {
   RouterNavigate = (path: string) : void => {
     this.router.navigate([path]);
   };
-  StopSpinner() : void {
-    this.showSpinner = false;
-  }
+  StopSpinner = (): void => { this.showSpinner = false; }
 };
