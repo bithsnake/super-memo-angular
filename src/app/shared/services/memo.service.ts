@@ -2,7 +2,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { EventEmitter, Injectable, NgZone } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FirebaseError } from 'firebase/app';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { YesNoQuestion } from 'src/app/management/dashboard/dashboard.component';
 import { Memo } from 'src/app/memo/memo.model';
@@ -27,9 +27,9 @@ export class MemoServices {
   public orderMemosByCreated: EventEmitter<Boolean> = new EventEmitter;
   public stackMemos: EventEmitter<Boolean> = new EventEmitter;
   public memoDeleted: EventEmitter<Memo> = new EventEmitter();
-  public sendMemoAsMail: EventEmitter<Memo> = new EventEmitter();
+  public sendMemoAsMail: BehaviorSubject<Memo> = new BehaviorSubject(new Memo());
   public onMemoClicked: EventEmitter<Memo> = new EventEmitter();
-  public onUpdateMemo: EventEmitter<Memo> = new EventEmitter();
+  public onUpdateMemo: BehaviorSubject<Memo> = new BehaviorSubject(new Memo());
   public onResetCurrentMemoIndexOnAll: EventEmitter<Memo> = new EventEmitter();
   public title = 'super-memo-angular';
   public isSignedin: boolean = false;
@@ -205,7 +205,7 @@ public CheckCurrentMemoIndex(checkThisMemo: Memo) : void {
       });
 
       if (isfound.closed) {
-        this.onUpdateMemo.emit(currentMemo);
+        this.onUpdateMemo.next(currentMemo);
       }
 
     } catch (error) {

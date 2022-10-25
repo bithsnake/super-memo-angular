@@ -2,7 +2,7 @@ import { Component,  NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Memo } from '../memo/memo.model';
 import { ScrollBackUp, checkOverflow,PrevScrollY } from '../shared/methods/methods';
 import { AuthService } from '../shared/services/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MemoServices } from '../shared/services/memo.service';
 import { Subscription } from 'rxjs';
 import { NewDialogComponent } from '../shared/new-dialog/new-dialog.component';
@@ -26,7 +26,7 @@ export class MainAppComponent implements OnInit, OnDestroy {
   protected memoCreatedSubscription!: Subscription;
   public Memos: Memo[] = [];
 
-  constructor(public authService: AuthService, private dialog: MatDialog, private ngZone: NgZone, public memoService: MemoServices, private router : Router) { }
+  constructor(public authService: AuthService, public memoService: MemoServices, public dialog : MatDialog) { }
   ngOnDestroy(): void {
     this.memosSubscription.unsubscribe();
     this.memoCreatedSubscription.unsubscribe();
@@ -50,15 +50,14 @@ export class MainAppComponent implements OnInit, OnDestroy {
       this.Memos[index] = updatedMemo;
       console.log("after update: " , this.Memos[index]);
     })
+    
     this.memoService.memoDeleted.subscribe(deletedMemo => {
       const index = this.Memos.findIndex(memo => { return memo.Id === deletedMemo.Id });
       this.Memos.splice(index, 1);
 
     })
     this.memoCreatedSubscription = this.memoService.memoCreated.subscribe(memo => {
-      console.log("new memo created: " , memo);
       this.Memos.push(memo);
-      // this.memoCreatedSubscription.unsubscribe();
     })
 
     setInterval(() => {
@@ -79,6 +78,9 @@ export class MainAppComponent implements OnInit, OnDestroy {
         complete: () => {
           this.memoService.showAllComponents = true;
           console.log('completed downloading the memos')
+        },
+        error : (error) => {
+          new NewDialogComponent(this.dialog).OpenNewNotificationDialog('An error occured when fetching memos: ' +  error);
         }
     });
   }

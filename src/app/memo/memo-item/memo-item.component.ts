@@ -80,7 +80,7 @@ export class MemoItemComponent implements OnInit {
     this.currentActiveMemoIndex = -1;
 
     if (cancel) {
-      this.memoService.onUpdateMemo.emit();
+      this.memoService.onUpdateMemo.next(this.memo);
       this.memoService.onResetCurrentMemoIndexOnAll.emit(this.memo);
     } else {
       if (this.memo.EditMemo === false) {

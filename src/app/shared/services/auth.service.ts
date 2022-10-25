@@ -49,10 +49,7 @@ export class AuthService {
 
     // Init spinner
     this.showSpinner = false;
-
-
-
-
+    
     // Observable that checks authentication state
     this.afAuth.authState.subscribe((user) => {
       if (user) {

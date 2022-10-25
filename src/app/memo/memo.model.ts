@@ -1,6 +1,5 @@
-import { Input } from "@angular/core";
 import { IMemo } from "../interfaces/interfaces";
-import { Ingredient,ingredients, IngredientType } from "../shared/ingredients";
+import { Ingredient } from "../shared/ingredients";
 import { MemoIcon } from "./memo-icons/memo-icons";
 /**A single memo model */
 export class Memo implements IMemo {
@@ -27,12 +26,12 @@ export class Memo implements IMemo {
 
   };
   constructor(
-    public Id: string,
-    public Index : number,
-    public Title: string,
-    public Description: string,
-    public CreatedDate : Date,
-    public MemoIcon: MemoIcon,
+    public Id: string = '-1',
+    public Index : number = -1,
+    public Title: string = "",
+    public Description: string = "",
+    public CreatedDate: Date = new Date(),
+    public MemoIcon: MemoIcon ="📝",
     public Ingredients: Ingredient[] = [],
   ) {
     this.AddIngredients = false;
