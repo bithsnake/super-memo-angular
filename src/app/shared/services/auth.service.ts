@@ -15,6 +15,7 @@ import { UrlService } from '../url.service';
 import { Memo } from 'src/app/memo/memo.model';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { MemoServices } from './memo.service';
 // user data in localstorage
 const _user: string = 'user';
 
@@ -32,7 +33,6 @@ export class AuthService {
     emailVerified: false,
   };
   public memos$!: Observable<Memo[]>;
-  private Memos!: Memo[];
   // spinner that shows when page is loading
   showSpinner: boolean;
 
@@ -46,12 +46,8 @@ export class AuthService {
     public urlService: UrlService,
   ) {
 
-
     // Init spinner
     this.showSpinner = false;
-
-
-
 
     // Observable that checks authentication state
     this.afAuth.authState.subscribe((user) => {
@@ -71,6 +67,7 @@ export class AuthService {
         if (this.userData.emailVerified === true) {
           if (this.router.url === '/sign-in' || this.router.url === '' || this.router.url === '/') {
             this.ngZone.run(() => {
+              console.log("this.userData.emailVerified: singing in to /app");
               this.RouterNavigate('app');
               // this.router.navigate(['app']);
             });
@@ -80,20 +77,20 @@ export class AuthService {
           const routeWeirdnessCheck = (this.router.url === '/' || this.router.url === '') && (this.urlService.currentUrl === '/' || this.urlService.currentUrl === '') && this.userData.emailVerified === true;
 
           // if route is empty, weird or anything but is verified, navigate to /app
-          if (routeWeirdnessCheck) {
-            this.ngZone.run(() => {
-              this.RouterNavigate('app');
-              // this.router.navigate(['app']);
-            });
-            return;
-          }
+          // if (routeWeirdnessCheck) {
+          //   this.ngZone.run(() => {
+          //     this.RouterNavigate('app');
+          //     // this.router.navigate(['app']);
+          //   });
+          //   return;
+          // }
 
-          if (routeWeirdnessCheck) {
-            this.ngZone.run(() => {
-            this.RouterNavigate('sign-in');
-            // this.router.navigate(['sign-in']);
-          });
-          }
+          // if (routeWeirdnessCheck) {
+          //   this.ngZone.run(() => {
+          //   this.RouterNavigate('sign-in');
+          //   // this.router.navigate(['sign-in']);
+          // });
+          // }
         }
 
       } else {
@@ -317,33 +314,18 @@ export class AuthService {
       merge: true,
     });
   };
-  GetAllMemos$() : Observable<QuerySnapshot<DocumentData>> {
-    return this.afs.collection(`users`).doc(this.userData.uid).collection('memos').get().pipe(
-      tap(data => {
-        this.Memos = data.docs.map(data => (data.data() as Memo));
-        console.log('from authservice GetAllmemos' + JSON.stringify(data))
-      }),
-    )
-
-    //   .pipe(
-    //    map((data) => {
-    //      const newMemoArray = data.docs.map(x => x.data() as Memo);
-    //      this.Memos = newMemoArray;
-    //   })
-    // );
-
-  }
   // Changed from return to async await
   /**Sign out user*/
   async SignOut() {
     this.showSpinner = true;
-    await this.afAuth.signOut();
-    localStorage.removeItem(_user);
-    this.urlService._previousUrl = '';
-    this.urlService.currentUrl = '';
-    this.StopSpinner();
-    this.RouterNavigate('sign-in');
-    // this.router.navigate(['sign-in']);
+    await this.afAuth.signOut().then(data => {
+      localStorage.removeItem(_user);
+      this.urlService._previousUrl = '';
+      this.urlService.currentUrl = '';
+      this.StopSpinner();
+      this.RouterNavigate('sign-in');
+      // this.router.navigate(['sign-in']);
+    });
   }
   /*Local router navigate method */
   RouterNavigate = (path: string) : void => {

@@ -5,18 +5,18 @@ import { filter } from 'rxjs/operators';
 @Injectable()
 export class UrlService {
 
-  constructor(private router : Router) {
+  constructor(private router: Router) {
+
     this.currentUrl = '';
     this.router.events.pipe(
-      filter(e => e instanceof NavigationEnd)
+      filter(e => (e instanceof NavigationEnd) )
     ).subscribe((res) => {
       if (this._previousUrl !== this.currentUrl) {
+        console.log("res : from Urlservice, ", res);
         this._previousUrl = this.currentUrl;
       }
       this.currentUrl = this.router.url;
     });
-
-
   }
   public _previousUrl: string | null = '';
   public currentUrl : string | null =''
@@ -25,8 +25,8 @@ export class UrlService {
 
 
   public setPreviousUrl(previousUrl: string) {
-    // this._previousUrl = previousUrl;
-    // this.previousUrl.next(previousUrl);
+    this._previousUrl = previousUrl;
+    this.previousUrl.next(previousUrl);
   }
     /*Goes back to previous page */
     public GoBack() {

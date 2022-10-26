@@ -8,13 +8,30 @@ import { VerifyEmailComponent } from './management/verify-email/verify-email.com
 import { AuthGuard } from './shared/guard/auth.guard';
 import { MainAppComponent } from './main-app/main-app.component';
 import { AboutComponent } from './about/about.component';
+import { MemoItemEditComponent } from './memo/memo-item-edit/memo-item-edit.component';
+import { CanDeactivateGuard } from './shared/services/can-deactivate-guard.service';
+import { MemoItemComponent } from './memo/memo-item/memo-item.component';
+import { MemoResolver } from './memo/memo-resolver.service';
+import { MemoItemsComponent } from './memo/memo-items/memo-items.component';
 
 const routes: Routes = [
-  { path: 'sign-in', component: SignInComponent },
+  { path: 'sign-in', component: SignInComponent,  },
   { path: 'register-user', component: SignUpComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+
   { path: 'verify-email-address', component: VerifyEmailComponent },
-  { path: 'app', component: MainAppComponent, canActivate: [AuthGuard] },
+
+  { path: 'app', component: MainAppComponent, canActivateChild: [AuthGuard],
+    children: [
+      { path: 'items/:id', component: MemoItemComponent, resolve: { server: MemoResolver } },
+      {
+        path: 'items/:id/edit',
+        component: MemoItemEditComponent,
+        canDeactivate: [CanDeactivateGuard]
+      },
+    ],
+  },
+
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
   //keep commented

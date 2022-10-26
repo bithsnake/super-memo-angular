@@ -1,44 +1,43 @@
-<div  id="__item" [ngStyle]="{maxWidth: max_width, minWidth : '16rem'}" class="w-[32rem] bg-white rounded-md _memo_lists">
-    <section  class="w3-card-4 p-8">
-        <!-- Memo Title -->
-        <header class="w-full justify-between mb-4 ">
-          <!-- <p> {{currentActiveMemoIndex}} </p> -->
-          <!-- <h1>{{memo.Title}}</h1><p>{{memo.MemoIcon}}</p> -->
-          <span><h1>{{memo.Title}}</h1> Id {{memo.Index}} </span>
-        </header>
-        <section><p class="text-blue-500">Created {{ dateText }} </p></section>
-        <!-- Description -->
-        <article class="border-b-2 border-gray-300">
-          <p>{{memo.Description}}</p>
-        </article>
+<div id="__item" [ngStyle]="{maxWidth: max_width}" class="w-[32rem] bg-white rounded-md hide_item">
+  <section  class="w3-card-4 p-8">
+    <!-- Memo Title -->
+    <header class="w-full justify-between mb-4 ">
+      <!-- <p> {{currentActiveMemoIndex}} </p> -->
+      <!-- <h1>{{memo.Title}}</h1><p>{{memo.MemoIcon}}</p> -->
+      <span><h1>{{memo.Title}}</h1> Id {{memo.Index}} </span>
+    </header>
+    <section><p class="text-blue-500">Created {{ dateText }} </p></section>
+    <!-- Description -->
+    <article class="border-b-2 border-gray-300">
+      <p>{{memo.Description}}</p>
+    </article>
 
-        <!-- Output all current ingredients for the current shopping list -->
-        <div cdkDropList class="ingredient-list cursor-move" (cdkDropListDropped)="drop($event)">
-          <ul cdkDrag class="ingredient-box" #_currentList *ngFor="let ingredient of memo.Ingredients">
-            <div class="hover:bg-gray-200 hover:text-blue-800 min-h-full">
-              <a  class=" "  >
-                <li class="w-full inline-flex flex-row justify-between items-center">
-                  <div #ingredientIcon class="inline-flex gap-2 my-1 " >
-                    <p class="text-white ingredient_item_" id="_ingredientItem" #_currenticon>{{ingredient.Icon}}</p> <span #_currentname>{{ingredient.Name}}</span>
-                  </div>
-                  <div class="inline-flex flex-row justify-end  ">
-                    <button *ngIf="memo.EditMemo"  (click)="DecrementIngredient(_currenticon)" class=" hover:opacity-40  cursor-pointer mr-2 w-full h-full">➖</button><p >x{{ingredient.Amount}}</p>
-                  </div>
-                </li>
-              </a>
-            </div>
-          </ul>
+    <!-- Output all current ingredients for the current shopping list -->
+    <div cdkDropList class="ingredient-list cursor-move" (cdkDropListDropped)="drop($event)">
+      <ul cdkDrag class="ingredient-box" #_currentList *ngFor="let ingredient of memo.Ingredients">
+        <div class="hover:bg-gray-200 hover:text-blue-800 min-h-full">
+          <a  class=" "  >
+            <li class="w-full inline-flex flex-row justify-between items-center">
+              <div #ingredientIcon class="inline-flex gap-2 my-1 " >
+                <p class="text-white ingredient_item_" id="_ingredientItem" #_currenticon>{{ingredient.Icon}}</p> <span #_currentname>{{ingredient.Name}}</span>
+              </div>
+              <div class="inline-flex flex-row justify-end  ">
+                <button *ngIf="memo.EditMemo"  (click)="DecrementIngredient(_currenticon)" class=" hover:opacity-40  cursor-pointer mr-2 w-full h-full">➖</button><p >x{{ingredient.Amount}}</p>
+              </div>
+            </li>
+          </a>
         </div>
-
-        <section #buttonSection [ngClass]="{'hidden': IsDisabled === true}" class="w-auto mt-4 flex flex-row flex-nowrap content-center justify-between  w3-monospace text-white">
-          <button #sendAsMailButton id="send-as-mail-button" (click)="SendAsMailDialog()" class="text-center rounded-lg p-2 mx-3 bg-gray-400 hover:bg-opacity-80">{{Icons.sendmail.icon}}</button>
-          <button #removeButton [ngClass]="{'hidden': memo.EditMemo}" id="remove-button" (click)="DeleteMemo()" class="text-center rounded-lg p-2 mx-3 bg-gray-400 hover:bg-opacity-80">{{Icons.remove.icon}}</button>
-          <button #editButton [ngClass]="{'bg-green-400': memo.EditMemo, 'bg-gray-400': !memo.EditMemo }" (click)="ToggleEditMemo(false)" id="edit-button" class="text-center rounded-lg p-2 mr-3 hover:bg-opacity-80"> {{memo.EditMemo ?  "Update & close" : Icons.edit.icon}}</button>
-          <div [ngClass]="{'hidden': !memo.EditMemo}"  class="inline-flex flex-row justify-start space-x-4">
-            <button #addNewIngredientsButton (click)="AddNewIngredientsDialogue()" id="add-new-ingredients-button" class="text-center rounded-lg p-2 mx-3 hover:bg-opacity-80 bg-green-400">Add</button>
-            <button #cancelButton (click)="ToggleEditMemo(true)" id="edit-button" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80">Cancel</button>
-          </div>
-        </section>
-      </section>
+      </ul>
     </div>
 
+    <section #buttonSection [ngClass]="{'hidden': IsDisabled === true}" class="w-auto mt-4 flex flex-row flex-nowrap content-center justify-between  w3-monospace text-white">
+      <button #sendAsMailButton id="send-as-mail-button" (click)="SendAsMailDialog()" class="text-center rounded-lg p-2 mx-3 bg-gray-400 hover:bg-opacity-80">{{Icons.sendmail.icon}}</button>
+      <button #removeButton [ngClass]="{'hidden': memo.EditMemo}" id="remove-button" (click)="DeleteMemo()" class="text-center rounded-lg p-2 mx-3 bg-gray-400 hover:bg-opacity-80">{{Icons.remove.icon}}</button>
+      <button #editButton [ngClass]="{'bg-green-400': memo.EditMemo, 'bg-gray-400': !memo.EditMemo }" (click)="ToggleEditMemo(false)" id="edit-button" class="text-center rounded-lg p-2 mr-3 hover:bg-opacity-80"> {{memo.EditMemo ?  "Update & close" : Icons.edit.icon}}</button>
+      <div [ngClass]="{'hidden': !memo.EditMemo}"  class="inline-flex flex-row justify-start space-x-4">
+        <button #addNewIngredientsButton (click)="AddNewIngredientsDialogue()" id="add-new-ingredients-button" class="text-center rounded-lg p-2 mx-3 hover:bg-opacity-80 bg-green-400">Add</button>
+        <button #cancelButton (click)="ToggleEditMemo(true)" id="edit-button" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80">Cancel</button>
+      </div>
+    </section>
+  </section>
+</div>

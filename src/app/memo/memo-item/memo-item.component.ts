@@ -37,6 +37,7 @@ export class MemoItemComponent implements OnInit {
   public InputTextTest = '';
   public IsDisabled: boolean = false;
   public hasClicked: boolean = false;
+  public canshowAfterOpacityIsZero: boolean = false;
 
   // @Output() public memoDeleted: EventEmitter<Memo> = new EventEmitter();
   // @Output() public sendMemoAsMail: EventEmitter<Memo> = new EventEmitter();
@@ -48,9 +49,14 @@ export class MemoItemComponent implements OnInit {
   // document.querySelector('#__item')?.addEventListener('mousedown', this.RotateElement);
   // document.querySelector('#__item')?.addEventListener('mouseup', this.StopRotateElement);
   // document.querySelectorAll('#__item').forEach(x => x.setAttribute('id', `__item${20}`));
+
+
     const dateText = this.memo.CreatedDate as unknown as {seconds : number, nanoseconds : number };
     console.log("dateText: ", dateText);
-    this.dateText = (this.memo.CreatedDate as Date).toLocaleDateString();
+    this.dateText = String(this.memo.CreatedDate);
+    console.log("this.dateText: ", this.dateText);
+    document.getElementsByClassName('hide-item').item(0)?.classList.replace('hide-item', 'show-item');
+
 }
 
   // private RotateElement(e : Event) {
@@ -63,7 +69,9 @@ export class MemoItemComponent implements OnInit {
   // }
 
 
-  constructor(private authService : AuthService,private dialog: MatDialog, public memoService : MemoServices) {}
+  constructor(private authService: AuthService, private dialog: MatDialog, public memoService: MemoServices) {
+
+  }
 
   public drop(event: CdkDragDrop<Ingredient[]>) {
     moveItemInArray(this.memo.Ingredients, event.previousIndex, event.currentIndex);
@@ -80,7 +88,7 @@ export class MemoItemComponent implements OnInit {
     this.currentActiveMemoIndex = -1;
 
     if (cancel) {
-      this.memoService.onUpdateMemo.emit();
+      this.memoService.onUpdateMemo$.next(this.memo);
       this.memoService.onResetCurrentMemoIndexOnAll.emit(this.memo);
     } else {
       if (this.memo.EditMemo === false) {
@@ -93,6 +101,7 @@ export class MemoItemComponent implements OnInit {
     }
     this.CheckCurrentMemoIndex();
   };
+
   private async getDocs(q : Query<DocumentData>){
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -114,9 +123,9 @@ export class MemoItemComponent implements OnInit {
         this.memo.Ingredients = [];
         this.memo.Ingredients = data as Ingredient[];
         this.UpdateIngredientsOnMemo();
-        },
-        error: (error => console.log(error)),
-        complete: ()=> console.log("completed adding new ingredients")
+      },
+      error: (error => console.log(error)),
+      complete: ()=> console.log("completed adding new ingredients")
     }
     );
   };

@@ -27,12 +27,12 @@ export class Memo implements IMemo {
 
   };
   constructor(
-    public Id: string,
-    public Index : number,
-    public Title: string,
-    public Description: string,
-    public CreatedDate : Date,
-    public MemoIcon: MemoIcon,
+    public Id: string = '',
+    public Index : number = -1,
+    public Title: string = '',
+    public Description: string = '',
+    public CreatedDate : Date = new Date(),
+    public MemoIcon: MemoIcon = "📝",
     public Ingredients: Ingredient[] = [],
   ) {
     this.AddIngredients = false;

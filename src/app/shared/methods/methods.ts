@@ -48,7 +48,7 @@ function SetBackToTopElement(InFrame : boolean) {
     });
 }
 
-export function PrevScrollY() : boolean{
+export function GoBackToTopEventlistener() : boolean{
   let lastKnownScrollYPosition: number = 0;
   let InFrame: boolean = false;
   document.addEventListener('scroll', () => {

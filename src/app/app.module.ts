@@ -93,6 +93,8 @@ import { CreateNewIngredientsModalComponent } from './create-new-ingredients-mod
 import { MemoAsMailComponent } from './memo-as-mail/memo-as-mail.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { CanDeactivateGuard } from './shared/services/can-deactivate-guard.service';
+import { MemoItemsComponent } from './memo/memo-items/memo-items.component';
+import { Subscription } from 'rxjs';
 
 
 // Initialize Firebase
@@ -104,6 +106,7 @@ export const analytics = getAnalytics(app);
   declarations: [
     AppComponent,
     MemoItemComponent,
+    MemoItemsComponent,
     IngredientsModalComponent,
     NavbarComponent,
     MemoMenuComponent,
