@@ -29,8 +29,6 @@ export class MemoAsMailComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("data: ", this.data);
-    console.log("data: ", this.data);
     this.title = this.data.memo.Title;
     this.description =this. data.memo.Description;
     this.date = this.data.memo.CreatedDate as Date;
@@ -51,7 +49,7 @@ export class MemoAsMailComponent implements OnInit {
       console.log("this modal has been closed");
     })
 
-    this.dialogRef.close(newData.email);
+    this.dialogRef.close(newData.email === undefined ? newData.email = '' : newData.email);
   }
   getEmailAddressErrorMessage() {
     if (this.emailAddressControl.hasError('required')) {

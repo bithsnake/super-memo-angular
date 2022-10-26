@@ -50,14 +50,15 @@ export class MainAppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     //initial memos get, sub on observable
-    this.memosSubscription = this.memoService
-      .GetAllMemos$()
-      .subscribe((data) => {
-        return data.docs.map((data) => {
-          return this.Memos.push(data.data() as Memo);
-        });
-      });
+    // this.memosSubscription = this.memoService
+    //   .GetAllMemos$()
+    //   .subscribe((data) => {
+    //     return data.docs.map((data) => {
+    //       return this.Memos.push(data.data() as Memo);
+    //     });
+    //   });
 
     // sub on updated one memo
     this.memoService.onUpdateMemo$.subscribe((updatedMemo) => {

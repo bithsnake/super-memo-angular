@@ -9,18 +9,18 @@
       <div class="inline-flex flex-col">
         <mat-form-field class="bg-gray-500 bg-opacity-50" appearance="fill">
           <mat-label for="username" class="text-white">Enter your mailaddress</mat-label>
-          <input (keydown.enter)="authService.SignIn(userName.value, userPassword.value);" class="cursor-pointer" name="username" matInput placeholder="...@email.com" [formControl]="userNameControl" #userName  required >
+          <input (keydown.enter)="authService.SignIn(userName.value, userPassword.value);" class="cursor-pointer" name="username" matInput placeholder="...@email.com" [formControl]="userNameControl" #userName id="user-name" required >
           <mat-error *ngIf="userNameControl.invalid">{{getUsernameErrorMessage()}}</mat-error>
         </mat-form-field>
 
         <mat-form-field class="bg-gray-500 bg-opacity-50" appearance="fill">
           <mat-label for="password" class="text-white">Enter your password</mat-label>
-          <input autocomplete="false" (keydown.enter)="authService.SignIn(userName.value, userPassword.value);" type="password" class="cursor-pointer" name="password" matInput placeholder="password..." [formControl]="passwordControl" #userPassword  required >
+          <input autocomplete="false" (keydown.enter)="authService.SignIn(userName.value, userPassword.value);" type="password" class="cursor-pointer" name="password" matInput placeholder="password..." id="password" [formControl]="passwordControl" #userPassword  required >
           <mat-error #materror id="_materror" *ngIf="passwordControl.invalid; ">{{getPasswordErrorMessage()}}</mat-error>
         </mat-form-field>
 
         <!-- Calling SignIn Api from AuthService -->
-        <button #login (click)="authService.SignIn(userName.value, userPassword.value);" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80  w-auto">Log in</button>
+        <button #login [disabled]="!FormIsValid()" (click)="authService.SignIn(userName.value, userPassword.value);" class="text-center rounded-lg p-2   w-auto" [ngClass]="{'bg-gray-200': !FormIsValid(), 'bg-green-400' : FormIsValid(), 'hover:bg-opacity-80' : FormIsValid()}">Log in</button>
         <hr class="text-gray-400 opacity-0  mb-2 mt-2">
         <button (click)="authService.GoogleAuth()" class="text-center rounded-lg p-2 bg-green-400 hover:bg-opacity-80 w-auto">Log in with google
           <img class="inline w-6 h-6"  src="../../../assets//svgs//google.svg" alt="">

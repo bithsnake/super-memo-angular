@@ -220,7 +220,7 @@ export class MemoServices {
 
   GetMemo(id: number): Memo {
     const memo = this.Memos.find((s) => {
-      return +s.Id === +id;
+      return +s.Index === +id;
     }
     )
     return memo as Memo;
@@ -234,17 +234,5 @@ export class MemoServices {
     }
     const observable = defer( ()=>  this.afs.collection('users').doc(this.authService.userData.uid).collection('memos').get().toPromise() );
     return observable;
-
-    let user: User = {} as User;
-    // return this.afs.collection('users').doc(user.uid).collection('memos').get()
-    //   .pipe(
-    //     map((data) => {
-    //       return data;
-    //     }),
-    //     tap(data => {
-    //       this.Memos = data.docs.map(data => (data.data() as Memo));
-    //       // console.log('from authservice GetAllmemos' + JSON.stringify(data.docs)) // listen to the stream but do not touch it
-    //     }),
-    //  )
   }
 }

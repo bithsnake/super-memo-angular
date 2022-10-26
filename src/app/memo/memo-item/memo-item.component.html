@@ -1,15 +1,23 @@
-<div id="__item" [ngStyle]="{maxWidth: max_width}" class="w-[32rem] bg-white rounded-md hide_item">
+
+<div id="__item"  [ngStyle]="{maxWidth: max_width}" class="w-[32rem] w-auto bg-white rounded-md  hover:bg-gray-200 cursor-pointer memo-item ">
   <section  class="w3-card-4 p-8">
     <!-- Memo Title -->
     <header class="w-full justify-between mb-4 ">
       <!-- <p> {{currentActiveMemoIndex}} </p> -->
       <!-- <h1>{{memo.Title}}</h1><p>{{memo.MemoIcon}}</p> -->
-      <span><h1>{{memo.Title}}</h1> Id {{memo.Index}} </span>
+      <span>
+
+        <input autofocus *ngIf="memo.EditMemo" id="title-input" name="titleinput" class="text-xl my-z-depth bg-gray-200 hover:bg-white" type="text" value="{{memo.Title}}" >
+        <h2 *ngIf="!memo.EditMemo">{{memo.Title}}</h2>
+      </span>
     </header>
-    <section><p class="text-blue-500">Created {{ dateText }} </p></section>
+
+    <p class="text-blue-500">Created {{ dateText }} </p>
+
     <!-- Description -->
     <article class="border-b-2 border-gray-300">
-      <p>{{memo.Description}}</p>
+      <input *ngIf="memo.EditMemo" type="text" name="descriptioninupt" id="description-input" class="text-base my-z-depth bg-gray-200 hover:bg-white" value="{{memo.Description}}">
+      <p *ngIf="!memo.EditMemo" type="text" class="my-z-depth" > {{memo.Description}} </p>
     </article>
 
     <!-- Output all current ingredients for the current shopping list -->
@@ -31,13 +39,17 @@
     </div>
 
     <section #buttonSection [ngClass]="{'hidden': IsDisabled === true}" class="w-auto mt-4 flex flex-row flex-nowrap content-center justify-between  w3-monospace text-white">
-      <button #sendAsMailButton id="send-as-mail-button" (click)="SendAsMailDialog()" class="text-center rounded-lg p-2 mx-3 bg-gray-400 hover:bg-opacity-80">{{Icons.sendmail.icon}}</button>
-      <button #removeButton [ngClass]="{'hidden': memo.EditMemo}" id="remove-button" (click)="DeleteMemo()" class="text-center rounded-lg p-2 mx-3 bg-gray-400 hover:bg-opacity-80">{{Icons.remove.icon}}</button>
-      <button #editButton [ngClass]="{'bg-green-400': memo.EditMemo, 'bg-gray-400': !memo.EditMemo }" (click)="ToggleEditMemo(false)" id="edit-button" class="text-center rounded-lg p-2 mr-3 hover:bg-opacity-80"> {{memo.EditMemo ?  "Update & close" : Icons.edit.icon}}</button>
+
+      <button #sendAsMailButton id="send-as-mail-button" (click)="SendAsMailDialog()" class="text-center rounded-lg p-2 mx-3 bg-gray-400 hover:bg-opacity-80 my-z-depth">{{Icons.sendmail.icon}}</button>
+      <button #removeButton [ngClass]="{'hidden': memo.EditMemo}" id="remove-button" (click)="DeleteMemo()" class="text-center rounded-lg p-2 mx-3 bg-gray-400 hover:bg-opacity-80 my-z-depth">{{Icons.remove.icon}}</button>
+      <button #editButton [ngClass]="{'bg-green-400': memo.EditMemo, 'bg-gray-400': !memo.EditMemo }" (click)="ToggleEditMemo(false)" id="edit-button" class="text-center rounded-lg p-2 mr-3 hover:bg-opacity-80 my-z-depth"> {{memo.EditMemo ?  "Update & close" : Icons.edit.icon}}</button>
+
       <div [ngClass]="{'hidden': !memo.EditMemo}"  class="inline-flex flex-row justify-start space-x-4">
-        <button #addNewIngredientsButton (click)="AddNewIngredientsDialogue()" id="add-new-ingredients-button" class="text-center rounded-lg p-2 mx-3 hover:bg-opacity-80 bg-green-400">Add</button>
-        <button #cancelButton (click)="ToggleEditMemo(true)" id="edit-button" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80">Cancel</button>
+        <button #addNewIngredientsButton (click)="AddNewIngredientsDialogue()" id="add-new-ingredients-button" class="text-center rounded-lg p-2 mx-3 hover:bg-opacity-80 bg-green-400 my-z-depth">Add</button>
+        <button #cancelButton (click)="ToggleEditMemo(true)" id="edit-button" class="text-center rounded-lg p-2 bg-red-400 hover:bg-opacity-80 my-z-depth">Cancel</button>
       </div>
+
     </section>
   </section>
+
 </div>

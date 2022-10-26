@@ -10,7 +10,8 @@ import { Memo } from './memo.model';
 export class MemoResolver implements Resolve<Memo> {
 
   constructor(private memoServices : MemoServices) {}
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Memo> | Promise<Memo> | Memo{
-    return this.memoServices.GetMemo(+route.params['id']);
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Memo> | Promise<Memo> | Memo {
+    console.log("resolving url: ", this.memoServices.GetMemo(Number(+route.params['id'])));
+    return this.memoServices.GetMemo(Number(+route.params['id']));
   }
 }

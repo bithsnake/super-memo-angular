@@ -83,6 +83,20 @@
   animation: anim 0.1s ease-in-out;
 }
 
+.my-z-depth{
+  z-index: 900 !important;
+}
+
+
+.memo-item{
+  transition: scale 100ms ease-in;
+}
+
+.memo-item:hover{
+  scale : 1.05;
+}
+
+
 @keyframes anim {
   from{
     font-size: small;

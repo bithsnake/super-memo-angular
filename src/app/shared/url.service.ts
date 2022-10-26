@@ -8,15 +8,18 @@ export class UrlService {
   constructor(private router: Router) {
 
     this.currentUrl = '';
-    this.router.events.pipe(
-      filter(e => (e instanceof NavigationEnd) )
-    ).subscribe((res) => {
+
+    // subscribe to navigation end for currentUrl just before changing url
+    this.router.events.pipe(filter(e => (e instanceof NavigationEnd)))
+      .subscribe((res) => {
       if (this._previousUrl !== this.currentUrl) {
         console.log("res : from Urlservice, ", res);
         this._previousUrl = this.currentUrl;
       }
       this.currentUrl = this.router.url;
-    });
+      });
+
+
   }
   public _previousUrl: string | null = '';
   public currentUrl : string | null =''

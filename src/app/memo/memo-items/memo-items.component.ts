@@ -1,8 +1,5 @@
 import { Component, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ChildActivationStart, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MemoServices } from 'src/app/shared/services/memo.service';
 import { Memo } from '../memo.model';
@@ -24,10 +21,7 @@ export class MemoItemsComponent implements OnInit, OnDestroy {
 
   constructor(
     public authService: AuthService,
-    private dialog: MatDialog,
-    private ngZone: NgZone,
     public memoService: MemoServices,
-    private router: Router
   ) {}
   ngOnDestroy(): void {
     if (this.myIntervall !== undefined) clearInterval(this.myIntervall);
@@ -57,16 +51,13 @@ export class MemoItemsComponent implements OnInit, OnDestroy {
         }
       });
 
-    console.log('authService: ', this.authService);
 
     // memo updated
     this.memoService.onUpdateMemo$.subscribe((updatedMemo) => {
       const index = this.Memos.findIndex((memo) => {
         return memo.Id === updatedMemo.Id;
       });
-      console.log('before update: ', this.Memos[index]);
       this.Memos[index] = updatedMemo;
-      console.log('after update: ', this.Memos[index]);
     });
 
     // memo deleted
@@ -80,9 +71,7 @@ export class MemoItemsComponent implements OnInit, OnDestroy {
     // created a new memo
     this.memoCreatedSubscription = this.memoService.memoCreated.subscribe(
       (memo) => {
-        console.log('new memo created: ', memo);
         this.Memos.push(memo);
-        // this.memoCreatedSubscription.unsubscribe();
       }
     );
 
