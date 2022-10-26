@@ -2,8 +2,13 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { EventEmitter, Injectable, NgZone } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FirebaseError } from 'firebase/app';
+<<<<<<< HEAD
 import { BehaviorSubject, defer, from, Observable, Subject, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+=======
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+>>>>>>> 2e8d54683d2209dcc11ffa4d9e8365caebb3c0bd
 import { YesNoQuestion } from 'src/app/management/dashboard/dashboard.component';
 import { Memo } from 'src/app/memo/memo.model';
 import { ScrollBackUp, checkOverflow, compareName, compareId, compareCreatedDate } from 'src/app/shared/methods/methods';
@@ -37,8 +42,12 @@ export class MemoServices {
   public orderMemosByCreated: EventEmitter<Boolean> = new EventEmitter;
   public stackMemos: EventEmitter<Boolean> = new EventEmitter;
   public memoDeleted: EventEmitter<Memo> = new EventEmitter();
-  public sendMemoAsMail: EventEmitter<Memo> = new EventEmitter();
+  public sendMemoAsMail: BehaviorSubject<Memo> = new BehaviorSubject(new Memo());
   public onMemoClicked: EventEmitter<Memo> = new EventEmitter();
+<<<<<<< HEAD
+=======
+  public onUpdateMemo: BehaviorSubject<Memo> = new BehaviorSubject(new Memo());
+>>>>>>> 2e8d54683d2209dcc11ffa4d9e8365caebb3c0bd
   public onResetCurrentMemoIndexOnAll: EventEmitter<Memo> = new EventEmitter();
 
 
@@ -207,7 +216,11 @@ export class MemoServices {
       });
 
       if (isfound.closed) {
+<<<<<<< HEAD
         this.onUpdateMemo$.next(currentMemo);
+=======
+        this.onUpdateMemo.next(currentMemo);
+>>>>>>> 2e8d54683d2209dcc11ffa4d9e8365caebb3c0bd
       }
 
     } catch (error) {
