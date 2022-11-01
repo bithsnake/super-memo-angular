@@ -17,7 +17,7 @@ export class MemoItemEditComponent implements OnInit {
   constructor(private dialog: MatDialog, private memoService : MemoServices) { }
   ngOnInit() {
 
-    this.subscription$ = this.memoService.onUpdateMemo$.subscribe((memoData: Memo) => {
+    this.subscription$ = this.memoService.onMemoUpdated$.subscribe((memoData: Memo) => {
       this.memo = memoData;
 
     })
@@ -33,7 +33,6 @@ export class MemoItemEditComponent implements OnInit {
         if (data === null || data === undefined) return;
         this.memo.Ingredients = [];
         this.memo.Ingredients = data as Ingredient[];
-        // UpdateIngredientsOnMemo(this.memo.Title,this.memo.Description,this.memo.CreatedDate.toLocaleDateString(),this.memo,this.memoService);
       },
       error: (error) => console.log(error),
       complete: () => console.log('completed adding new ingredients'),

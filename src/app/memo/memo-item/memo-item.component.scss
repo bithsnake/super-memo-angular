@@ -89,12 +89,18 @@
 
 
 .memo-item{
-  transition: scale 100ms ease-in;
+  transition: all 100ms ease-in;
+  background-color : white;
 }
 
 .memo-item:hover{
   scale : 1.05;
+  background: linear-gradient(45deg, rgba(0, 0, 255, 0.26), white);
 }
+
+// .memo-item:active {
+
+// }
 
 
 @keyframes anim {

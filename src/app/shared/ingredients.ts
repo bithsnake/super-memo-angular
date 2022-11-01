@@ -88,7 +88,7 @@ export const ingredients = {
   rice:           { Name: "Rice", Icon: '🍙' as IngredientType},
   sausage :       { Name: "Sausage/Hot dog", Icon: '🌭' as IngredientType},
   strawberry :    { Name: "Strawberry", Icon: '🍓' as IngredientType},
-  sweetpotato :   { Name: "Sweetpotato", Icon: '🍠' as IngredientType},
+  sweetpotato :   { Name: "SweetpclickedIngredientotato", Icon: '🍠' as IngredientType},
   tomato:         { Name: "Tomato", Icon: '🍅' as IngredientType},
   peanuts:        { Name: "Peanuts", Icon: '🥜' as IngredientType},
   pear:           { Name: "Pear", Icon: '🍐' as IngredientType},

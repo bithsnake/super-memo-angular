@@ -17,7 +17,7 @@ const _id = uuid.v4();
 })
 class AddNewMemoComponent implements IMemo, OnInit {
   public Id: string = "";
-  public Index: number = -1;
+  public Index: string = '-1';
   public Title: string = '';
   public Description: string = '';
   public CreatedDate: Date = new Date();
@@ -38,7 +38,7 @@ class AddNewMemoComponent implements IMemo, OnInit {
     this.dialogRef.close(this.memo);
   }
   ngOnInit(): void {
-    this.memo = new Memo(_id,-1,this.Title,this.Description,new Date(),this.MemoIcon,this.Ingredients);
+    this.memo = new Memo(_id,'-1',this.Title,this.Description,new Date(),this.MemoIcon,this.Ingredients);
     this.data =  this.memo;
 
   }
@@ -57,7 +57,6 @@ class AddNewMemoComponent implements IMemo, OnInit {
   }
   /**Adds an igredient to list if none is found, otherwise one is added to the current ingredient */
   AddIngredientToList(addedIngredientIcon: IngredientType) {
-    // console.log("From 'add-new-memo' , Added item: ", addedIngredientIcon);
     const _tempIngredient = ingredientsArray.find(x => x.Icon === addedIngredientIcon);
     let newIngredient: Ingredient;
 
@@ -150,6 +149,4 @@ class AddNewMemoComponent implements IMemo, OnInit {
     }, resetAfterMs);
   }
 }
-
-
 export default AddNewMemoComponent;

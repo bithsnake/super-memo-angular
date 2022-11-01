@@ -18,27 +18,18 @@ GoBackToTopEventlistener();
 export class MainAppComponent implements OnInit, OnDestroy {
   // switch between row and col (css)
   public UseRow: boolean = true;
-  // page scroll features
-
-  protected memosSubscription: Subscription | undefined;
-  protected memoCreatedSubscription: Subscription | undefined;
-
+  private memosSubscription: Subscription | undefined;
+  private memoCreatedSubscription: Subscription | undefined;
   public IsOverflowing: boolean = false;
   public ScrollBackUp = ScrollBackUp;
   public checkOverflow = checkOverflow;
   @Input() public Memos: Memo[] = [];
 
-  constructor(
-    public authService: AuthService,
-    private dialog: MatDialog,
-    private ngZone: NgZone,
-    public memoService: MemoServices,
-    private router: Router
-  ) {}
+  constructor(public authService: AuthService,public memoService: MemoServices,) {}
   ngOnDestroy(): void {
-    if (this.memosSubscription !== undefined) this.memosSubscription.unsubscribe();
-    if (this.memoCreatedSubscription !== undefined) this.memoCreatedSubscription.unsubscribe();
-    console.log('From main-app :  unsubscribed from memoArraySubcription');
+    // if (this.memosSubscription !== undefined) this.memosSubscription.unsubscribe();
+    // if (this.memoCreatedSubscription !== undefined) this.memoCreatedSubscription.unsubscribe();
+    // console.log('From main-app :  unsubscribed from memoArraySubcription');
   }
 
   public ToggleMemosFlexFlow(
@@ -61,31 +52,30 @@ export class MainAppComponent implements OnInit, OnDestroy {
     //   });
 
     // sub on updated one memo
-    this.memoService.onUpdateMemo$.subscribe((updatedMemo) => {
-      const index = this.Memos.findIndex((memo) => {
-        return memo.Id === updatedMemo.Id;
-      });
-      console.log('before update: ', this.Memos[index]);
-      this.Memos[index] = updatedMemo;
-      console.log('after update: ', this.Memos[index]);
-    });
 
-    // sub on deleted memo
-    this.memoService.memoDeleted.subscribe((deletedMemo) => {
-      const index = this.Memos.findIndex((memo) => {
-        return memo.Id === deletedMemo.Id;
-      });
-      this.Memos.splice(index, 1);
-    });
-    // sub on created memo'
-    this.memoCreatedSubscription = this.memoService.memoCreated.subscribe(
-      (memo) => {
-        console.log('new memo created: ', memo);
-        this.Memos.push(memo);
-        // this.memoCreatedSubscription.unsubscribe();
-      }
-    );
+    // this.memoService.onUpdateMemo$.subscribe((updatedMemo) => {
+    //   const index = this.Memos.findIndex((memo) => {
+    //     return memo.Id === updatedMemo.Id;
+    //   });
+    //   console.log('before update: ', this.Memos[index]);
+    //   this.Memos[index] = updatedMemo;
+    //   console.log('after update: ', this.Memos[index]);
+    // });
 
-    console.log('current memos from /app: ', this.memoService.Memos);
+    // // sub on deleted memo
+    // this.memoService.onMemoDeleted$.subscribe((deletedMemo) => {
+    //   const index = this.Memos.findIndex((memo) => {
+    //     return memo.Id === deletedMemo.Id;
+    //   });
+    //   this.Memos.splice(index, 1);
+    // });
+    // // sub on created memo'
+    // this.memoCreatedSubscription = this.memoService.memoCreated.subscribe(
+    //   (memo) => {
+    //     console.log('new memo created: ', memo);
+    //     this.Memos.push(memo);
+    //     // this.memoCreatedSubscription.unsubscribe();
+    //   }
+    // );
   }
 };

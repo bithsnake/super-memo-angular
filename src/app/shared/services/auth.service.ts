@@ -6,19 +6,14 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
-  DocumentData,
-  QuerySnapshot,
 } from '@angular/fire/compat/firestore';
 import {Router } from '@angular/router';
 import { NewDialogComponent } from '../new-dialog/new-dialog.component';
 import { UrlService } from '../url.service';
 import { Memo } from 'src/app/memo/memo.model';
-import { Observable, of, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { MemoServices } from './memo.service';
+import { Observable } from 'rxjs';
 // user data in localstorage
 const _user: string = 'user';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -48,7 +43,7 @@ export class AuthService {
 
     // Init spinner
     this.showSpinner = false;
-    // Observable that checks authentication state
+    // Observable that checks authentication state if page is refreshed
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userData = user as User;
@@ -72,24 +67,6 @@ export class AuthService {
             });
             return;
           };
-
-          const routeWeirdnessCheck = (this.router.url === '/' || this.router.url === '') && (this.urlService.currentUrl === '/' || this.urlService.currentUrl === '') && this.userData.emailVerified === true;
-
-          // if route is empty, weird or anything but is verified, navigate to /app
-          // if (routeWeirdnessCheck) {
-          //   this.ngZone.run(() => {
-          //     this.RouterNavigate('app');
-          //     // this.router.navigate(['app']);
-          //   });
-          //   return;
-          // }
-
-          // if (routeWeirdnessCheck) {
-          //   this.ngZone.run(() => {
-          //   this.RouterNavigate('sign-in');
-          //   // this.router.navigate(['sign-in']);
-          // });
-          // }
         }
 
       } else {
@@ -104,35 +81,32 @@ export class AuthService {
           if (this.userData.emailVerified === true && router.url === '/sign-in') {
             this.ngZone.run(() => {
               this.RouterNavigate('app');
-              // this.router.navigate(['app']);
             });
             return;
-          };
-        };
+          }
+        }
       });
-    };
-  };
+    }
+  }
 
   /**sign in with email/password */
   SignIn(email: string, password: string) {
-    this.showSpinner = true;
 
+    this.showSpinner = true;
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
         if (result.user !== null) {
-
           if (result.user.emailVerified === false) {
-
             this.SendVerificationMail();
-
             new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your email address is not verified yet, check your inbox for a verification mail, a new verification mail has been sent');
             this.StopSpinner();
           }
 
+          // if verified then log in
           if (result.user.emailVerified === true) {
             this.afAuth.authState.subscribe((user) => {
-              console.log("subscribtion triggered");
-
+              console.log("Logging in");
+              // if user exists store data i localstorage and navigate to app
               if (user) {
                   this.userData = user as User;
                   localStorage.setItem(_user, JSON.stringify(this.userData));
@@ -140,7 +114,7 @@ export class AuthService {
                   if (this.router.url === '/sign-in') {
                     this.ngZone.run(() => {
                       this.RouterNavigate('app');
-                      // this.router.navigate(['app']);
+                      new NewDialogComponent(this.dialog).OpenNewNotificationDialog('🍲🍲 Welcome, time to create some grocery list memos! 🍲🍲');
                     });
                   };
               } else {
@@ -155,18 +129,17 @@ export class AuthService {
             this.StopSpinner();
             return;
           }
-
+          // set user data
           this.SetUserData(result.user).then(_result => {
             this.StopSpinner();
-          })
-            .catch((error) => {
+          }).catch((error) => {
               this.StopSpinner();
               new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error);
-            });
+          });
+
         }
 
-      })
-      .catch((error) => {
+      }).catch((error) => {
         this.StopSpinner();
         new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error.message);
       });
@@ -178,6 +151,7 @@ export class AuthService {
       new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your display name can not be empty.');
       return;
     }
+
     return this.afAuth
         .createUserWithEmailAndPassword(email, password)
         .then((result) => {
@@ -186,8 +160,7 @@ export class AuthService {
               result.user.updateProfile({
                 displayName: (displayName === '' || displayName === null) ? 'NoName' : displayName,
               }).then((res) => {
-                console.log("current displayname: ", result.user?.displayName);
-
+                // console.log("current displayname: ", result.user?.displayName);
               })
             }
             this.SendVerificationMail();
@@ -265,9 +238,10 @@ export class AuthService {
     this.showSpinner = true;
     return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
       if (res) {
+
         this.StopSpinner();
         this.RouterNavigate('app');
-        // this.router.navigate(['app']);
+        new NewDialogComponent(this.dialog).OpenNewNotificationDialog('🍲🍲 You are so welcome, time to create some grocery list memos! 🍲🍲');
         return;
       } else {
         this.StopSpinner();

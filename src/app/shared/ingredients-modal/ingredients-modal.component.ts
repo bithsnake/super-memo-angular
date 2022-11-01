@@ -20,7 +20,7 @@ export class IngredientsModalComponent implements OnInit {
 
 
   public _ingredients = ingredientsArray;
-  public Index: number = -1;
+  public Index: string = '-1';
   public Title: string = '';
   public Description: string = '';
   public CreatedDate: Date = new Date();
@@ -33,7 +33,7 @@ export class IngredientsModalComponent implements OnInit {
   @Input() public currentActiveMemoIndex: number = -1;
   @Output() public AddedIngredientIcon: IngredientType = '🍆';
 
-  public NewMemo: Memo = new Memo(uuid.v4(),this.Index = -1, this.Title = '', this.Description = '', this.CreatedDate, this.MemoIcon, this.newIngredients = []);
+  public NewMemo: Memo = new Memo(uuid.v4(),this.Index = '-1', this.Title = '', this.Description = '', this.CreatedDate, this.MemoIcon, this.newIngredients = []);
 
   constructor(private dialogRef: MatDialogRef<IngredientsModalComponent>,@Inject(MAT_DIALOG_DATA) public data: any) {
     this.currentIngredients = data.length <= 0 ? [] : data.Ingredients;

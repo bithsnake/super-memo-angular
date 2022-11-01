@@ -1,5 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { AuthService } from './shared/services/auth.service';
+import { MemoServices } from './shared/services/memo.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,5 +11,7 @@ export class AppComponent implements OnInit {
 
 constructor(public authService: AuthService) {
 }
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+
 };

@@ -1,5 +1,4 @@
-import { createViewChild } from '@angular/compiler/src/core';
-import { AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, OnInit} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 @Component({
@@ -15,6 +14,14 @@ export class SignInComponent implements OnInit, AfterViewInit  {
   passwordControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(100)]);
   constructor(public authService: AuthService) {
 
+  }
+  ngOnInit(): void {
+
+    setTimeout(() => {
+      const loginButton = document.querySelector('#login');
+      if (loginButton)
+        loginButton.classList.add('bg-green-400');
+    }, 10);
   }
   getUsernameErrorMessage() {
     if (this.userNameControl.hasError('required')) {
@@ -32,9 +39,6 @@ export class SignInComponent implements OnInit, AfterViewInit  {
   FormIsValid() {
     return this.userNameControl.valid === true && this.passwordControl.valid === true;
   }
-  ngOnInit(): void {
-  }
-
   ngAfterViewInit(): void {
 
     // child is set

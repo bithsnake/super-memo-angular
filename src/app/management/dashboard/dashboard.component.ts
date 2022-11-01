@@ -8,6 +8,8 @@ import { authState } from '@angular/fire/auth';
 import { UrlService } from 'src/app/shared/url.service';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
+import { MemoServices } from 'src/app/shared/services/memo.service';
+import { NewDialogComponent } from 'src/app/shared/new-dialog/new-dialog.component';
 interface DeleteQuestion {
   deleteItem : boolean
 }
@@ -22,12 +24,17 @@ export class YesNoQuestion implements DeleteQuestion {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   color = {
     red: 'rgba(255,148,148)',
     green: 'rgb(72, 245, 66)'
   };
-  constructor(public authService: AuthService, public dialog: MatDialog, private urlService : UrlService, private router: Router) {}
+  constructor(
+    public authService: AuthService,
+    public dialog: MatDialog,
+    private urlService: UrlService,
+    private router: Router,
+  private memoService : MemoServices) { }
 
   public OpenDeleteAccountDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -47,7 +54,10 @@ export class DashboardComponent implements OnInit {
             return;
           }
           user.delete().then(next => {
-            this.authService.SignOut();
+            this.memoService.afs.collection('users').doc(this.authService.userData.uid).delete().then(() => {
+              new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your accoutn is deleted! You are welcome back again! 💯');
+              this.authService.SignOut();
+            });
           }).catch(error => {
             window.alert("Could not delete acount: " + error);
           })
@@ -88,6 +98,4 @@ export class DashboardComponent implements OnInit {
   public GoBack() {
     this.urlService.GoBack();
   }
-
-  ngOnInit(): void { }
 }
