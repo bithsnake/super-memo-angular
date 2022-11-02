@@ -7,10 +7,10 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss']
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent {
 
-  emailAddressControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(100)]);
 
+  emailAddressControl = new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]);
   constructor(public authService : AuthService) { }
 
   getUsernameErrorMessage() {
@@ -19,9 +19,4 @@ export class ForgotPasswordComponent implements OnInit {
     }
     return this.emailAddressControl.hasError('formTitle') ? 'Not a valid mailaddress' : '';
   }
-
-
-  ngOnInit(): void {
-  }
-
 }
