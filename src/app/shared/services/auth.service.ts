@@ -7,7 +7,7 @@ import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
-import {Router } from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { NewDialogComponent } from '../new-dialog/new-dialog.component';
 import { UrlService } from '../url.service';
 import { Memo } from 'src/app/memo/memo.model';
@@ -36,6 +36,7 @@ export class AuthService {
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth servce
     public router: Router,
+    private route : ActivatedRoute,
     public ngZone: NgZone, // nGZone service to remove outside scope warnings
     public dialog: MatDialog,
     public urlService: UrlService,
@@ -51,7 +52,7 @@ export class AuthService {
         JSON.parse(localStorage.getItem(_user)!);
 
         // force navigation from /sign-in to /app after logging in and email is verfified
-        if (this.userData.emailVerified === false) {
+        if (this.userData.emailVerified === false && router.url !== '/verify-email-address') {
           this.ngZone.run(() => {
             this.RouterNavigate('sign-in');
             // this.router.navigate(['sign-in']);
@@ -98,7 +99,7 @@ export class AuthService {
         if (result.user !== null) {
           if (result.user.emailVerified === false) {
             this.SendVerificationMail();
-            new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your email address is not verified yet, check your inbox for a verification mail, a new verification mail has been sent');
+            new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your email address is not verified yet📧! Check your inbox for a verification mail, a new verification mail has been sent');
             this.StopSpinner();
           }
 
@@ -165,7 +166,9 @@ export class AuthService {
             }
             this.SendVerificationMail();
             this.SetUserData(result.user);
-            this.StopSpinner();
+          this.StopSpinner();
+
+
           })
           .catch((error) => {
             this.StopSpinner();
@@ -184,6 +187,7 @@ export class AuthService {
 
         if (this.userData !== null) {
           // delete later
+          // new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Congrats, now you are signed up!🙌 verification email sent to: ' + u?.email);
           console.log("this.afAuth.currentUser: ", this.afAuth.currentUser);
           console.log("current user 'u' : ", u);
         }
@@ -194,7 +198,7 @@ export class AuthService {
 
         // Send email verification
         u.sendEmailVerification().catch((error) => {
-          new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error);
+          // new NewDialogComponent(this.dialog).OpenNewNotificationDialog(error);
         });
 
       })

@@ -36,7 +36,7 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
   //keep commented
   { path: '', redirectTo: '/sign-in', pathMatch: 'full'},
-  { path: '**', redirectTo: window.location.pathname === '' ? '/sign-in' : window.location.pathname, },
+  { path: '**', redirectTo: window.location.pathname === '' ? '/sign-in' : window.location.pathname,  pathMatch: 'full'},
   // old
   // { path: '**',  redirectTo: '/app', },
 ];

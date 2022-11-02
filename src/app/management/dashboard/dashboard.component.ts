@@ -55,7 +55,7 @@ export class DashboardComponent {
           }
           user.delete().then(next => {
             this.memoService.afs.collection('users').doc(this.authService.userData.uid).delete().then(() => {
-              new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your accoutn is deleted! You are welcome back again! 💯');
+              new NewDialogComponent(this.dialog).OpenNewNotificationDialog('Your account is deleted! You are welcome back again! 💯');
               this.authService.SignOut();
             });
           }).catch(error => {

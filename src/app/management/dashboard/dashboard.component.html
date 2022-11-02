@@ -11,7 +11,7 @@
         <div class="" *ngIf="authService.userData as user">
           <div class=" p-4">
             <div class="inline-flex  flex-col  space-y-4 justify-center place-content-between">
-              <img class="w-10 h-10 " src="{{(user.photoURL) ? user.photoURL : '../../../../../assets/images/dummy-user.png'}}"
+              <img class="w-10 h-10 " title="{{user.displayName}}" src="{{(user.photoURL) ? user.photoURL : '../../../../../assets/images/dummy-user.png'}}"
                 alt="profile picture">
 
                 <div class="mt-6">
