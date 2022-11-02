@@ -1,19 +1,39 @@
 <div class="flex flex-col ">
   <section  class="w-1/2 h-1/2  min-w-full">
+
     <div class="inline-flex flex-row justify-between w-full">
       <p class="text-xl">New food list memo!</p>
-      <button #createMemoButton id="_create-memo-button" (click)="ExitMemo($event)"  class="text-center scale-50 rounded-lg p-2 m-0 bg-red-400 hover:bg-opacity-80">❌</button>
+
+      <button
+      #createMemoButton
+      id="_create-memo-button"
+      (click)="ExitMemo($event)"
+      class="text-center scale-50 rounded-lg p-2 m-0 bg-red-400 hover:bg-opacity-80">
+      ❌</button>
     </div>
+
     <div class="inline-flex flex-col">
       <mat-form-field appearance="fill">
         <mat-label for="title" class="text-white">Enter your title</mat-label>
-        <input name="title" matInput placeholder="happy sundays!..." [formControl]="titleControl" #title [(ngModel)]="Title" required >
+        <input
+        name="title"
+        matInput placeholder="happy sundays!..."
+        [formControl]="titleControl"
+        #title
+        [(ngModel)]="Title"
+        required >
         <mat-error *ngIf="titleControl.invalid">{{getTitleErrorMessage()}}</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label for="description">Enter your description</mat-label>
-        <input name="description" matInput placeholder="some description.." [formControl]="descriptionControl" #description [(ngModel)]="Description" required >
+        <input
+        name="description"
+        matInput placeholder="some description.."
+        [formControl]="descriptionControl"
+        #description
+        [(ngModel)]="Description" required >
+
         <mat-error *ngIf="descriptionControl.invalid">{{getDescriptionErrorMessage()}}</mat-error>
       </mat-form-field>
     </div>
@@ -29,43 +49,51 @@
           </header>
 
           <div #ingredientMenu class="flex justify-evenly open-list ingredient-list-default"   >
-            <app-create-new-ingredients-modal #ingredient  (NewIngredientsAdded)="AddIngredientToList($event)"  [ngStyle]="{maxWidth: max_width}" ></app-create-new-ingredients-modal>
+            <app-create-new-ingredients-modal
+            #ingredient
+            (NewIngredientsAdded)="AddIngredientToList($event)"
+            [ngStyle]="{maxWidth: max_width}" >
+          </app-create-new-ingredients-modal>
           </div>
         </section>
-
-
     </div>
+
   </section>
+      <button
+      #createMemoButton
+      id="_create-memo-button"
+      (click)="CreateNewMemo()"
+      class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80">
+      Create Memo
+    </button>
+</div>
 
-      <button #createMemoButton id="_create-memo-button" (click)="CreateNewMemo()"  class="text-center rounded-lg p-2 bg-gray-400 hover:bg-opacity-80">Create Memo</button>
-    </div>
-    <!-- Current Ingredient List -->
-    <section>
-      <p>Current list</p>
-      <hr>
-      <br>
-      <h4 class="text-xl" *ngIf="memo.Ingredients.length === 0">
-        List is Empty!
-      </h4>
+<!-- Current Ingredient List -->
+<section>
+  <p>Current list</p>
+  <hr>
+  <br>
+  <h4 class="text-xl" *ngIf="memo.Ingredients.length === 0">
+    List is Empty!
+  </h4>
 
 
-      <div  class="bg-gray-400 bg-opacity-50 ">
-        <!-- Output all current ingredients for the current shopping list -->
-        <mat-dialog-content class="mat-typography">
-          <ul  id="_ingredientItems"  *ngFor="let ingredient of memo.Ingredients">
-            <a  class=" "  >
-              <li class="w-full inline-flex flex-row justify-between items-center">
-                <div #ingredientIcon class="inline-flex gap-2 my-1 " >
-                  <p class="text-white new_ingredient_items_" id="_ingredientItem" #_currenticon>{{ingredient.Icon}}</p> <span #_currentname>{{ingredient.Name}}</span>
-                </div>
-                <div class="inline-flex flex-row justify-end  ">
-                  <button  (click)="DecrementIngredient(_currenticon)" class=" hover:opacity-40  cursor-pointer mr-2 w-full h-full">➖</button><p >x{{ingredient.Amount}}</p>
-                </div>
-              </li>
-            </a>
-          </ul>
-        </mat-dialog-content>
-
+  <div  class="bg-gray-400 bg-opacity-50 ">
+    <!-- Output all current ingredients for the current shopping list -->
+    <mat-dialog-content class="mat-typography">
+      <ul  id="_ingredientItems"  *ngFor="let ingredient of memo.Ingredients">
+        <a  class=" "  >
+          <li class="w-full inline-flex flex-row justify-between items-center">
+            <div #ingredientIcon class="inline-flex gap-2 my-1 " >
+              <p class="text-white new_ingredient_items_" id="_ingredientItem" #_currenticon>{{ingredient.Icon}}</p> <span #_currentname>{{ingredient.Name}}</span>
+            </div>
+            <div class="inline-flex flex-row justify-end  ">
+              <button  (click)="DecrementIngredient(_currenticon)" class=" hover:opacity-40  cursor-pointer mr-2 w-full h-full">➖</button><p >x{{ingredient.Amount}}</p>
+            </div>
+          </li>
+        </a>
+      </ul>
+    </mat-dialog-content>
   </div>
 </section>
 

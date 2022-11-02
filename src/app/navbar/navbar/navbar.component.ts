@@ -1,21 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
-
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
 
   id: string;
 
   ClickHandler = (e?: Event, action: string = 'home') => {
     switch (action) {
       case 'home':
-        if (!this.authService.isLoggedIn) { this.router.navigate(['sign-in']); return; }
+        // if not logged in, redirect to the sign-in page
+        if (!this.authService.isLoggedIn)
+        {
+          this.router.navigate(['sign-in']); return;
+        }
         e?.preventDefault();
         this.router.navigate(['app']);
         break;
@@ -31,7 +34,6 @@ export class NavbarComponent implements OnInit {
       case 'about':
         e?.preventDefault();
         this.router.navigate(['about']);
-
         break;
       case 'logout':
         e?.preventDefault();
@@ -44,13 +46,8 @@ export class NavbarComponent implements OnInit {
     }
     if (e === null || e === undefined) return;
     e.preventDefault();
-    console.log("this something: ", (<HTMLButtonElement>e.target).value);
   };
   constructor( public authService : AuthService, public router : Router,) {
     this.id = "";
   }
-
-  ngOnInit(): void {
-  }
-
 }

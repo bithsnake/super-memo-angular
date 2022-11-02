@@ -8,7 +8,7 @@ import { authState } from '@angular/fire/auth';
 import { UrlService } from 'src/app/shared/url.service';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
-import { MemoServices } from 'src/app/shared/services/memo.service';
+import { MemoServices } from 'src/app/memo/services/memo.service';
 import { NewDialogComponent } from 'src/app/shared/new-dialog/new-dialog.component';
 interface DeleteQuestion {
   deleteItem : boolean

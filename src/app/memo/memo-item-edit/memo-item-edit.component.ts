@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angu
 import { Subscription } from 'rxjs';
 import { Ingredient } from 'src/app/shared/ingredients';
 import { IngredientsModalComponent } from 'src/app/shared/ingredients-modal/ingredients-modal.component';
-import { MemoServices } from 'src/app/shared/services/memo.service';
+import { MemoServices } from 'src/app/memo/services/memo.service';
 import { Memo } from '../memo.model';
 @Component({
   selector: 'app-memo-item-edit',

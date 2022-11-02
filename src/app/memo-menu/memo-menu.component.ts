@@ -4,8 +4,7 @@ import { Subscription } from 'rxjs';
 import AddNewMemoComponent from '../memo/add-new-memo/add-new-memo.component';
 import { MemoIcons } from '../memo/memo-icons/memo-icons';
 import { Memo } from '../memo/memo.model';
-import { NewDialogComponent } from '../shared/new-dialog/new-dialog.component';
-import { MemoServices } from '../shared/services/memo.service';
+import { MemoServices } from '../memo/services/memo.service';
 @Component({
   selector: 'app-memo-menu',
   templateUrl: './memo-menu.component.html',
@@ -21,7 +20,6 @@ export class MemoMenuComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.Memos = [];
-
   }
 
   ngOnDestroy(): void {
@@ -32,13 +30,10 @@ export class MemoMenuComponent implements OnInit,OnDestroy {
     console.log("From memo-menu : unsubscribed from memoArraySubcription");
 
   }
-
-  OrderMemosByLetter = () => this.memoService.orderMemosByLetter.emit(true);
-  OrderMemosByID = () => this.memoService.orderMemosByID.emit(true);
-  OrderMemosByCreated = () => this.memoService.orderMemosByCreated.emit(true);
-  StackMemos = () => this.memoService.stackMemos.emit();
-
-
+  // OrderMemosByLetter = () => this.memoService.orderMemosByLetter.emit(true);
+  // OrderMemosByID = () => this.memoService.orderMemosByID.emit(true);
+  // OrderMemosByCreated = () => this.memoService.orderMemosByCreated.emit(true);
+  // StackMemos = () => this.memoService.stackMemos.emit();
 
   public OpenNewMemoDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -53,9 +48,7 @@ export class MemoMenuComponent implements OnInit,OnDestroy {
     };
     // set dialog box maxheight
     dialogConfig.maxHeight = "64rem";
-
     const dialogRef = this.dialog.open(AddNewMemoComponent, dialogConfig);
-
     dialogRef.afterClosed().subscribe({
       next: (newMemoData) => {
         if (newMemoData === null || newMemoData === undefined) return;
@@ -89,7 +82,5 @@ export class MemoMenuComponent implements OnInit,OnDestroy {
         this.Memos.push(memo);
       }
     );
-
   }
-
 }

@@ -13,14 +13,11 @@ export class NotificationComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<NotificationComponent>, @Inject(MAT_DIALOG_DATA) public data: { serverMessage: string }, public authService: AuthService) {
     this.message = data.serverMessage;
   }
-
   public CloseNotification() {
-    // this.data.closeDialog = answer;
     this.dialogRef.close();
   };
 
   ngOnInit() {
     this.message = this.data.serverMessage;
   };
-
 }

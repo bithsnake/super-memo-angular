@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 @Component({
@@ -6,10 +6,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent implements OnInit, AfterViewInit  {
-
+export class SignInComponent implements OnInit  {
   // original state is empty string
-
   userNameControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(100)]);
   passwordControl = new FormControl('', [Validators.required,Validators.minLength(5), Validators.maxLength(100)]);
   constructor(public authService: AuthService) {
@@ -39,8 +37,5 @@ export class SignInComponent implements OnInit, AfterViewInit  {
   FormIsValid() {
     return this.userNameControl.valid === true && this.passwordControl.valid === true;
   }
-  ngAfterViewInit(): void {
 
-    // child is set
-  }
 }

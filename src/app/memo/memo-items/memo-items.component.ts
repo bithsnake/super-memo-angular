@@ -3,8 +3,8 @@ import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IMemo } from 'src/app/interfaces/interfaces';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { MemoMapperService } from 'src/app/shared/services/memo-mapper.service';
-import { MemoServices } from 'src/app/shared/services/memo.service';
+import { MemoMapperService } from 'src/app/memo/services/memo-mapper.service';
+import { MemoServices } from 'src/app/memo/services/memo.service';
 import { Memo } from '../memo.model';
 
 @Component({

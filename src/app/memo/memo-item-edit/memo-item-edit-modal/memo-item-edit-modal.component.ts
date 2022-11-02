@@ -2,9 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Ingredient, IngredientType, ingredientsArray } from 'src/app/shared/ingredients';
 import { IngredientsModalComponent } from 'src/app/shared/ingredients-modal/ingredients-modal.component';
-import { MemoServices } from 'src/app/shared/services/memo.service';
+import { MemoServices } from 'src/app/memo/services/memo.service';
 import { Memo } from '../../memo.model';
-import { AddIngredientToList } from '../../../shared/services/memo.service'
+import { AddIngredientToList } from '../../services/memo.service'
 
 @Component({
   selector: 'app-memo-item-edit-modal',

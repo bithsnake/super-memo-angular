@@ -3,7 +3,7 @@ import { Memo } from '../memo/memo.model';
 import { ScrollBackUp, checkOverflow,GoBackToTopEventlistener } from '../shared/methods/methods';
 import { AuthService } from '../shared/services/auth.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MemoServices } from '../shared/services/memo.service';
+import { MemoServices } from '../memo/services/memo.service';
 import { Subscription, } from 'rxjs';
 import { NewDialogComponent } from '../shared/new-dialog/new-dialog.component';
 import { Router } from '@angular/router';

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Resolver } from 'dns';
 import { Observable } from 'rxjs';
-import { MemoServices } from '../shared/services/memo.service';
+import { MemoServices } from './services/memo.service';
 import { Memo } from './memo.model';
 @Injectable({
   providedIn: 'root'

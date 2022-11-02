@@ -8,14 +8,14 @@ import { YesNoQuestion } from 'src/app/management/dashboard/dashboard.component'
 import { Memo } from 'src/app/memo/memo.model';
 import { ScrollBackUp, checkOverflow, compareName, compareId, compareCreatedDate } from 'src/app/shared/methods/methods';
 import { QuestionComponent } from 'src/app/question/question.component';
-import { Ingredient, ingredientsArray, IngredientType } from '../ingredients';
-import { NewDialogComponent } from '../new-dialog/new-dialog.component';
-import { AuthService } from './auth.service';
+import { Ingredient, ingredientsArray, IngredientType } from '../../shared/ingredients';
+import { NewDialogComponent } from '../../shared/new-dialog/new-dialog.component';
+import { AuthService } from '../../shared/services/auth.service';
 import { AngularFirestore, AngularFirestoreCollection, DocumentData, DocumentReference, QuerySnapshot } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { UrlService } from '../url.service';
+import { UrlService } from '../../shared/url.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,10 +26,10 @@ export class MemoServices {
   //cancel
   public onCancelEditMemo: EventEmitter<Boolean> = new EventEmitter();
   // ordering
-  public orderMemosByLetter: EventEmitter<Boolean> = new EventEmitter();
-  public orderMemosByID: EventEmitter<Boolean> = new EventEmitter();
-  public orderMemosByCreated: EventEmitter<Boolean> = new EventEmitter();
-  public stackMemos: EventEmitter<Boolean> = new EventEmitter();
+  // private orderMemosByLetter!: Subject<Boolean>
+  // private orderMemosByID!: Subject<Boolean>;
+  // private orderMemosByCreated!: Subject<Boolean>;
+  // private stackMemos!: Subject<Boolean>;
 
   // Observables
   public onNewMemoCreated$: Subject<Memo> = new Subject();

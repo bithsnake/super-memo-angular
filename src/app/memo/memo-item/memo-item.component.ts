@@ -7,7 +7,7 @@ import { NewDialogComponent } from 'src/app/shared/new-dialog/new-dialog.compone
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { IngredientsModalComponent } from 'src/app/shared/ingredients-modal/ingredients-modal.component';
 import { MemoAsMailComponent } from 'src/app/memo-as-mail/memo-as-mail.component';
-import { MemoServices } from 'src/app/shared/services/memo.service';
+import { MemoServices } from 'src/app/memo/services/memo.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as firestore from 'firebase/firestore';
 const MAX_WIDTH = "20rem";
@@ -40,24 +40,10 @@ export class MemoItemComponent implements OnInit,AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    document.getElementsByClassName('hide-item').item(0)?.classList.replace('hide-item', 'show-item');
-    //TODO From memo-item: Check if it works to set memo.Index to routers param ['id']
-    this.route.params.subscribe((params: Params) => {
-      const num = params['id'];
-        this.memo.Index = num;
-    });
-
-    this.memoService.onCancelEditMemo.subscribe((cancel: boolean) => {
-      this.ToggleEditMemo(false);
-      console.log("clicked on the background canceling other memos")
-    });
-    // Date to Timestamp
     const t = firestore.Timestamp.fromDate(new Date());
     // Timestamp to Date
     this.dateText = t.toDate().toLocaleDateString();
   }
-
-
   /**Add an index number to the end of the id */
   ngAfterViewInit(): void {
     let element = document.getElementById('__item');
@@ -73,7 +59,6 @@ export class MemoItemComponent implements OnInit,AfterViewInit {
     console.log("this.router params: " + this.route.params);
     console.log("this.router params: " + this.route.params);
   }
-
   /**When dropping a selected item in the Ingredients array */
   public drop(event: CdkDragDrop<Ingredient[]>) {
     moveItemInArray(
@@ -83,7 +68,6 @@ export class MemoItemComponent implements OnInit,AfterViewInit {
     );
     this.UpdateIngredientsOnMemo(UpdateOperation.ChangeOrder);
   }
-
   //TODO From memo-item: In the future, use this to open perhaps a modal with the memo you want to edit?
   /**Emit a event when an item is clicked */
   private async CheckCurrentMemoIndex() { this.memoService.onMemoClicked$.next(this.memo) };
@@ -165,10 +149,8 @@ export class MemoItemComponent implements OnInit,AfterViewInit {
         this.DeleteMemo();
         return;
     }
-
     // Else just update the list with one less ingredient
     this.UpdateIngredientsOnMemo(UpdateOperation.UpdateAmount); // just in case
-
   }
   /*Increment Ingredient from current memo list */
   public IncrementAmount(chosenIngredientIcon: HTMLElement) : void {
