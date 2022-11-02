@@ -66,9 +66,10 @@ export class MemoServices {
     const _e = (e.currentTarget as HTMLElement);
     _e.classList.add('rotate-element');
   }
+  /**Observable that gets memo data from firestore database */
   public GetMemos(): Observable<Memo[]> {
 
-    if (this.authService.userData.uid === '') {
+    if (this.authService.isLoggedIn === false || this.authService.userData.uid === '') {
       this.authService.SignOut();
       return {} as Observable<any>;
     }
